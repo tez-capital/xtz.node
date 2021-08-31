@@ -1,0 +1,8 @@
+{
+    "Description": '''
+XTZ node - rpc or baker node.
+'''
+    Links: [
+        { website: "https://tezos.com/" }
+    ]
+}

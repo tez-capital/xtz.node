@@ -1,0 +1,22 @@
+[Unit]
+Description={{{ID}}} endorser-next service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+User={{{USER}}}
+Group={{{USER}}}
+
+Type=simple
+Restart=always
+RestartSec=1
+
+Environment=TEZOS_LOG='* -> debug'
+ExecStart={{{ROOT_DIR}}}/bin/endorser-next run baker
+
+{{#model.SERVICE_CONFIGURATION_ENDORSER__ARRAY}}
+{{{key}}}={{{value}}}
+{{/model.SERVICE_CONFIGURATION_ENDORSER__ARRAY}}
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,22 @@
+[Unit]
+Description={{{ID}}} accuser service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+User={{{USER}}}
+Group={{{USER}}}
+
+Type=simple
+Restart=always
+RestartSec=1
+
+Environment=TEZOS_LOG='* -> debug'
+ExecStart={{{ROOT_DIR}}}/bin/accuser-next run
+
+{{#model.SERVICE_CONFIGURATION_ACCUSER__ARRAY}}
+{{{key}}}={{{value}}}
+{{/model.SERVICE_CONFIGURATION_ACCUSER__ARRAY}}
+
+[Install]
+WantedBy=default.target
