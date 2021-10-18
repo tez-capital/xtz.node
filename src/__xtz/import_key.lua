@@ -4,7 +4,7 @@ ami_assert(#_args > 0, "Please provide signer address in format: tcp://X.X.X.X:2
 
 local _user = am.app.get("user")
 local _keyId = am.app.get_configuration("keyId", "baker")
-local _proc = proc.spawn("bin/client", { "import", "secret", "key", _keyId, _args[1] }, {
+local _proc = proc.spawn("bin/client", { "import", "secret", "key", _keyId, ... }, {
 	stdio = "inherit",
 	wait = true,
 	env = { HOME = _user == "root" and "/root" or "/home/" .. _user }
