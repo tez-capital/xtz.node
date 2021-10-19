@@ -65,7 +65,7 @@ if fs.exists(_fetchScriptPath) then -- we download only on debian
     local _proc = proc.spawn("/bin/bash", { _fetchScriptPath }, {
         stdio = { stderr = "pipe" },
         wait = true,
-        env = { HOME = _user == "root" and "/root" or "/home/" .. _user }
+        env = { HOME = path.combine(os.cwd(), "data") }
     })
     ami_assert(_proc.exitcode == 0, "Failed to fetch params: " .. _proc.stderrStream:read("a"))
     log_success("Sprout parameters downloaded...")
@@ -74,7 +74,7 @@ end
 local _configFile = am.app.get_configuration("CONFIG_FILE")
 if type(_configFile) == "table" and not table.is_array(_configFile) then
 	log_info("Creating config file...")
-	fs.write_file("data/config.json", hjson.stringify_to_json(_configFile))
+	fs.write_file("./data/.tezos-node/config.json", hjson.stringify_to_json(_configFile))
 end
 
 local _ok, _error = fs.chown("data", _uid, _uid, {recure = true})

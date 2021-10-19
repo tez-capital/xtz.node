@@ -11,7 +11,9 @@ Type=simple
 Restart=always
 RestartSec=1
 
-ExecStart={{{ROOT_DIR}}}/bin/node run --data-dir {{{ROOT_DIR}}}/data --rpc-addr {{{model.RPC_ADDR}}} {{{configuration.STARTUP_ARGS__CLI_ARGS}}}
+Environment="HOME={{{ROOT_DIR}}}/data"
+
+ExecStart={{{ROOT_DIR}}}/bin/node run --rpc-addr {{{model.RPC_ADDR}}} {{{configuration.STARTUP_ARGS__CLI_ARGS}}}
 
 {{#model.SERVICE_CONFIGURATION__ARRAY}}
 {{{key}}}={{{value}}}

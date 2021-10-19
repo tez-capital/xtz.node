@@ -14,10 +14,10 @@ if not _ok then
 end
 
 local _args = table.pack(...)
-local _proc = proc.spawn("./bin/node", { "snapshot", "--data-dir", "data", "import", _tmpFile, "--block", _args[2]}, {
+local _proc = proc.spawn("./bin/node", { "snapshot", "import", _tmpFile, "--block", _args[2]}, {
 	stdio = "inherit",
 	wait = true,
-	env = { HOME = _user == "root" and "/root" or "/home/" .. _user }
+	env = { HOME = path.combine(os.cwd(), "data") }
 })
 os.remove(_tmpFile)
 ami_assert(_proc.exitcode == 0,  "Failed to import snapshot!")

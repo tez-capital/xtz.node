@@ -83,6 +83,9 @@ return {
 			index = 8, 
 			type = "external",
 			exec = "bin/client",
+            environment = {
+                HOME = path.combine(os.cwd(), "data")
+            },
 			contextFailExitCode = EXIT_APP_INTERNAL_ERROR
 		},
 		["import-key"] = {
