@@ -74,8 +74,9 @@ end
 local _configFile = am.app.get_configuration("CONFIG_FILE")
 if type(_configFile) == "table" and not table.is_array(_configFile) then
 	log_info("Creating config file...")
+	fs.safe_mkdirp("./data/.tezos-node/")
 	fs.write_file("./data/.tezos-node/config.json", hjson.stringify_to_json(_configFile))
 end
 
-local _ok, _error = fs.chown("data", _uid, _uid, {recure = true})
+local _ok, _error = fs.chown(os.cwd(), _uid, _uid, {recurse = true})
 ami_assert(_ok, "Failed to chown data - " .. (_error or ""))
