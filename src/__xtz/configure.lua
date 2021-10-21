@@ -51,7 +51,7 @@ end
 
 log_success(am.app.get("id") .. " services configured")
 
-log_info("Downloadgin zcash parameters...")
+log_info("Downloading zcash parameters...")
 
 local _fetchScriptPath = "bin/fetch-params.sh"
 local _ok, _error = net.safe_download_file("https://raw.githubusercontent.com/zcash/zcash/master/zcutil/fetch-params.sh", _fetchScriptPath, {followRedirects = true})
