@@ -9,31 +9,32 @@ if not _ok then
     return
 end
 
+-- SOURCE: https://gitlab.com/tezos/tezos/-/releases
 local _downloadLinks = {
     ["linux-x86_x64"] = {
-        node = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/x86_64-tezos-node",
-        client = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/x86_64-tezos-client",
+        node = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/x86_64-tezos-node",
+        client = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/x86_64-tezos-client",
         
-        accuser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/x86_64-tezos-accuser-010-PtGRANAD",
-        baker = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/x86_64-tezos-baker-010-PtGRANAD",
-        endorser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/x86_64-tezos-endorser-010-PtGRANAD",
+        accuser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/x86_64-tezos-accuser-010-PtGRANAD",
+        baker = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/x86_64-tezos-baker-010-PtGRANAD",
+        endorser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/x86_64-tezos-endorser-010-PtGRANAD",
         
-        -- ["accuser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/9.6.0/x86_64-tezos-accuser-010-PtGRANAD",
-        -- ["baker-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/9.6.0/x86_64-tezos-baker-010-PtGRANAD",
-        -- ["endorser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/9.6.0/x86_64-tezos-endorser-010-PtGRANAD"
+        -- ["accuser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/x86_64-tezos-accuser-010-PtGRANAD",
+        -- ["baker-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/x86_64-tezos-baker-010-PtGRANAD",
+        -- ["endorser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/x86_64-tezos-endorser-010-PtGRANAD"
         
     },
     ["linux-arm64"] = {
-        node = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/arm64-tezos-node",
-        client = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/arm64-tezos-client",
+        node = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/arm64-tezos-node",
+        client = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/arm64-tezos-client",
         
-        accuser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/arm64-tezos-accuser-010-PtGRANAD",
-        baker = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/arm64-tezos-baker-010-PtGRANAD",
-        endorser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.2.0/arm64-tezos-endorser-010-PtGRANAD",
+        accuser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/arm64-tezos-accuser-010-PtGRANAD",
+        baker = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/arm64-tezos-baker-010-PtGRANAD",
+        endorser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/arm64-tezos-endorser-010-PtGRANAD",
         
-        -- ["accuser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/9.6.0/arm64-tezos-accuser-010-PtGRANAD",
-        -- ["baker-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/9.6.0/arm64-tezos-baker-010-PtGRANAD",
-        -- ["endorser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/9.6.0/arm64-tezos-endorser-010-PtGRANAD"
+        -- ["accuser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/arm64-tezos-accuser-010-PtGRANAD",
+        -- ["baker-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/arm64-tezos-baker-010-PtGRANAD",
+        -- ["endorser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/10.3.0/arm64-tezos-endorser-010-PtGRANAD"
 	}
 }
 
