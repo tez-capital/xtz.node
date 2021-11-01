@@ -13,7 +13,7 @@ RestartSec=1
 
 Environment="HOME={{{ROOT_DIR}}}/data"
 Environment=TEZOS_LOG='* -> debug'
-ExecStart={{{ROOT_DIR}}}/bin/baker run with local node {{{ROOT_DIR}}}/data baker
+ExecStart={{{ROOT_DIR}}}/bin/baker run with local node {{{ROOT_DIR}}}/data/.tezos-node baker
 
 {{#model.SERVICE_CONFIGURATION_BAKER__ARRAY}}
 {{{key}}}={{{value}}}
