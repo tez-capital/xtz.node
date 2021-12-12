@@ -76,58 +76,13 @@ if _ok then
 end
 
 if _isBaker then
-	-- local _cycle = table.get(_info, {"chain_head", "cycle"})
-	-- local _ok, _pkhFile = fs.safe_read_file("data/.tezos-client/public_key_hashs")
-	-- local _ok2, _pkh = hjson.safe_parse(_pkhFile)
-	-- if _ok and _ok2 then 
-	-- 	local _bakerKeyHash = nil
-	-- 	for _, v in ipairs(_pkh) do 
-	-- 		if v.name == "baker" then 
-	-- 			_bakerKeyHash = v.value
-	-- 		end
-	-- 	end
-	-- 	if type(_bakerKeyHash) == "string" and type(_cycle) == "number" then
-	-- 		local _ok, _response = _client:safe_get("chains/main/blocks/head/helpers/baking_rights?delegate=".._bakerKeyHash.."&max_priority=1&cycle="..tostring(_cycle))
-	-- 		if _ok then
-	-- 			_info.baking_rights = _response.data
-	-- 			_info.baking_rights_status = {
-	-- 				level = "ok",
-	-- 				status = "Collected."
-	-- 			}
-	-- 		else
-	-- 			_info.baking_rights = {}
-	-- 			_info.baking_rights_status = {
-	-- 				level = "error",
-	-- 				status = "Failed to obtain rights from the node!",
-	-- 				response = _response
-	-- 			}
-	-- 		end
-	-- 	else
-	-- 		_info.baking_rights = {}
-	-- 		_info.baking_rights_status = {
-	-- 			level = "error",
-	-- 			status = "Invalid baker key hash or cycle number!",
-	-- 			bakerKeyHash = _bakerKeyHash,
-	-- 			cycle = _cycle
-	-- 		}
-	-- 	end
-	-- else
-	-- 	_info.baking_rights = {}
-	-- 	_info.baking_rights_status = {
-	-- 		level = "error",
-	-- 		status = "Failed to read baker key hash!",
-	-- 		file = _pkhFile,
-	-- 		parsed = _pkh
-	-- 	}
-	-- end
-
 	local _ok, _response = _client:safe_get("chains/main/blocks/head/votes/proposals")
 	if _ok then
 		local _data = _response.data
 		if table.is_array(_data) then 
 			_info.voting_proposals = {}
 			for _, v in ipairs(_data) do 
-				if #v >= 2 then
+				if #v >= 2 and type(_info.proposals) == "table" then
 					_info.proposals[v[1]] = v[2]
 				end
 			end
