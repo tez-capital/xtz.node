@@ -13,7 +13,7 @@ RestartSec=1
 
 Environment="HOME={{{ROOT_DIR}}}/data"
 Environment=TEZOS_LOG='* -> debug'
-ExecStart={{{ROOT_DIR}}}/bin/endorser-next run baker
+ExecStart={{{ROOT_DIR}}}/bin/endorser-next --remote-signer {{{model.REMOTE_SIGNER_ADDR}}} run baker
 
 {{#model.SERVICE_CONFIGURATION_ENDORSER__ARRAY}}
 {{{key}}}={{{value}}}
