@@ -27,6 +27,8 @@ upload:
   image: curlimages/curl:latest
   script:
     - |
+      echo "uploading to: ${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}"
+    - |
       curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file packages/${PACKAGE_NAME} "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}"
     - echo "Package successfully uploaded."
 
