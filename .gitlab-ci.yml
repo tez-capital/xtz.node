@@ -1,11 +1,11 @@
 stages:          # List of stages for jobs, and their order of execution
   - build
   - upload
+  - tag
   - release
 
 variables:
-  PACKAGE_NAME: ${CI_PROJECT_TITLE}-${CI_COMMIT_TAG}.zip
-  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/groktech/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_TITLE}/${CI_COMMIT_TAG}"
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/groktech/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_TITLE}"
 
 build:
   stage: build
@@ -14,9 +14,14 @@ build:
       - main
   script:
       - apk add zip
+      - apk add jq
+      - VERSION=$(jq -r .version src/specs.json)
+      - PACKAGE_NAME="${CI_PROJECT_TITLE}-$VERSION.zip"
       - mkdir packages
       - cd "src"
       - zip ../packages/${PACKAGE_NAME} -r ./*
+      - printf "%s" "$PACKAGE_NAME" ../packages/name.txt
+      - printf "%s" "$VERSION" ../packages/version.txt
   artifacts:
     paths:
       - ./packages
@@ -26,18 +31,45 @@ upload:
   stage: upload
   image: curlimages/curl:latest
   script:
+    - PACKAGE_NAME=$(cat ./packages/name.txt)
+    - VERSION=$(cat ./packages/version.txt)
     - |
-      echo "uploading to: ${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}"
+      echo "uploading to: ${PACKAGE_REGISTRY_URL}/$PACKAGE_NAME"
     - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file packages/${PACKAGE_NAME} "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}"
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file packages/$PACKAGE_NAME "${PACKAGE_REGISTRY_URL}/$VERSION/$PACKAGE_NAME"
     - echo "Package successfully uploaded."
+
+tag:
+  stage: tag
+  image: node
+  script:
+    - PACKAGE_NAME=$(cat ./packages/name.txt)
+    - VERSION=$(cat ./packages/version.txt)
+    - > 
+      if [ $(git tag -l "$VERSION") ]; then
+        echo "Version $VERSION already exists"
+      else
+        git clone https://gitlab.com/groktech/xtz.node.git
+        cd xtz.node
+        npm install -g git-credential-envvar
+        git config credential.helper envvar
+        git config user.name  $GITCREDENTIALUSERNAME
+        git config user.email $GITCREDENTIALEMAIL
+        git tag $VERSION
+        git push
+        printf "$VERSION" > ./packages/new_release.txt
+      fi
 
 release:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
-  rules:
-    - if: $CI_COMMIT_TAG
   script:
-    - |
-      release-cli create --name "$CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
-        --assets-link "{\"name\":\"${PACKAGE_NAME}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}\"}"
+    - PACKAGE_NAME=$(cat ./packages/name.txt)
+    - VERSION=$(cat ./packages/version.txt)
+    - > 
+      if grep "$VERSION" ./packages/new_release.txt; then
+        echo "Version $VERSION already exists"
+      else
+        release-cli create --name "$VERSION" --tag-name $VERSION \
+        --assets-link "{\"name\":\"$PACKAGE_NAME\",\"url\":\"${PACKAGE_REGISTRY_URL}/$PACKAGE_NAME\"}"
+      fi
