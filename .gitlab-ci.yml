@@ -24,6 +24,7 @@ build:
   artifacts:
     paths:
       - ./packages
+      - ./build.env
     reports:
       dotenv: build.env
 
