@@ -20,19 +20,20 @@ build:
       - mkdir packages
       - cd "src"
       - zip ../packages/${PACKAGE_NAME} -r ./*
-      - printf "%s" "$PACKAGE_NAME" ../packages/name.txt
-      - printf "%s" "$VERSION" ../packages/version.txt
+      - printf "PACKAGE_NAME=%s\nVERSION=%s\n" "$PACKAGE_NAME" "$VERSION" ../build.env
   artifacts:
     paths:
       - ./packages
+    reports:
+      dotenv: build.env
 
 
 upload:      
   stage: upload
   image: curlimages/curl:latest
+  dependencies:
+    - build
   script:
-    - PACKAGE_NAME=$(cat ./packages/name.txt)
-    - VERSION=$(cat ./packages/version.txt)
     - |
       echo "uploading to: ${PACKAGE_REGISTRY_URL}/$PACKAGE_NAME"
     - |
@@ -42,9 +43,9 @@ upload:
 tag:
   stage: tag
   image: node
+  dependencies:
+    - build
   script:
-    - PACKAGE_NAME=$(cat ./packages/name.txt)
-    - VERSION=$(cat ./packages/version.txt)
     - > 
       if [ $(git tag -l "$VERSION") ]; then
         echo "Version $VERSION already exists"
@@ -63,9 +64,9 @@ tag:
 release:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  dependencies:
+    - build
   script:
-    - PACKAGE_NAME=$(cat ./packages/name.txt)
-    - VERSION=$(cat ./packages/version.txt)
     - > 
       if grep "$VERSION" ./packages/new_release.txt; then
         echo "Version $VERSION already exists"
