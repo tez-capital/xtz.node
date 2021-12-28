@@ -5,7 +5,7 @@ stages:          # List of stages for jobs, and their order of execution
 
 variables:
   PACKAGE_NAME: ${CI_PROJECT_TITLE}-${CI_COMMIT_TAG}.zip
-  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_TITLE}/${CI_COMMIT_TAG}"
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/groktech/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_TITLE}/${CI_COMMIT_TAG}"
 
 build:
   stage: build
