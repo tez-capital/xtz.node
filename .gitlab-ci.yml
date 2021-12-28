@@ -45,6 +45,9 @@ upload:
   image: curlimages/curl:latest
   dependencies:
     - prep
+  needs:
+    - job: build
+      artifacts: true
   script:
     - |
       echo "uploading to: ${PACKAGE_REGISTRY_URL}/$VERSION/$PACKAGE_NAME"
