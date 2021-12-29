@@ -29,6 +29,8 @@ build:
     - prep
   only:
       - main
+  rules:
+    - if: $CI_COMMIT_TAG
   script:
       - apk add zip
       - mkdir packages
@@ -38,14 +40,14 @@ build:
     paths:
       - ./packages
 
-
-
 upload:      
   stage: upload
   image: curlimages/curl:latest
   dependencies:
     - prep
     - build
+  rules:
+    - if: $CI_COMMIT_TAG
   script:
     - |
       echo "uploading to: ${PACKAGE_REGISTRY_URL}/$VERSION/$PACKAGE_NAME"
@@ -53,28 +55,16 @@ upload:
       curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file packages/$PACKAGE_NAME "${PACKAGE_REGISTRY_URL}/$VERSION/$PACKAGE_NAME"
     - echo "Package successfully uploaded."
 
-tag:
-  stage: tag
-  image: node
-  dependencies:
-    - prep
-  script:
-    - > 
-      if [ $(git tag -l "$VERSION") ]; then
-        echo "Version $VERSION already exists"
-      else
-        git tag $VERSION
-        git push
-      fi
-
 release:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   dependencies:
     - prep
+  rules:
+    - if: $CI_COMMIT_TAG
   script:
     - > 
-      if grep "$VERSION" ./packages/new_release.txt; then
+      if [ git tag -l "$CI_COMMIT_TAG" ]; then
         echo "Version $VERSION already exists"
       else
         release-cli create --name "$VERSION" --tag-name $VERSION \
