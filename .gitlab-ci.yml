@@ -67,7 +67,7 @@ release:
       RELEASE_VERSION="$VERSION"
       if [ "$RELEASE_VERSION" -ne "$CI_COMMIT_TAG" ]; then
         RELEASE_VERSION="$VERSION-$CI_COMMIT_TAG"
-      end
+      fi
       if [ git tag -l "$CI_COMMIT_TAG" ]; then
         echo "Version $VERSION already exists"
       else
