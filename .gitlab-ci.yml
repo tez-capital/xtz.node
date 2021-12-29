@@ -11,8 +11,6 @@ variables:
 prep:
   stage: prep
   image: alpine:latest
-  only:
-      - main
   script:
       - apk add jq
       - VERSION=$(jq -r .version src/specs.json)
@@ -31,6 +29,8 @@ build:
   rules:
     - if: $CI_COMMIT_TAG
   script:
+      - echo "version $VERSION"
+      - echo "package $PACKAGE_NAME"
       - apk add zip
       - mkdir packages
       - cd "src"
