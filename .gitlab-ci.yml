@@ -65,7 +65,7 @@ release:
   script:
     - > 
       RELEASE_VERSION="$VERSION"
-      if [ "$RELEASE_VERSION" != "$CI_COMMIT_TAG" ]; then
+      if [[ "$RELEASE_VERSION" != "$CI_COMMIT_TAG" ]]; then
         RELEASE_VERSION="$VERSION-$CI_COMMIT_TAG"
       fi
       if [ git tag -l "$CI_COMMIT_TAG" ]; then
