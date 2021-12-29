@@ -17,10 +17,11 @@ prep:
       - apk add jq
       - VERSION=$(jq -r .version src/specs.json)
       - PACKAGE_NAME="${CI_PROJECT_TITLE}-$VERSION.zip"
-      - printf "PACKAGE_NAME=%s\nVERSION=%s\n" "$PACKAGE_NAME" "$VERSION" > build.env
+      - printf "PACKAGE_NAME=%s\nVERSION=%s\n" "$PACKAGE_NAME" "$VERSION" > prep.env
+      - cat build.env
   artifacts:
     reports:
-      dotenv: build.env
+      dotenv: prep.env
 
 build:
   stage: build
