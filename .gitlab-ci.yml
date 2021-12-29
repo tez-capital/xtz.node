@@ -27,8 +27,6 @@ build:
   image: alpine:latest
   dependencies:
     - prep
-  only:
-      - main
   rules:
     - if: $CI_COMMIT_TAG
   script:
