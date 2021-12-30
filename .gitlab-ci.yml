@@ -22,7 +22,7 @@ prep:
       - apk add git
       - ID=$(printf ${CI_PROJECT_TITLE} | sed "s/.*\///g")
       - VERSION=$(jq -r .version src/specs.json)
-      - if git tag -l "$VERSION"; then echo "Version $VERSION already exists"; exit 1; fi
+      - if git tag -l "$VERSION" | grep "$VERSION"; then echo "Version $VERSION already exists"; exit 1; fi
       - PACKAGE_NAME="${CI_PROJECT_TITLE}-$VERSION.zip"
       - printf "PACKAGE_NAME=%s\nVERSION=%s\nID=%s\n" "$PACKAGE_NAME" "$VERSION" "$ID" > prep.env
       - cat prep.env
