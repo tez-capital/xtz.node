@@ -1,6 +1,5 @@
 stages:          # List of stages for jobs, and their order of execution
   - prep
-  - build
   - release
   - publish
 
