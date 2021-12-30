@@ -8,9 +8,15 @@ stages:          # List of stages for jobs, and their order of execution
 variables:
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/groktech/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_TITLE}"
 
+.default_rules:
+  rules:
+    if: '$CI_COMMIT_BRANCH == "main"'
+
 prep:
   stage: prep
   image: alpine:latest
+  rules:
+    - !reference [.default_rules, rules]
   script:
       - apk add jq
       - ID=$(printf ${CI_PROJECT_TITLE} | sed "s/.*\///g")
@@ -27,6 +33,8 @@ build:
   image: alpine:latest
   dependencies:
     - prep
+  rules:
+    - !reference [.default_rules, rules]
   script:
       - echo "version $VERSION"
       - echo "package $PACKAGE_NAME"
@@ -44,6 +52,8 @@ upload:
   dependencies:
     - prep
     - build
+  rules:
+    - !reference [.default_rules, rules]
   script:
     - >
       echo "version: $VERSION"
@@ -57,6 +67,8 @@ release:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   dependencies:
     - prep
+  rules:
+    - !reference [.default_rules, rules]
   script:
     - RELEASE_VERSION="$VERSION";
     - printf "RELEASE_VERSION=%s\n" "$RELEASE_VERSION" > release.env;
@@ -77,9 +89,12 @@ publish:
     - prep
     - build
     - release
+  rules:
+    - !reference [.default_rules, rules]
   script:
+    - SHA256=$(sha256sum "./packages/${PACKAGE_NAME}" | awk '{print $1}');
+    - echo "uploading $ID [package - $PACKAGE_NAME] from ${CI_PROJECT_PATH} (sha256 - $SHA256, version - $RELEASE_VERSION, package source - ${PACKAGE_REGISTRY_URL})"
     - >
-      SHA256=$(sha256sum "./packages/${PACKAGE_NAME}" | awk '{print $1}');
       curl -i -u "BakeBuddyBot:$GHAT" \
       -X POST \
       -H "Accept: application/vnd.github.v3+json" \
