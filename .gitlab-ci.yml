@@ -19,6 +19,7 @@ prep:
     - !reference [.default_rules, rules]
   script:
       - apk add jq
+      - apk add git
       - ID=$(printf ${CI_PROJECT_TITLE} | sed "s/.*\///g")
       - VERSION=$(jq -r .version src/specs.json)
       - if [ git tag -l "$VERSION" ]; then echo "Version $VERSION already exists"; exit 1; fi
