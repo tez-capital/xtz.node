@@ -27,8 +27,6 @@ build:
   image: alpine:latest
   dependencies:
     - prep
-  rules:
-    - if: $CI_COMMIT_TAG
   script:
       - echo "version $VERSION"
       - echo "package $PACKAGE_NAME"
@@ -46,8 +44,6 @@ upload:
   dependencies:
     - prep
     - build
-  rules:
-    - if: $CI_COMMIT_TAG
   script:
     - >
       echo "version: $VERSION"
@@ -61,15 +57,10 @@ release:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   dependencies:
     - prep
-  rules:
-    - if: $CI_COMMIT_TAG
   script:
+    - RELEASE_VERSION="$VERSION";
+    - printf "RELEASE_VERSION=%s\n" "$RELEASE_VERSION" > release.env;
     - > 
-      RELEASE_VERSION="$VERSION";
-      # if [[ "$RELEASE_VERSION" != "$CI_COMMIT_TAG" ]]; then
-      #  RELEASE_VERSION="$VERSION-$CI_COMMIT_TAG"
-      # fi;
-      printf "RELEASE_VERSION=%s\n" "$RELEASE_VERSION" > release.env;
       if [ git tag -l "$CI_COMMIT_TAG" ]; then
         echo "Version $VERSION already exists";
       else
