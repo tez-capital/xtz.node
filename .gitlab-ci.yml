@@ -62,7 +62,7 @@ release:
     - printf "RELEASE_VERSION=%s\n" "$RELEASE_VERSION" > release.env;
     - > 
       if [ git tag -l "$CI_COMMIT_TAG" ]; then
-        echo "Version $VERSION already exists";
+        echo "Version $VERSION already exists"; exit 1;
       else
         release-cli create --name "$RELEASE_VERSION" --tag-name "$RELEASE_VERSION" --assets-link "{\"name\":\"$PACKAGE_NAME\",\"url\":\"${PACKAGE_REGISTRY_URL}/$RELEASE_VERSION/$PACKAGE_NAME\"}";
       fi;
