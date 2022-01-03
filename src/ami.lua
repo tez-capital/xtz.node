@@ -5,6 +5,13 @@ return {
             description = "ami 'info' sub command",
             summary = "Prints runtime info and status of the app",
             action = "__xtz/info.lua",
+            options = {
+				["timeout"] = {
+					aliases = {"t"},
+                    description = 'Sets time to wait for info collections',
+					type = "number"
+                }
+            },
             contextFailExitCode = EXIT_APP_INFO_ERROR
         },
         setup = {

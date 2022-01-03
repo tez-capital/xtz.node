@@ -1,10 +1,10 @@
 local _json = am.options.OUTPUT_FORMAT == "json"
 local _appId = am.app.get("id", "unknown")
 
-local _args = table.pack(...)
+local _options = ...
 local _timeout = 4
-if #_args > 0 and tonumber(_args[1]) then
-	_timeout = tonumber(_args[1])
+if _options.timeout then
+    _timeout = tonumber(_options.timeout)
 end
 
 local _ok, _systemctl = am.plugin.safe_get("systemctl")
