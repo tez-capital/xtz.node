@@ -41,7 +41,7 @@ for k, v in pairs(_services) do
 	::CONTINUE::
 end
 
-local _client = net.RestClient:new("http://localhost:8732/", { timeout = 2 })
+local _client = net.RestClient:new("http://localhost:8732/", { timeout = 4 })
 local _ok, _response = _client:safe_get("chains/main/blocks/head")
 if _ok then
 	local _data = _response.data
