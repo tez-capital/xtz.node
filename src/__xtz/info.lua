@@ -1,6 +1,12 @@
 local _json = am.options.OUTPUT_FORMAT == "json"
 local _appId = am.app.get("id", "unknown")
 
+local _args = table.pack(...)
+local _timeout = 4
+if #_args > 0 and tonumber(_args[1]) then
+	_timeout = tonumber(_args[1])
+end
+
 local _ok, _systemctl = am.plugin.safe_get("systemctl")
 ami_assert(_ok, "Failed to load systemctl plugin", EXIT_PLUGIN_LOAD_ERROR)
 
@@ -41,7 +47,7 @@ for k, v in pairs(_services) do
 	::CONTINUE::
 end
 
-local _client = net.RestClient:new("http://localhost:8732/", { timeout = 4 })
+local _client = net.RestClient:new("http://localhost:8732/", { timeout = _timeout })
 local _ok, _response = _client:safe_get("chains/main/blocks/head")
 if _ok then
 	local _data = _response.data
