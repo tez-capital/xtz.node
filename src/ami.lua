@@ -10,6 +10,23 @@ return {
 					aliases = {"t"},
                     description = 'Sets time to wait for info collections',
 					type = "number"
+                },
+                ["services"] = {
+                    description = "Prints info about services",
+                    type = "boolean"
+                },
+                ["voting"] = {
+                    description = "Prints info about voting period",
+                    type = "boolean"
+                },
+                ["chain"] = {
+                    description = "Prints info about chain state",
+                    type = "boolean"
+                },
+                ["simple"] = {
+                    aliases = "s",
+                    description = "Prints simplified info",
+                    type = "boolean"
                 }
             },
             contextFailExitCode = EXIT_APP_INFO_ERROR
