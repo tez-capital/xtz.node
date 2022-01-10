@@ -72,7 +72,7 @@ local _dataDir = path.combine(os.cwd(), "data")
 am.app.set_model(
     {
         RPC_ADDR = am.app.get_configuration("RPC_ADDR", "127.0.0.1"),
-        REMOTE_SIGNER_ADDR = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0.0.1:2222/"),
+        REMOTE_SIGNER_ADDR = am.app.get_configuration("REMOTE_SIGNER_ADDR", "tcp://127.0.0.1:2222/"),
 		SERVICE_CONFIGURATION = util.merge_tables(
             {
                 TimeoutStopSec = 300,
