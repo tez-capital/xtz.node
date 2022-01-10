@@ -1,6 +1,6 @@
 {
     "id": "xtz.node" ,
-    "version" : "0.2.1+11.0.0.granada_hangz2",
+    "version" : "0.2.2+11.0.0.granada_hangz2",
     "dependencies": [
         { "id":"xtz.base" }
     ]
