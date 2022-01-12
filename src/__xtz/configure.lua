@@ -30,22 +30,28 @@ if am.app.get_configuration("NODE_TYPE", "rpc") == "baker" then
 	local _urls = am.app.get_model("DOWNLOAD_URLS")
 	ami_assert(type(_urls) == "table", "Invalid download URLs!")
 
+	local _bakerNextServiceId = am.app.get("id") .. "-xtz-baker-next"
 	if am.app.get_model({ "AVAILABLE_NEXT", "baker" }, false) then
-		local _bakerNextServiceId = am.app.get("id") .. "-xtz-baker-next"
 		local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/baker-next.service"), _bakerNextServiceId)
 		ami_assert(_ok, "Failed to install " .. _bakerNextServiceId .. ".service " .. (_error or ""))
+	else
+		_systemctl.safe_remove_service(_bakerNextServiceId)
 	end
 
+	local _endorserNextServiceId = am.app.get("id") .. "-xtz-endorser-next"
 	if am.app.get_model({ "AVAILABLE_NEXT", "endorser" }, false) then
-		local _endorserNextServiceId = am.app.get("id") .. "-xtz-endorser-next"
 		local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/endorser-next.service"), _endorserNextServiceId)
 		ami_assert(_ok, "Failed to install " .. _endorserNextServiceId .. ".service " .. (_error or ""))
+	else
+		_systemctl.safe_remove_service(_endorserNextServiceId)
 	end
 
+	local _accuserNextServiceId = am.app.get("id") .. "-xtz-accuser-next"
 	if am.app.get_model({ "AVAILABLE_NEXT", "accuser" }, false) then
-		local _accuserNextServiceId = am.app.get("id") .. "-xtz-accuser-next"
 		local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/accuser-next.service"), _accuserNextServiceId)
 		ami_assert(_ok, "Failed to install " .. _accuserNextServiceId .. ".service " .. (_error or ""))
+	else
+		_systemctl.safe_remove_service(_accuserNextServiceId)
 	end
 end
 
