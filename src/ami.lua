@@ -139,12 +139,21 @@ return {
         },
         remove = {
             index = 7,
+            options = {
+                chain = {
+                    description = "Remove chain data only."
+                }
+            },
             action = function(_options, _, _, _)
+                if _options.chain then
+                    am.execute_extension("__xtz/remove-chain.lua", { contextFailExitCode = EXIT_RM_ERROR })
+                end
                 if _options.all then
                     am.execute_extension("__xtz/remove-all.lua", { contextFailExitCode = EXIT_RM_ERROR })
                     am.app.remove()
                     log_success("Application removed.")
-                else
+                end
+                if #table.keys(_options) == 0 then
                     am.app.remove_data()
                     log_success("Application data removed.")
                 end
