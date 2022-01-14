@@ -1,6 +1,6 @@
 // SOURCE: https://gitlab.com/tezos/tezos/-/releases
 
-linux-x86_x64": {
+linux-x86_x64: {
     node: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-node
     client: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-client
 
