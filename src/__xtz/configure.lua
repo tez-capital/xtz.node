@@ -86,6 +86,9 @@ if type(_configFile) == "table" and not table.is_array(_configFile) then
 	log_info("Creating config file...")
 	fs.safe_mkdirp("./data/.tezos-node/")
 	fs.write_file("./data/.tezos-node/config.json", hjson.stringify_to_json(_configFile))
+elseif fs.exists("./__xtz/node-config.json") then
+	fs.safe_mkdirp("./data/.tezos-node/")
+	fs.copy_file("./__xtz/node-config.json", "./data/.tezos-node/config.json")
 end
 
 local _ok, _error = fs.chown(os.cwd(), _uid, _uid, {recurse = true})
