@@ -9,34 +9,7 @@ if not _ok then
     return
 end
 
--- SOURCE: https://gitlab.com/tezos/tezos/-/releases
-local _downloadLinks = {
-    ["linux-x86_x64"] = {
-        node = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-node",
-        client = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-client",
-        
-        accuser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-accuser-011-PtHangz2",
-        baker = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-baker-011-PtHangz2",
-        endorser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-endorser-011-PtHangz2",
-        
-        --["accuser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-accuser-011-PtHangz2",
-        --["baker-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-baker-011-PtHangz2",
-        --["endorser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/x86_64-tezos-endorser-011-PtHangz2"
-        
-    },
-    ["linux-arm64"] = {
-        node = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/arm64-tezos-node",
-        client = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/arm64-tezos-client",
-        
-        accuser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/arm64-tezos-accuser-011-PtHangz2",
-        baker = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/arm64-tezos-baker-011-PtHangz2",
-        endorser = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/arm64-tezos-endorser-011-PtHangz2",
-        
-        --["accuser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/arm64-tezos-accuser-011-PtHangz2",
-        --["baker-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/arm64-tezos-baker-011-PtHangz2",
-        --["endorser-next"] = "https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos/11.0.0/arm64-tezos-endorser-011-PtHangz2"
-	}
-}
+local _downloadLinks =  hjson.parse(fs.read_file("__xtz/sources.hjson"))
 
 local _downlaodUrls = nil
 
