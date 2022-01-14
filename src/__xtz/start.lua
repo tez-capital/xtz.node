@@ -6,7 +6,7 @@ local _isBaker = am.app.get_configuration("NODE_TYPE") == "baker"
 local _toStart = {
 	am.app.get("id") .. "-xtz-node",
 	_isBaker and am.app.get("id") .. "-xtz-baker",
-	_isBaker and am.app.get("id") .. "-xtz-endorser",
+	_isBaker and am.app.get_model({ "AVAILABLE", "endorser" }, false) and am.app.get("id") .. "-xtz-endorser",
 	_isBaker and am.app.get("id") .. "-xtz-accuser",
 	_isBaker and am.app.get_model({ "AVAILABLE_NEXT", "baker" }, false) and (am.app.get("id") .. "-xtz-baker-next"),
 	_isBaker and am.app.get_model({ "AVAILABLE_NEXT", "endorser" }, false) and ( am.app.get("id") .. "-xtz-endorser-next"),

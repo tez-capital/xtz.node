@@ -20,8 +20,12 @@ if am.app.get_configuration("NODE_TYPE", "rpc") == "baker" then
 	ami_assert(_ok, "Failed to install " .. _bakerServiceId .. ".service " .. (_error or ""))
 
 	local _endorserServiceId = am.app.get("id") .. "-xtz-endorser"
-	local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/endorser.service"), _endorserServiceId)
-	ami_assert(_ok, "Failed to install " .. _endorserServiceId .. ".service " .. (_error or ""))
+	if am.app.get_model({ "AVAILABLE", "endorser" }, false) then
+		local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/endorser.service"), _endorserServiceId)
+		ami_assert(_ok, "Failed to install " .. _endorserServiceId .. ".service " .. (_error or ""))
+	else
+		_systemctl.safe_remove_service(_endorserServiceId)
+	end
 
 	local _accuserServiceId = am.app.get("id") .. "-xtz-accuser"
 	local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/accuser.service"), _accuserServiceId)

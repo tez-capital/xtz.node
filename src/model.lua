@@ -9,7 +9,7 @@ if not _ok then
     return
 end
 
-local _downloadLinks =  hjson.parse(fs.read_file("__xtz/sources.hjson"))
+local _downloadLinks = hjson.parse(fs.read_file("__xtz/sources.hjson"))
 
 local _downlaodUrls = nil
 
@@ -30,6 +30,9 @@ am.app.set_model({
 		WANTED_BINARIES = {
 			"node", "client", "accuser", "baker", "endorser", "accuser-next", "baker-next", "endorser-next"
 		},
+        AVAILABLE = {
+            endorser = type(_downlaodUrls["endorser"]) == "string"
+        },
 		AVAILABLE_NEXT = {
 			accuser = type(_downlaodUrls["accuser-next"]) == "string",
 			baker = type(_downlaodUrls["baker-next"]) == "string",

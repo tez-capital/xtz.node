@@ -31,7 +31,7 @@ if _printAll or _printServiceInfo or _printSimple then
 	local _services = {
 		node = am.app.get("id") .. "-xtz-node",
 		baker = _isBaker and am.app.get("id") .. "-xtz-baker",
-		endorser = _isBaker and am.app.get("id") .. "-xtz-endorser",
+		endorser = _isBaker and am.app.get_model({ "AVAILABLE", "endorser" }, false) and am.app.get("id") .. "-xtz-endorser",
 		accuser = _isBaker and am.app.get("id") .. "-xtz-accuser",
 		["baker-next"] = _isBaker and am.app.get_model({ "AVAILABLE_NEXT", "baker" }, false) and (am.app.get("id") .. "-xtz-baker-next"),
 		["endorser-next"] = _isBaker and am.app.get_model({ "AVAILABLE_NEXT", "endorser" }, false) and ( am.app.get("id") .. "-xtz-endorser-next"),
