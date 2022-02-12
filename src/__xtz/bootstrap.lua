@@ -1,16 +1,16 @@
 local _args = table.pack(...)
 
-local _user = am.app.get("user")
-ami_assert(type(_user) == "string", "User not specified...", EXIT_INVALID_CONFIGURATION)
-
-ami_assert(#_args > 1, [[Please provide URL to snapshot source and block hash to import.
-ami ... bootstrap <url> <block hash>]])
 
 local _tmpFile = os.tmpname()
-local _ok, _error = net.safe_download_file(_args[1], _tmpFile, {followRedirects = true})
-if not _ok then
-	fs.remove(_tmpFile)
-	ami_error("Failed to download: " .. tostring(_error))
+local _ok, _exists = fs.safe_exists(_args[1])
+if _ok and _exists then
+	_tmpFile = _args[1]
+else 
+	local _ok, _error = net.safe_download_file(_args[1], _tmpFile, {followRedirects = true, contentType = "binary/octet-stream"})
+	if not _ok then
+		fs.remove(_tmpFile)
+		ami_error("Failed to download: " .. tostring(_error))
+	end
 end
 
 local _args = table.pack(...)

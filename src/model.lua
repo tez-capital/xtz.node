@@ -43,8 +43,6 @@ am.app.set_model({
 )
 
 
-local _dataDir = path.combine(os.cwd(), "data")
-
 am.app.set_model(
     {
         RPC_ADDR = am.app.get_configuration("RPC_ADDR", "127.0.0.1"),
