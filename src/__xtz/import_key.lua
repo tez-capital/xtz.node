@@ -1,7 +1,7 @@
 local _args = table.pack(...)
 
 ami_assert(#_args > 0, "Please provide baker address...")
-local _importArgs = { "import", "secret", "key", "baker", am.app.get_model("REMOTE_SIGNER_ADDR", "http://127.0.0.1:2222/") .. _args[1] }
+local _importArgs = { "--remote-signer", am.app.get_model("REMOTE_SIGNER_ADDR", "http://127.0.0.1:2222/"), "import", "secret", "key", "baker", "remote:" .. _args[1] }
 
 for _, v in ipairs(_args) do
 	if string.trim(v) == "-f" or string.trim(v) == "--force" then
