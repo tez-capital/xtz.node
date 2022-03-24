@@ -28,17 +28,9 @@ local _info = {
 local _isBaker = am.app.get_configuration("NODE_TYPE") == "baker"
 
 if _printAll or _printServiceInfo or _printSimple then
-	local _services = {
-		node = am.app.get("id") .. "-xtz-node",
-		baker = _isBaker and am.app.get("id") .. "-xtz-baker",
-		endorser = _isBaker and am.app.get_model({ "AVAILABLE", "endorser" }, false) and am.app.get("id") .. "-xtz-endorser",
-		accuser = _isBaker and am.app.get("id") .. "-xtz-accuser",
-		["baker-next"] = _isBaker and am.app.get_model({ "AVAILABLE_NEXT", "baker" }, false) and (am.app.get("id") .. "-xtz-baker-next"),
-		["endorser-next"] = _isBaker and am.app.get_model({ "AVAILABLE_NEXT", "endorser" }, false) and ( am.app.get("id") .. "-xtz-endorser-next"),
-		["accuser-next"] = _isBaker and am.app.get_model({ "AVAILABLE_NEXT", "accuser" }, false) and (am.app.get("id") .. "-xtz-accuser-next")
-	}
+	local _services = require"__xtz.services"
 
-	for k, v in pairs(_services) do 
+	for k, v in pairs(_services.allNames) do
 		if type(v) ~= "string" then goto CONTINUE end
 		local _ok, _status, _started = _systemctl.safe_get_service_status(v)
 		ami_assert(_ok, "Failed to get status of " .. v .. ".service " .. (_status or ""), EXIT_PLUGIN_EXEC_ERROR)

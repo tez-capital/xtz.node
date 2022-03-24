@@ -30,26 +30,20 @@ if _downlaodUrls == nil then
     return
 end
 
-am.app.set_model({
-		DOWNLOAD_URLS = _downlaodUrls, 
-		WANTED_BINARIES = {
-			"node", "client", "accuser", "baker", "endorser", "accuser-next", "baker-next", "endorser-next"
-		},
-        AVAILABLE = {
-            endorser = type(_downlaodUrls["endorser"]) == "string"
-        },
-		AVAILABLE_NEXT = {
-			accuser = type(_downlaodUrls["accuser-next"]) == "string",
-			baker = type(_downlaodUrls["baker-next"]) == "string",
-			endorser = type(_downlaodUrls["endorser-next"]) == "string"
-		}
-	}, 
-	{merge = true, overwrite = true}
+am.app.set_model(
+    {
+        DOWNLOAD_URLS = _downlaodUrls,
+    },
+    { merge = true, overwrite = true }
 )
 
+local _services = require("__xtz.services")
+local _wantedBinaries = table.keys(_services.allNames)
+table.insert(_wantedBinaries, "client")
 
 am.app.set_model(
     {
+        WANTED_BINARIES = _wantedBinaries,
         RPC_ADDR = am.app.get_configuration("RPC_ADDR", "127.0.0.1"),
         REMOTE_SIGNER_ADDR = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0.0.1:2222/"),
 		SERVICE_CONFIGURATION = util.merge_tables(

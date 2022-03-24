@@ -10,52 +10,18 @@ log_info("Configuring " .. am.app.get("id") .. " services...")
 local _ok, _systemctl = am.plugin.safe_get("systemctl")
 ami_assert(_ok, "Failed to load systemctl plugin - " .. tostring(_systemctl))
 
-local _nodeServiceId = am.app.get("id") .. "-xtz-node"
-local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/node.service"), _nodeServiceId)
-ami_assert(_ok, "Failed to install " .. _nodeServiceId .. ".service " .. (_error or ""))
+local _services = require"__xtz.services"
+for k, v in pairs(_services.node) do
+	local _serviceId = k
+	local _ok, _error = _systemctl.safe_install_service(v, _serviceId)
+	ami_assert(_ok, "Failed to install " .. _serviceId .. ".service " .. (_error or ""))
+end
 
 if am.app.get_configuration("NODE_TYPE", "rpc") == "baker" then
-	local _bakerServiceId = am.app.get("id") .. "-xtz-baker"
-	local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/baker.service"), _bakerServiceId)
-	ami_assert(_ok, "Failed to install " .. _bakerServiceId .. ".service " .. (_error or ""))
-
-	local _endorserServiceId = am.app.get("id") .. "-xtz-endorser"
-	if am.app.get_model({ "AVAILABLE", "endorser" }, false) then
-		local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/endorser.service"), _endorserServiceId)
-		ami_assert(_ok, "Failed to install " .. _endorserServiceId .. ".service " .. (_error or ""))
-	else
-		_systemctl.safe_remove_service(_endorserServiceId)
-	end
-
-	local _accuserServiceId = am.app.get("id") .. "-xtz-accuser"
-	local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/accuser.service"), _accuserServiceId)
-	ami_assert(_ok, "Failed to install " .. _accuserServiceId .. ".service " .. (_error or ""))
-
-	local _urls = am.app.get_model("DOWNLOAD_URLS")
-	ami_assert(type(_urls) == "table", "Invalid download URLs!")
-
-	local _bakerNextServiceId = am.app.get("id") .. "-xtz-baker-next"
-	if am.app.get_model({ "AVAILABLE_NEXT", "baker" }, false) then
-		local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/baker-next.service"), _bakerNextServiceId)
-		ami_assert(_ok, "Failed to install " .. _bakerNextServiceId .. ".service " .. (_error or ""))
-	else
-		_systemctl.safe_remove_service(_bakerNextServiceId)
-	end
-
-	local _endorserNextServiceId = am.app.get("id") .. "-xtz-endorser-next"
-	if am.app.get_model({ "AVAILABLE_NEXT", "endorser" }, false) then
-		local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/endorser-next.service"), _endorserNextServiceId)
-		ami_assert(_ok, "Failed to install " .. _endorserNextServiceId .. ".service " .. (_error or ""))
-	else
-		_systemctl.safe_remove_service(_endorserNextServiceId)
-	end
-
-	local _accuserNextServiceId = am.app.get("id") .. "-xtz-accuser-next"
-	if am.app.get_model({ "AVAILABLE_NEXT", "accuser" }, false) then
-		local _ok, _error = _systemctl.safe_install_service(am.app.get_model("SERVICE_FILE", "__xtz/assets/accuser-next.service"), _accuserNextServiceId)
-		ami_assert(_ok, "Failed to install " .. _accuserNextServiceId .. ".service " .. (_error or ""))
-	else
-		_systemctl.safe_remove_service(_accuserNextServiceId)
+	for k, v in pairs(_services.baker) do
+		local _serviceId = k
+		local _ok, _error = _systemctl.safe_install_service(v, _serviceId)
+		ami_assert(_ok, "Failed to install " .. _serviceId .. ".service " .. (_error or ""))
 	end
 end
 
