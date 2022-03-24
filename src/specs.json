@@ -1,6 +1,6 @@
 {
     "id": "xtz.node" ,
-    "version" : "0.8.0+12.0.0.hangz2_ithaca",
+    "version" : "0.8.1+12.0.0.hangz2_ithaca",
     "dependencies": [
         { "id":"xtz.base" }
     ]
