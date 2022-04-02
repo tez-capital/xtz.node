@@ -11,6 +11,8 @@ local _ok, _systemctl = am.plugin.safe_get("systemctl")
 ami_assert(_ok, "Failed to load systemctl plugin - " .. tostring(_systemctl))
 
 local _services = require"__xtz.services"
+_services.remove_all_services() -- cleanup past install
+
 for k, v in pairs(_services.node) do
 	local _serviceId = k
 	local _ok, _error = _systemctl.safe_install_service(v, _serviceId)

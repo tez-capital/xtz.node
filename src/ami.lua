@@ -120,6 +120,20 @@ return {
 			type = "raw",
             contextFailExitCode = EXIT_APP_INTERNAL_ERROR
 		},
+        log = {
+            description = "ami 'log' sub command",
+            summary = 'Prints logs from services.',
+            options = {
+                ["follow"] = {
+                    aliases = {"f"},
+                    description = "Keeps printing the log continuously.",
+                    type = "boolean"
+                }
+            },
+            type = "no-command",
+            action = '__xtz/log.lua',
+            contextFailExitCode = EXIT_APP_INTERNAL_ERROR
+        },
         about = {
             description = "ami 'about' sub command",
             summary = "Prints information about application",
