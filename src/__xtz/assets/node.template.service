@@ -9,7 +9,7 @@ Group={{{USER}}}
 
 Type=simple
 Restart=always
-RestartSec=1
+RestartSec=20
 
 Environment="HOME={{{ROOT_DIR}}}/data"
 
