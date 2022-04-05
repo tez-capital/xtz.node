@@ -34,7 +34,7 @@ log_info("Downloading zcash parameters...")
 local _fetchScriptPath = "bin/fetch-params.sh"
 local _ok, _error = net.safe_download_file("https://raw.githubusercontent.com/zcash/zcash/master/zcutil/fetch-params.sh", _fetchScriptPath, {followRedirects = true})
 if not _ok then 
-    log_error("Failed to download fetch-params.sh - " .. (_error or '-').. "!")
+    log_error("Failed to download fetch-params.sh - " .. tostring(_error) .. "!")
     return
 end
 
