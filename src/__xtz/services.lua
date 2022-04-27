@@ -16,8 +16,8 @@ local _bakerServices = {
 	[_appId .. "-xtz-baker"] = am.app.get_configuration("BAKER_SERVICE_FILE", "__xtz/assets/baker.service"),
 	-- [_appId .. "-xtz-endorser"] = am.app.get_configuration("ENDORSER_SERVICE_FILE", "__xtz/assets/endorser.service"),
 
-	-- [_appId .. "-xtz-accuser-next"] = am.app.get_configuration("ACCUSER_NEXT_SERVICE_FILE", "__xtz/assets/accuser-next.service")
-	-- [_appId .. "-xtz-baker-next"] = am.app.get_configuration("BAKER_NEXT_SERVICE_FILE", "__xtz/assets/baker-next.service"),
+	[_appId .. "-xtz-accuser-next"] = am.app.get_configuration("ACCUSER_NEXT_SERVICE_FILE", "__xtz/assets/accuser-next.service"),
+	[_appId .. "-xtz-baker-next"] = am.app.get_configuration("BAKER_NEXT_SERVICE_FILE", "__xtz/assets/baker-next.service"),
 	-- [_appId .. "-xtz-endorser-next"] = am.app.get_configuration("ENDORSER_NEXT_SERVICE_FILE", "__xtz/assets/endorser-next.service"),
 }
 
