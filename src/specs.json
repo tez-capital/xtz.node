@@ -1,6 +1,6 @@
 {
     "id": "xtz.node" ,
-    "version" : "0.10.10+13.0.ithaca",
+    "version" : "0.10.11+13.0.ithaca_jakarta",
     "dependencies": [
         { "id":"xtz.base" }
     ]
