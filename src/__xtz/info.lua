@@ -1,5 +1,4 @@
 local _json = am.options.OUTPUT_FORMAT == "json"
-local _appId = am.app.get("id", "unknown")
 
 local _options = ...
 local _timeout = 4
@@ -22,7 +21,8 @@ local _info = {
 	bootstrapped = false,
     status = "XTZ baker is operational",
     version = am.app.get_version(),
-    type = am.app.get_type()
+    type = am.app.get_type(),
+	services = {}
 }
 
 local _isBaker = am.app.get_configuration("NODE_TYPE") == "baker"
@@ -34,6 +34,10 @@ if _printAll or _printServiceInfo or _printSimple then
 		if type(v) ~= "string" then goto CONTINUE end
 		local _ok, _status, _started = _systemctl.safe_get_service_status(v)
 		ami_assert(_ok, "Failed to get status of " .. v .. ".service " .. (_status or ""), EXIT_PLUGIN_EXEC_ERROR)
+		_info.services[k] = {
+			status = _status,
+			started = _started
+		}
 		_info[k] = _status
 		_info[k .. "_started"] = _started
 		if _status ~= "running" then 
