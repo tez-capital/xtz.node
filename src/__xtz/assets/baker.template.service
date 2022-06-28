@@ -13,7 +13,7 @@ RestartSec=20
 
 Environment="HOME={{{ROOT_DIR}}}/data"
 Environment=TEZOS_LOG='* -> debug'
-ExecStart={{{ROOT_DIR}}}/bin/baker --remote-signer {{{model.REMOTE_SIGNER_ADDR}}} run with local node {{{ROOT_DIR}}}/data/.tezos-node baker
+ExecStart={{{ROOT_DIR}}}/bin/baker --remote-signer {{{model.REMOTE_SIGNER_ADDR}}} run with local node {{{ROOT_DIR}}}/data/.tezos-node baker --liquidity-baking-toggle-vote pass
 
 {{#model.SERVICE_CONFIGURATION_BAKER__ARRAY}}
 {{{key}}}={{{value}}}
