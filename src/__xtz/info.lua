@@ -38,6 +38,7 @@ if _printAll or _printServiceInfo or _printSimple then
 			status = _status,
 			started = _started
 		}
+		-- // TODO: remove from root object after migration to bb-cli next
 		_info[k] = _status
 		_info[k .. "_started"] = _started
 		if _status ~= "running" then 

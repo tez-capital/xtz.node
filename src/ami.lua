@@ -6,10 +6,10 @@ return {
             summary = "Prints runtime info and status of the app",
             action = "__xtz/info.lua",
             options = {
-				["timeout"] = {
-					aliases = {"t"},
+                ["timeout"] = {
+                    aliases = { "t" },
                     description = 'Sets time to wait for info collections',
-					type = "number"
+                    type = "number"
                 },
                 ["services"] = {
                     description = "Prints info about services",
@@ -44,7 +44,7 @@ return {
                 end
 
                 if _noOptions or not _options["no-validate"] then
-                    am.execute("validate", {"--platform"})
+                    am.execute("validate", { "--platform" })
                 end
 
                 if _noOptions or _options.app then
@@ -52,11 +52,11 @@ return {
                 end
 
                 if _noOptions and not _options["no-validate"] then
-                    am.execute("validate", {"--configuration"})
+                    am.execute("validate", { "--configuration" })
                 end
 
                 if _noOptions or _options.configure then
-					am.execute_extension('__xtz/create_user.lua', {contextFailExitCode = EXIT_APP_CONFIGURE_ERROR})
+                    am.execute_extension('__xtz/create_user.lua', { contextFailExitCode = EXIT_APP_CONFIGURE_ERROR })
                     am.app.render()
                     am.execute_extension("__xtz/configure.lua", { contextFailExitCode = EXIT_APP_CONFIGURE_ERROR })
                 end
@@ -87,50 +87,63 @@ return {
                 ami_assert(proc.EPROC, "xtz node AMI requires extra api - eli.proc.extra", EXIT_MISSING_API)
                 ami_assert(fs.EFS, "xtz node AMI requires extra api - eli.fs.extra", EXIT_MISSING_API)
 
-                ami_assert(type(am.app.get("id")) == 'string', "id not specified!" , EXIT_INVALID_CONFIGURATION)
-                ami_assert(type(am.app.get_config()) == 'table', "configuration not found in app.h/json!" , EXIT_INVALID_CONFIGURATION)
-                ami_assert(type(am.app.get("user")) == 'string', "USER not specified!" , EXIT_INVALID_CONFIGURATION)
-                ami_assert(type(am.app.get_type()) == "table" or type(am.app.get_type()) == "string", "Invalid app type!" , EXIT_INVALID_CONFIGURATION)
+                ami_assert(type(am.app.get("id")) == 'string', "id not specified!", EXIT_INVALID_CONFIGURATION)
+                ami_assert(type(am.app.get_config()) == 'table', "configuration not found in app.h/json!",
+                    EXIT_INVALID_CONFIGURATION)
+                ami_assert(type(am.app.get("user")) == 'string', "USER not specified!", EXIT_INVALID_CONFIGURATION)
+                ami_assert(type(am.app.get_type()) == "table" or type(am.app.get_type()) == "string", "Invalid app type!"
+                    , EXIT_INVALID_CONFIGURATION)
                 log_success("XTZ node configuration validated.")
             end
         },
-		bootstrap = {
+        bootstrap = {
             description = "ami 'bootstrap' sub command",
             summary = 'Bootstraps XTZ chain',
             action = '__xtz/bootstrap.lua',
-			type = "raw",
+            type = "raw",
             contextFailExitCode = EXIT_APP_START_ERROR
         },
-		client = {
-			description = "ami 'signer' sub command",
-			summary = "Passes any passed arguments directly to tezos-client.",
-			index = 8, 
-			type = "external",
-			exec = "bin/client",
+        client = {
+            description = "ami 'signer' sub command",
+            summary = "Passes any passed arguments directly to tezos-client.",
+            index = 8,
+            type = "external",
+            exec = "bin/client",
             environment = {
                 HOME = path.combine(os.cwd(), "data")
             },
-			contextFailExitCode = EXIT_APP_INTERNAL_ERROR
-		},
-		["import-key"] = {
-			description = "ami 'import-key' sub command",
-			summary = "Attempts to import ledger key (Assumes only one ledger is connected).",
-			index = 9, 
-			action = "__xtz/import_key.lua",
-			type = "raw",
             contextFailExitCode = EXIT_APP_INTERNAL_ERROR
-		},
+        },
+        node = {
+            description = "ami 'node' sub command",
+            summary = "Passes any passed arguments directly to tezos-node.",
+            index = 9,
+            type = "external",
+            exec = "bin/node",
+            environment = {
+                HOME = path.combine(os.cwd(), "data")
+            },
+            contextFailExitCode = EXIT_APP_INTERNAL_ERROR
+        },
+        ["import-key"] = {
+            description = "ami 'import-key' sub command",
+            summary = "Attempts to import ledger key (Assumes only one ledger is connected).",
+            index = 10,
+            action = "__xtz/import_key.lua",
+            type = "raw",
+            contextFailExitCode = EXIT_APP_INTERNAL_ERROR
+        },
         log = {
             description = "ami 'log' sub command",
             summary = 'Prints logs from services.',
             options = {
                 ["follow"] = {
-                    aliases = {"f"},
+                    aliases = { "f" },
                     description = "Keeps printing the log continuously.",
                     type = "boolean"
                 },
                 ["end"] = {
-                    aliases = {"e"},
+                    aliases = { "e" },
                     description = "Jumps to the end of the log.",
                     type = "boolean"
                 }
@@ -147,10 +160,10 @@ return {
                 ami_assert(_ok, "Failed to read about file!", EXIT_APP_ABOUT_ERROR)
 
                 local _ok, _about = hjson.safe_parse(_aboutFile)
-                _about["App Type"] = am.app.get({"type", "id"}, am.app.get("type"))
+                _about["App Type"] = am.app.get({ "type", "id" }, am.app.get("type"))
                 ami_assert(_ok, "Failed to parse about file!", EXIT_APP_ABOUT_ERROR)
                 if am.options.OUTPUT_FORMAT == "json" then
-                    print(hjson.stringify_to_json(_about, {indent = false, skipkeys = true}))
+                    print(hjson.stringify_to_json(_about, { indent = false, skipkeys = true }))
                 else
                     print(hjson.stringify(_about))
                 end
