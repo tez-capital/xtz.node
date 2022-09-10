@@ -33,7 +33,7 @@ log_info("Downloading zcash parameters...")
 
 local _fetchScriptPath = "bin/fetch-params.sh"
 local _ok, _error = net.safe_download_file("https://raw.githubusercontent.com/zcash/zcash/master/zcutil/fetch-params.sh", _fetchScriptPath, {followRedirects = true})
-if not _ok then 
+if not _ok then
     log_error("Failed to download fetch-params.sh - " .. tostring(_error) .. "!")
     return
 end
@@ -59,5 +59,21 @@ elseif fs.exists("./__xtz/node-config.json") then
 	fs.copy_file("./__xtz/node-config.json", "./data/.tezos-node/config.json")
 end
 
+-- vote file
+local _voteFile = am.app.get_configuration("VOTE_FILE")
+local _voteFileResult = {}
+local _ok, _baselineFile = fs.safe_read_file("./__xtz/assets/default-vote-file.json")
+if _ok then
+	local _ok, _baseline = hjson.safe_parse(_baselineFile)
+	if _ok and type(_baseline) == "table" and not table.is_array(_baseline) then _voteFileResult = _baseline end
+end
+if type(_voteFile) == "table" and not table.is_array(_voteFile) then
+	_voteFileResult = util.merge_tables(_voteFileResult, _voteFile, true)
+elseif _voteFile then
+	log_warn("Invalid 'VOTE_FILE' detected!")
+end
+fs.write_file("./data/vote-file.json", hjson.stringify_to_json(_voteFileResult))
+
+-- finalize
 local _ok, _error = fs.chown(os.cwd(), _uid, _uid, {recurse = true})
 ami_assert(_ok, "Failed to chown data - " .. (_error or ""))
