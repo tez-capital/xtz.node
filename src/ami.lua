@@ -104,7 +104,7 @@ return {
             contextFailExitCode = EXIT_APP_START_ERROR
         },
         client = {
-            description = "ami 'signer' sub command",
+            description = "ami 'client' sub command",
             summary = "Passes any passed arguments directly to tezos-client.",
             index = 8,
             type = "external",
