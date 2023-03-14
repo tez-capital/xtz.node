@@ -88,7 +88,7 @@ return {
                 ami_assert(fs.EFS, "xtz node AMI requires extra api - eli.fs.extra", EXIT_MISSING_API)
 
                 ami_assert(type(am.app.get("id")) == 'string', "id not specified!", EXIT_INVALID_CONFIGURATION)
-                ami_assert(type(am.app.get_config()) == 'table', "configuration not found in app.h/json!",
+                ami_assert(type(am.app.get_configuration()) == 'table', "configuration not found in app.h/json!",
                     EXIT_INVALID_CONFIGURATION)
                 ami_assert(type(am.app.get("user")) == 'string', "USER not specified!", EXIT_INVALID_CONFIGURATION)
                 ami_assert(type(am.app.get_type()) == "table" or type(am.app.get_type()) == "string", "Invalid app type!"
