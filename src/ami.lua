@@ -139,13 +139,21 @@ return {
             options = {
                 ["follow"] = {
                     aliases = { "f" },
-                    description = "Keeps printing the log continuously.",
+                    description = "Continuously prints the log in real-time.",
                     type = "boolean"
                 },
                 ["end"] = {
                     aliases = { "e" },
                     description = "Jumps to the end of the log.",
                     type = "boolean"
+                },
+                ["since"] = {
+                    description = "Displays logs starting from the specified time or date. Format: 'YYYY-MM-DD HH:MM:SS'",
+                    type = "string"
+                },
+                ["until"] = {
+                    description = "Displays logs up until the specified time or date. Format: 'YYYY-MM-DD HH:MM:SS'",
+                    type = "string"
                 }
             },
             type = "no-command",
