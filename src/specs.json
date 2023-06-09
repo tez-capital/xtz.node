@@ -1,6 +1,6 @@
 {
     "id": "xtz.node" ,
-    "version" : "0.15.1+17.0.mumbai_nairobi",
+    "version" : "0.15.2+17.0.mumbai_nairobi",
     "dependencies": [
         { "id":"xtz.base" }
     ]

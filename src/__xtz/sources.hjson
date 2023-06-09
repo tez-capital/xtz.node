@@ -7,8 +7,8 @@ linux-x86_x64: {
     accuser: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/x86_64-octez-accuser-PtMumbai
     baker: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/x86_64-octez-baker-PtMumbai
 
-    accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/x86_64-octez-accuser-PtMumbai
-    baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/x86_64-octez-baker-PtMumbai
+    accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/x86_64-octez-accuser-PtNairob
+    baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/x86_64-octez-baker-PtNairob
 }
 linux-arm64: {
     node: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/arm64-octez-node
@@ -17,6 +17,6 @@ linux-arm64: {
     accuser: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/arm64-octez-accuser-PtMumbai
     baker: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/arm64-octez-baker-PtMumbai
 
-    accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/arm64-octez-accuser-PtMumbai
-    baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/arm64-octez-baker-PtMumbai
+    accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/arm64-octez-accuser-PtNairob
+    baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.0/17.0/arm64-octez-baker-PtNairob
 }
