@@ -36,6 +36,21 @@ local _services = require("__xtz.services")
 local _wantedBinaries = table.keys(_services.allNames)
 table.insert(_wantedBinaries, "client")
 
+---@type string[]
+local _configuredAdditionalKeys = am.app.get_configuration("additional_keys_aliases", {})
+if not util.is_array(_configuredAdditionalKeys) then
+    _configuredAdditionalKeys = {}
+    log_warn("invalid additional_keys configuration (skipped)")
+end
+---@type string[]
+local _configuredKeys = am.app.get_configuration("keys_aliases", { "baker" })
+local _keys = "baker"
+if util.is_array(_configuredKeys) then
+    _keys = string.join(" ", table.unpack(util.merge_arrays(_configuredKeys, _configuredAdditionalKeys)))
+else
+    log_warn("invalid keys configuration (skipped)")
+end
+
 am.app.set_model(
     {
         WANTED_BINARIES = _wantedBinaries,
@@ -47,7 +62,8 @@ am.app.set_model(
             },
             type(am.app.get_configuration("SERVICE_CONFIGURATION")) == "table" and am.app.get_configuration("SERVICE_CONFIGURATION") or {},
             true
-        )
+        ),
+        KEYS_ALIASES = _keys
     },
     { merge = true, overwrite = true }
 )

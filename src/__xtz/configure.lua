@@ -65,7 +65,9 @@ local _voteFileResult = {}
 local _ok, _baselineFile = fs.safe_read_file("./__xtz/assets/default-vote-file.json")
 if _ok then
 	local _ok, _baseline = hjson.safe_parse(_baselineFile)
-	if _ok and type(_baseline) == "table" and not table.is_array(_baseline) then _voteFileResult = _baseline end
+	if _ok and type(_baseline) == "table" and not table.is_array(_baseline) then
+		_voteFileResult = _baseline
+	end
 end
 if type(_voteFile) == "table" and not table.is_array(_voteFile) then
 	_voteFileResult = util.merge_tables(_voteFileResult, _voteFile, true)
