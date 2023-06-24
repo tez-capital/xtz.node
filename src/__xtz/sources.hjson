@@ -4,19 +4,19 @@ linux-x86_x64: {
     node: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-node
     client: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-client
 
-    accuser: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-accuser-PtMumbai
-    baker: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-baker-PtMumbai
+    accuser: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-accuser-PtNairob
+    baker: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-baker-PtNairob
 
-    accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-accuser-PtNairob
-    baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-baker-PtNairob
+    // accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-accuser-PtNairob
+    // baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/x86_64-octez-baker-PtNairob
 }
 linux-arm64: {
     node: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-node
     client: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-client
 
-    accuser: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-accuser-PtMumbai
-    baker: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-baker-PtMumbai
+    accuser: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-accuser-PtNairob
+    baker: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-baker-PtNairob
 
-    accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-accuser-PtNairob
-    baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-baker-PtNairob
+    // accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-accuser-PtNairob
+    // baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/tezos-17.1/17.1/arm64-octez-baker-PtNairob
 }
