@@ -1,0 +1,23 @@
+[Unit]
+Description={{{ID}}} vdf service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+User={{{USER}}}
+Group={{{USER}}}
+
+Type=simple
+Restart=always
+RestartSec=20
+
+Environment="HOME={{{ROOT_DIR}}}/data"
+Environment=TEZOS_LOG='* -> debug'
+ExecStart={{{ROOT_DIR}}}/bin/baker-next run vdf
+
+{{#model.SERVICE_CONFIGURATION_BAKER__ARRAY}}
+{{{key}}}={{{value}}}
+{{/model.SERVICE_CONFIGURATION_BAKER__ARRAY}}
+
+[Install]
+WantedBy=default.target

@@ -33,8 +33,7 @@ am.app.set_model(
 )
 
 local _services = require("__xtz.services")
-local _wantedBinaries = table.keys(_services.allNames)
-table.insert(_wantedBinaries, "client")
+local _wantedBinaries = _services.allBinaries
 
 ---@type string[]
 local _configuredAdditionalKeys = am.app.get_configuration("additional_keys_aliases", {})

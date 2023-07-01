@@ -13,18 +13,10 @@ ami_assert(_ok, "Failed to load systemctl plugin - " .. tostring(_systemctl))
 local _services = require"__xtz.services"
 _services.remove_all_services() -- cleanup past install
 
-for k, v in pairs(_services.node) do
+for k, v in pairs(_services.all) do
 	local _serviceId = k
 	local _ok, _error = _systemctl.safe_install_service(v, _serviceId)
 	ami_assert(_ok, "Failed to install " .. _serviceId .. ".service " .. (_error or ""))
-end
-
-if am.app.get_configuration("NODE_TYPE", "rpc") == "baker" then
-	for k, v in pairs(_services.baker) do
-		local _serviceId = k
-		local _ok, _error = _systemctl.safe_install_service(v, _serviceId)
-		ami_assert(_ok, "Failed to install " .. _serviceId .. ".service " .. (_error or ""))
-	end
 end
 
 log_success(am.app.get("id") .. " services configured")
