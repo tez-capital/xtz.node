@@ -21,25 +21,11 @@ end
 
 log_success(am.app.get("id") .. " services configured")
 
-log_info("Downloading zcash parameters...")
+log_info("Downloading zcash parameters... (This may take few minutes.)")
 
-local _fetchScriptPath = "bin/fetch-params.sh"
-local _ok, _error = net.safe_download_file("https://raw.githubusercontent.com/zcash/zcash/master/zcutil/fetch-params.sh", _fetchScriptPath, {followRedirects = true})
-if not _ok then
-    log_error("Failed to download fetch-params.sh - " .. tostring(_error) .. "!")
-    return
-end
-
-if fs.exists(_fetchScriptPath) then -- we download only on debian
-    log_info("Downloading params... (This may take few minutes.)")
-    local _proc = proc.spawn("/bin/bash", { _fetchScriptPath }, {
-        stdio = { stderr = "pipe" },
-        wait = true,
-        env = { HOME = path.combine(os.cwd(), "data") }
-    })
-    ami_assert(_proc.exitcode == 0, "Failed to fetch params: " .. _proc.stderrStream:read("a"))
-    log_success("Sprout parameters downloaded...")
-end
+local _download_zk_params = require"__xtz.download-zk-params"
+local _ok, _error = _download_zk_params()
+ami_assert(_ok, "Failed to fetch params: " .. tostring(_error))
 
 local _configFile = am.app.get_configuration("CONFIG_FILE")
 if type(_configFile) == "table" and not table.is_array(_configFile) then
