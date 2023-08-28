@@ -54,7 +54,7 @@ am.app.set_model(
     {
         WANTED_BINARIES = _wantedBinaries,
         RPC_ADDR = am.app.get_configuration("RPC_ADDR", "127.0.0.1"),
-        REMOTE_SIGNER_ADDR = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0.0.1:2222/"),
+        REMOTE_SIGNER_ADDR = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0.0.1:20090/"),
 		SERVICE_CONFIGURATION = util.merge_tables(
             {
                 TimeoutStopSec = 300,
