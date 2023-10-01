@@ -19,13 +19,16 @@ local _info = {
     level = "ok",
     sync_state = false,
 	bootstrapped = false,
-    status = "XTZ baker is operational",
+    status = "node is operational",
     version = am.app.get_version(),
     type = am.app.get_type(),
 	services = {}
 }
 
 local _isBaker = am.app.get_configuration("NODE_TYPE") == "baker"
+if _isBaker then
+	_info.status = "XTZ baker is operational"
+end
 
 if _printAll or _printServiceInfo or _printSimple then
 	local _services = require"__xtz.services"
