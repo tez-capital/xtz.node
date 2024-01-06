@@ -9,14 +9,14 @@ local _possibleResidue = {
 }
 
 local _nodeServices = {
-	[_appId .. "-xtz-node"] = am.app.get_configuration("NODE_SERVICE_FILE", "__xtz/assets/node.service")
+	[_appId .. "-xtz-node"] = am.app.get_configuration("NODE_SERVICE_FILE", "__xtz/assets/node")
 }
 local _vdfServices = {
-	[ _appId .. "-xtz-vdf"] = am.app.get_configuration("NODE_SERVICE_FILE", "__xtz/assets/vdf.service"),
+	[ _appId .. "-xtz-vdf"] = am.app.get_configuration("NODE_SERVICE_FILE", "__xtz/assets/vdf"),
 }
 local _bakerServices = {
-	[_appId .. "-xtz-accuser"] = am.app.get_configuration("ACCUSER_SERVICE_FILE", "__xtz/assets/accuser.service"),
-	[_appId .. "-xtz-baker"] = am.app.get_configuration("BAKER_SERVICE_FILE", "__xtz/assets/baker.service"),
+	[_appId .. "-xtz-accuser"] = am.app.get_configuration("ACCUSER_SERVICE_FILE", "__xtz/assets/accuser"),
+	[_appId .. "-xtz-baker"] = am.app.get_configuration("BAKER_SERVICE_FILE", "__xtz/assets/baker"),
 }
 
 local _nodeBinaries = { "client", "node" }
@@ -24,13 +24,13 @@ local _bakerBinaries = { "accuser", "baker" }
 local _vdfBinaries = { "baker" }
 
 if am.app.get_model({ "DOWNLOAD_URLS", "baker-next" }, false) then
-	_vdfServices[ _appId .. "xtz-vdf-next"] = am.app.get_configuration("NODE_SERVICE_FILE", "__xtz/assets/vdf.service")
-	_bakerServices[_appId .. "-xtz-baker-next"] = am.app.get_configuration("BAKER_NEXT_SERVICE_FILE", "__xtz/assets/baker-next.service")
+	_vdfServices[ _appId .. "xtz-vdf-next"] = am.app.get_configuration("NODE_SERVICE_FILE", "__xtz/assets/vdf")
+	_bakerServices[_appId .. "-xtz-baker-next"] = am.app.get_configuration("BAKER_NEXT_SERVICE_FILE", "__xtz/assets/baker-next")
 	table.insert(_bakerBinaries, "baker-next")
 	table.insert(_vdfBinaries, "baker-next")
 end
 if am.app.get_model({ "DOWNLOAD_URLS", "accuser-next" }, false) then
-	_bakerServices[_appId .. "-xtz-accuser-next"] = am.app.get_configuration("ACCUSER_NEXT_SERVICE_FILE", "__xtz/assets/accuser-next.service")
+	_bakerServices[_appId .. "-xtz-accuser-next"] = am.app.get_configuration("ACCUSER_NEXT_SERVICE_FILE", "__xtz/assets/accuser-next")
 	table.insert(_bakerBinaries, "accuser-next")
 end
 
