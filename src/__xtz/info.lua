@@ -12,8 +12,19 @@ local _printServiceInfo = _options.services
 local _printSimple = _options.simple
 local _printAll = (not _printVotingInfo) and (not _printChainInfo) and (not _printServiceInfo) and (not _printSimple)
 
-local _ok, _systemctl = am.plugin.safe_get("systemctl")
-ami_assert(_ok, "Failed to load systemctl plugin", EXIT_PLUGIN_LOAD_ERROR)
+
+local backend = am.app.get_configuration("backend", os.getenv("ASCEND_SERVICES") ~= nil and "ascend" or "systemd")
+
+local serviceManager = nil
+if backend == "ascend" then
+	local ok, asctl = am.plugin.safe_get("asctl")
+	ami_assert(ok, "Failed to load asctl plugin")
+	serviceManager = asctl
+else
+	local ok, systemctl = am.plugin.safe_get("systemctl")
+	ami_assert(ok, "Failed to load systemctl plugin")
+	serviceManager = systemctl
+end
 
 local _info = {
     level = "ok",
@@ -35,7 +46,7 @@ if _printAll or _printServiceInfo or _printSimple then
 
 	for k, v in pairs(_services.allNames) do
 		if type(v) ~= "string" then goto CONTINUE end
-		local _ok, _status, _started = _systemctl.safe_get_service_status(v)
+		local _ok, _status, _started = serviceManager.safe_get_service_status(v)
 		ami_assert(_ok, "Failed to get status of " .. v .. ".service " .. (_status or ""), EXIT_PLUGIN_EXEC_ERROR)
 		_info.services[k] = {
 			status = _status,

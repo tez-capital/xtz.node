@@ -1,0 +1,24 @@
+{
+    executable: {{{ROOT_DIR}}}/bin/baker-next
+    args: [
+        --remote-signer
+        {{{model.REMOTE_SIGNER_ADDR}}}
+        run
+        with
+        local
+        node
+        {{{ROOT_DIR}}}/data/.tezos-node
+        {{{model.KEYS_ALIASES}}}
+        --votefile
+        {{{ROOT_DIR}}}/data/vote-file.json
+        {{#configuration.BAKER_STARTUP_ARGS}}
+        {{.}}
+        {{/configuration.BAKER_STARTUP_ARGS}}
+    ]
+    environment: {
+        HOME: {{{ROOT_DIR}}}/data
+        TEZOS_LOG: "* -> debug"
+    }
+    restart: always
+    restart_delay: 20
+}
