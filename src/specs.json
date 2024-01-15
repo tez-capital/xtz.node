@@ -1,6 +1,6 @@
 {
     "id": "xtz.node" ,
-    "version" : "0.22.1+18.1.nairobi",
+    "version" : "0.23.0+18.1.nairobi",
     "dependencies": [
         { "id":"xtz.base" }
     ]
