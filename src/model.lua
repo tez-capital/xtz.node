@@ -62,6 +62,7 @@ am.app.set_model(
             type(am.app.get_configuration("SERVICE_CONFIGURATION")) == "table" and am.app.get_configuration("SERVICE_CONFIGURATION") or {},
             true
         ),
+        TEZOS_LOG_LEVEL = am.app.get_configuration("TEZOS_LOG_LEVEL", "info"),
         KEYS_ALIASES = _keys
     },
     { merge = true, overwrite = true }

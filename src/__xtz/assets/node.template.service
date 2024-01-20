@@ -12,6 +12,7 @@ Restart=always
 RestartSec=20
 
 Environment="HOME={{{ROOT_DIR}}}/data"
+Environment=TEZOS_LOG='* -> {{{TEZOS_LOG_LEVEL}}}'
 
 ExecStart={{{ROOT_DIR}}}/bin/node run --rpc-addr {{{model.RPC_ADDR}}} {{{configuration.STARTUP_ARGS__CLI_ARGS}}}
 

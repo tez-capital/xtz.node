@@ -10,7 +10,7 @@
     ]
     environment: {
         HOME: {{{ROOT_DIR}}}/data
-        TEZOS_LOG: "* -> debug"
+        TEZOS_LOG: "* -> {{{TEZOS_LOG_LEVEL}}}"
     }
     restart: always
     restart_delay: 20

@@ -12,7 +12,7 @@ Restart=always
 RestartSec=20
 
 Environment="HOME={{{ROOT_DIR}}}/data"
-Environment=TEZOS_LOG='* -> debug'
+Environment=TEZOS_LOG='* -> {{{TEZOS_LOG_LEVEL}}}'
 ExecStart={{{ROOT_DIR}}}/bin/baker-next run vdf {{{configuration.VDF_STARTUP_ARGS__CLI_ARGS}}}
 
 {{#model.SERVICE_CONFIGURATION_BAKER__ARRAY}}
