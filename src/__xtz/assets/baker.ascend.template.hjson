@@ -17,7 +17,7 @@
     ]
     environment: {
         HOME: {{{ROOT_DIR}}}/data
-        TEZOS_LOG: "* -> {{{model.TEZOS_LOG_LEVEL}}}"
+        TEZOS_LOG: "* -> {{{model.BAKER_LOG_LEVEL}}}"
     }
     restart: always
     restart_delay: 20

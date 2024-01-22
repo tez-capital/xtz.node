@@ -3,10 +3,57 @@ local _args = table.pack(...)
 local _user = am.app.get("user")
 ami_assert(type(_user) == "string", "User not specified...", EXIT_INVALID_CONFIGURATION)
 
-ami_assert(#_args > 1, [[Please provide URL to snapshot source and block hash to import.
-ami ... bootstrap <url> <block hash>]])
+ami_assert(#_args >= 1, [[Please provide URL to snapshot source and block hash to import.
+ami ... bootstrap <url> [block hash]])
 
-local _tmpFile = os.tmpname() 
+-- check if node is running
+local backend = am.app.get_configuration("backend", os.getenv("ASCEND_SERVICES") ~= nil and "ascend" or "systemd")
+local serviceManager = nil
+if backend == "ascend" then
+	local ok, asctl = am.plugin.safe_get("asctl")
+	ami_assert(ok, "Failed to load asctl plugin")
+	serviceManager = asctl
+else
+	local ok, systemctl = am.plugin.safe_get("systemctl")
+	ami_assert(ok, "Failed to load systemctl plugin")
+	serviceManager = systemctl
+end
+
+local services = require"__xtz.services"
+for k, v in pairs(services.allNames) do
+	if type(v) ~= "string" then goto CONTINUE end
+	local _, status, _ = serviceManager.safe_get_service_status(v)
+	ami_assert(status ~= "running", "Some of node services is running, please stop them first...")
+	::CONTINUE::
+end
+
+log_info"Preparing the snapshot import"
+-- cleanup directory
+local nodeDir = "./data/.tezos-node"
+local tmpNodeDir = "./data/.tezos-node-tmp"
+if not fs.exists(tmpNodeDir) and fs.exists(nodeDir) then
+	os.rename(nodeDir, tmpNodeDir)
+	fs.mkdirp(nodeDir)
+end
+
+local toRemovePaths = {
+	"context",
+	"daily_logs",
+	"lock",
+	"store",
+	-- we want to preserve + proofs
+	-- "identity.json",
+	-- "config.json",
+	-- "peers.json",
+	-- "version.json",
+}
+local nodeDirContent = fs.read_dir(tmpNodeDir, { returnFullPaths = false, recurse = false, asDirEntries = false })
+local pathsToKeep = table.filter(nodeDirContent, function (_, v)
+	return not table.includes(toRemovePaths, v)
+end)
+
+-- bootstrap
+local _tmpFile = os.tmpname()
 local _ok, _exists = fs.safe_exists(_args[1])
 if _ok and _exists then
 	_tmpFile = _args[1]
@@ -30,20 +77,30 @@ else
 	end
 end
 
-local _args = table.pack(...)
-local _proc = proc.spawn("./bin/node", { "snapshot", "import", _tmpFile, "--block", _args[2]}, {
+local importArgs = { "snapshot", "import", _tmpFile }
+if #_args > 1 then
+	table.insert(importArgs, "--block")
+	table.insert(importArgs, _args[2])
+end
+local _proc = proc.spawn("./bin/node", importArgs, {
 	stdio = "inherit",
 	wait = true,
-	env = { HOME = path.combine(os.cwd(), "data") }
+	env = { HOME = path.combine(os.cwd() --[[@as string]], "data") }
 })
 os.remove(_tmpFile)
 ami_assert(_proc.exitcode == 0,  "Failed to import snapshot!")
 
+log_info"finishing the snapshot import"
+for _, v in ipairs(pathsToKeep) do
+	os.rename(path.combine(tmpNodeDir, v --[[@as string]]), path.combine(nodeDir, v --[[@as string]]))
+end
+fs.remove(tmpNodeDir, { recurse = true })
+
 local _ok, _uid = fs.safe_getuid(_user)
 ami_assert(_ok, "Failed to get " .. _user .. "uid - " .. (_uid or ""))
-local _ok, _error = fs.safe_chown("data", _uid, _uid, {recurse = true})
+local _ok, _error = fs.safe_chown("data", _uid, _uid, {recurse = true, recurseIgnoreErrors = true})
 if not _ok then
-	ami_error(_ok, "Failed to chown data - " .. _error)
+	ami_error("Failed to chown data - " .. tostring(_error))
 end
 
 log_success("Snapshot imported.")

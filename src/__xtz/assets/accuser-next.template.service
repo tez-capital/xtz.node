@@ -12,7 +12,7 @@ Restart=always
 RestartSec=20
 
 Environment="HOME={{{ROOT_DIR}}}/data"
-Environment=TEZOS_LOG='* -> {{{model.TEZOS_LOG_LEVEL}}}'
+Environment=TEZOS_LOG='* -> {{{model.ACCUSER_LOG_LEVEL}}}'
 ExecStart={{{ROOT_DIR}}}/bin/accuser-next --remote-signer {{{model.REMOTE_SIGNER_ADDR}}} run {{{configuration.ACCUSER_STARTUP_ARGS__CLI_ARGS}}}
 
 {{#model.SERVICE_CONFIGURATION_ACCUSER__ARRAY}}

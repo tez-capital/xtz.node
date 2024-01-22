@@ -49,6 +49,7 @@ if util.is_array(_configuredKeys) then
 else
     log_warn("invalid keys configuration (skipped)")
 end
+local TEZOS_LOG_LEVEL = am.app.get_configuration("TEZOS_LOG_LEVEL", "info")
 
 am.app.set_model(
     {
@@ -62,7 +63,10 @@ am.app.set_model(
             type(am.app.get_configuration("SERVICE_CONFIGURATION")) == "table" and am.app.get_configuration("SERVICE_CONFIGURATION") or {},
             true
         ),
-        TEZOS_LOG_LEVEL = am.app.get_configuration("TEZOS_LOG_LEVEL", "info"),
+        BAKER_LOG_LEVEL = am.app.get_configuration("BAKER_LOG_LEVEL", TEZOS_LOG_LEVEL),
+        NODE_LOG_LEVEL = am.app.get_configuration("NODE_LOG_LEVEL", TEZOS_LOG_LEVEL),
+        VDF_LOG_LEVEL = am.app.get_configuration("VDF_LOG_LEVEL", TEZOS_LOG_LEVEL),
+        ACCUSER_LOG_LEVEL = am.app.get_configuration("ACCUSER_LOG_LEVEL", TEZOS_LOG_LEVEL),
         KEYS_ALIASES = _keys
     },
     { merge = true, overwrite = true }
