@@ -3,6 +3,12 @@ local _args = table.pack(...)
 local _user = am.app.get("user")
 ami_assert(type(_user) == "string", "User not specified...", EXIT_INVALID_CONFIGURATION)
 
+local noCheck = false
+if table.includes(_args, "--no-check") then
+	_args = table.filter(_args, function(k, v) return v ~= "--no-check" and k ~= "n" end)
+	noCheck = true
+end
+
 ami_assert(#_args >= 1, [[Please provide URL to snapshot source and block hash to import.
 ami ... bootstrap <url> [block hash]])
 
@@ -78,6 +84,9 @@ else
 end
 
 local importArgs = { "snapshot", "import", _tmpFile }
+if noCheck then
+	table.insert(importArgs, "--no-check")
+end
 if #_args > 1 then
 	table.insert(importArgs, "--block")
 	table.insert(importArgs, _args[2])
