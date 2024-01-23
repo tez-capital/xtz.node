@@ -40,6 +40,8 @@ local tmpNodeDir = "./data/.tezos-node-tmp"
 if not fs.exists(tmpNodeDir) and fs.exists(nodeDir) then
 	os.rename(nodeDir, tmpNodeDir)
 	fs.mkdirp(nodeDir)
+	fs.copy_file(path.combine(tmpNodeDir, "config.json"), path.combine(nodeDir, "config.json"))
+	fs.copy_file(path.combine(tmpNodeDir, "identity.json"), path.combine(nodeDir, "identity.json"))
 end
 
 local toRemovePaths = {
