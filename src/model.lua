@@ -36,10 +36,10 @@ local _services = require("__xtz.services")
 local _wantedBinaries = _services.allBinaries
 
 ---@type string[]
-local _configuredAdditionalKeys = am.app.get_configuration("additional_keys_aliases", {})
+local _configuredAdditionalKeys = am.app.get_configuration("additional_key_aliases", {})
 if not util.is_array(_configuredAdditionalKeys) then
     _configuredAdditionalKeys = {}
-    log_warn("invalid additional_keys configuration (skipped)")
+    log_warn("invalid additional_key_aliases configuration (skipped)")
 end
 ---@type string[]
 local _configuredKeys = am.app.get_configuration("keys_aliases", { "baker" })
