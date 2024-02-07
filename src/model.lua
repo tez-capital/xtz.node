@@ -42,9 +42,9 @@ if not util.is_array(_configuredAdditionalKeys) then
     log_warn("invalid additional_key_aliases configuration (skipped)")
 end
 ---@type string[]
-local _configuredKeys = am.app.get_configuration("keys_aliases", { "baker" })
+local _configuredKeys = am.app.get_configuration("key_aliases", { "baker" })
 local _keys = "baker"
-if util.is_array(_configuredKeys) then
+if util.is_array(_configuredAdditionalKeys) then
     _keys = string.join(" ", table.unpack(util.merge_arrays(_configuredKeys, _configuredAdditionalKeys)))
 else
     log_warn("invalid keys configuration (skipped)")
@@ -67,7 +67,7 @@ am.app.set_model(
         NODE_LOG_LEVEL = am.app.get_configuration("NODE_LOG_LEVEL", TEZOS_LOG_LEVEL),
         VDF_LOG_LEVEL = am.app.get_configuration("VDF_LOG_LEVEL", TEZOS_LOG_LEVEL),
         ACCUSER_LOG_LEVEL = am.app.get_configuration("ACCUSER_LOG_LEVEL", TEZOS_LOG_LEVEL),
-        KEYS_ALIASES = _keys
+        KEY_ALIASES = _keys
     },
     { merge = true, overwrite = true }
 )
