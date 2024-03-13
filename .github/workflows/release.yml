@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       needs_release: ${{ steps.repository_info.outputs.needs_release }}
+      version: ${{ steps.repository_info.outputs.VERSION }}
     steps:
     - uses: actions/checkout@v3
     - name: setup eli
@@ -80,11 +81,11 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     needs: [build, build-containers]
-
+    if: needs.build.outputs.needs_release == 'true'
     steps:
     - name: Notify new version available
       uses: Ilshidur/action-discord@master
       env:
         DISCORD_WEBHOOK: ${{ secrets.XTZ_PACKAGES_DISCORD_WEBHOOK }}
       with:
-        args: "New ${{github.repository}} - ${{ github.ref_name }} released. (<https://github.com/${{github.repository}}/releases/tag/${{ github.ref_name }}>)"
+        args: "New ${{github.repository}} - ${{ needs.build.outputs.version }} released. (<https://github.com/${{github.repository}}/releases/tag/${{ github.ref_name }}>)"
