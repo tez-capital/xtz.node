@@ -80,7 +80,7 @@ jobs:
         context: ./container
         platforms: linux/amd64,linux/arm64
         build-args: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        tags: ghcr.io/${{github.repository}}:latest,ghcr.io/${{github.repository}}:${{ needs.build.outputs.VERSION }}
+        tags: ghcr.io/${{github.repository}}:latest,ghcr.io/${{github.repository}}:${{ needs.build.outputs.CONTAINER_TAG }}
         push: true
         provenance: false
 
