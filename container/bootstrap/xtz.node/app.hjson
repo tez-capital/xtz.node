@@ -1,0 +1,12 @@
+{
+	id: xtz-node
+    configuration: {
+		NODE_TYPE: node
+		RPC_ADDR: 0.0.0.0
+    }
+    type: {
+        id: xtz.node
+        version: latest
+    }
+    user: ascend
+}
