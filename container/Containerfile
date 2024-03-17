@@ -1,6 +1,5 @@
 FROM ghcr.io/alis-is/ascend:latest-ubuntu-ami
 
 COPY bootstrap /bootstrap
-# RUN chown -R ascend:ascend /bootstrap
 
 ENV APPS_BOOTSTRAP=/bootstrap

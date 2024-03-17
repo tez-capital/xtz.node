@@ -31,7 +31,7 @@ local function download_zk_params()
 
     local _tmpFile = os.tmpname()
     log_trace("downloading params zip ...")
-    local _ok, _error = net.safe_download_file(DOWNLOAD_URL, _tmpFile, {followRedirects = true})
+    local _ok, _error = net.safe_download_file(DOWNLOAD_URL, _tmpFile, {followRedirects = true, showDefaultProgress = true})
     if not _ok then return _ok, _error end
     log_trace("extracting params zip ...")
     local _ok, _error = zip.safe_extract(_tmpFile, PARAMS_DIR, { flattenRootDir = true })

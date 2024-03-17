@@ -21,4 +21,5 @@
     }
     restart: always
     restart_delay: 20
+    user: {{{USER}}}
 }
