@@ -13,7 +13,7 @@ local function _has_valid_zk_params()
 
     for k, v in pairs(_fileHashes) do
         local _fPath = path.combine(PARAMS_DIR, k)
-        local _, _hash = fs.safe_hash_file(_fPath, { hex = true })
+        local _, _hash = fs.safe_hash_file(_fPath, { hex = true, type = "sha256" })
         if _hash ~= v then
             return false
         end

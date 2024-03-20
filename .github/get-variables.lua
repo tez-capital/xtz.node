@@ -12,6 +12,9 @@ print("CONTAINER_TAG=" .. containerTag)
 
 local command = 'git tag -l "' .. specs.version .. '"'
 local handle = io.popen(command)
+if not handle then
+	error("failed to check existing versions")
+end
 local result = handle:read("*a")
 handle:close()
 

@@ -80,7 +80,7 @@ return {
             summary = "Validates app configuration and platform support",
             action = function(_options, _, _, _cli)
                 if _options.help then
-                    show_cli_help(_cli)
+                    am.print_help(_cli)
                     return
                 end
                 -- //TODO: Validate platform
