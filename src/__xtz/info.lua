@@ -13,19 +13,7 @@ local _printSimple = _options.simple
 local _printAll = (not _printVotingInfo) and (not _printChainInfo) and (not _printServiceInfo) and (not _printSimple)
 
 
-local backend = am.app.get_configuration("backend", os.getenv("ASCEND_SERVICES") ~= nil and "ascend" or "systemd")
-
-local serviceManager = nil
-if backend == "ascend" then
-	local ok, asctl = am.plugin.safe_get("asctl")
-	ami_assert(ok, "Failed to load asctl plugin")
-	serviceManager = asctl
-else
-	local ok, systemctl = am.plugin.safe_get("systemctl")
-	ami_assert(ok, "Failed to load systemctl plugin")
-	serviceManager = systemctl
-end
-
+local serviceManager = require"__xtz.service-manager"
 local _info = {
     level = "ok",
     sync_state = false,
@@ -52,9 +40,6 @@ if _printAll or _printServiceInfo or _printSimple then
 			status = _status,
 			started = _started
 		}
-		-- // TODO: remove from root object after migration to bb-cli next
-		_info[k] = _status
-		_info[k .. "_started"] = _started
 		if _status ~= "running" then 
 			_info.status = "One or more baker services is not running"
 			_info.level = "error"

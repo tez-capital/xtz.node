@@ -83,24 +83,13 @@ end
 
 -- includes potential residues
 local function _remove_all_services()
-	local backend = am.app.get_configuration("backend", os.getenv("ASCEND_SERVICES") ~= nil and "ascend" or "systemd")
+	local serviceManager = require"__xtz.service-manager"
 
-	local serviceManager = nil
-	if backend == "ascend" then
-		local ok, asctl = am.plugin.safe_get("asctl")
-		ami_assert(ok, "Failed to load asctl plugin")
-		serviceManager = asctl
-	else
-		local ok, systemctl = am.plugin.safe_get("systemctl")
-		ami_assert(ok, "Failed to load systemctl plugin")
-		serviceManager = systemctl
-	end
+	local all = util.merge_arrays(table.values(_bakerServiceNames), table.values(_nodeServiceNames))
+	all = util.merge_arrays(all, table.values(_vdfServiceNames))
+	all = util.merge_arrays(all, _possibleResidue)
 
-	local _all = util.merge_arrays(table.values(_bakerServiceNames), table.values(_nodeServiceNames))
-	_all = util.merge_arrays(_all, table.values(_vdfServiceNames))
-	_all = util.merge_arrays(_all, _possibleResidue)
-
-	for _, service in ipairs(_all) do
+	for _, service in ipairs(all) do
 		if type(service) ~= "string" then goto CONTINUE end
 		local _ok, _error = serviceManager.safe_remove_service(service)
 		if not _ok then
