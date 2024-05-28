@@ -1,22 +1,19 @@
 // SOURCE: https://gitlab.com/tezos/tezos/-/releases
-
-linux-x86_x64: {
-    node: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/x86_64-octez-node
-    client: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/x86_64-octez-client
-
-    accuser: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/x86_64-octez-accuser-Proxford
-    baker: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/x86_64-octez-baker-Proxford
-
- #   accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/x86_64-octez-accuser-Proxford
- #   baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/x86_64-octez-baker-Proxford
-}
-linux-arm64: {
-    node: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/arm64-octez-node
-    client: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/arm64-octez-client
-
-    accuser: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/arm64-octez-accuser-Proxford
-    baker: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/arm64-octez-baker-Proxford
-
-#    accuser-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/arm64-octez-accuser-Proxford
-#    baker-next: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-19.2/19.2/arm64-octez-baker-Proxford
+{
+    linux-x86_64: {
+        accuser: https://gitlab.com/tezos/tezos/-/package_files/130339791/download
+        node: https://gitlab.com/tezos/tezos/-/package_files/130339583/download
+        client: https://gitlab.com/tezos/tezos/-/package_files/130339263/download
+        accuser-next: https://gitlab.com/tezos/tezos/-/package_files/130339791/download
+        baker-next: https://gitlab.com/tezos/tezos/-/package_files/130339874/download
+        baker: https://gitlab.com/tezos/tezos/-/package_files/130339874/download
+    }
+    linux-arm64: {
+        accuser: https://gitlab.com/tezos/tezos/-/package_files/130343040/download
+        node: https://gitlab.com/tezos/tezos/-/package_files/130342826/download
+        client: https://gitlab.com/tezos/tezos/-/package_files/130342347/download
+        accuser-next: https://gitlab.com/tezos/tezos/-/package_files/130343040/download
+        baker-next: https://gitlab.com/tezos/tezos/-/package_files/130343131/download
+        baker: https://gitlab.com/tezos/tezos/-/package_files/130343131/download
+    }
 }

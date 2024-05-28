@@ -82,3 +82,8 @@ To enable trace level printout, run `ami` with `-ll=trace`. For example: `ami --
 
 Remember to adjust the path according to your app's location.
 
+
+### Updating sources
+
+Sources can be updated with:
+`eli src/__xtz/update-sources.lua https://gitlab.com/tezos/tezos/-/packages/25835249 Proxford PtParisB`
