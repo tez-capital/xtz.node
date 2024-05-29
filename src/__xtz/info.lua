@@ -48,7 +48,10 @@ if _printAll or _printServiceInfo or _printSimple then
 	end
 end
 
-local _client = net.RestClient:new("http://localhost:8732/", { timeout = _timeout })
+local rpcAddr = am.app.get_model("RPC_ADDR")
+local rpcUrl = string.interpolate("http://${RPC_ADDR}:8732/", { RPC_ADDR = rpcAddr })
+
+local _client = net.RestClient:new(rpcUrl, { timeout = _timeout })
 if _printAll or _printChainInfo then
 	local _ok, _response = _client:safe_get("chains/main/blocks/head")
 	if _ok then

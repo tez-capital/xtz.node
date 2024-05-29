@@ -1,6 +1,6 @@
 {
     "id": "xtz.node" ,
-    "version" : "0.28.1+20.0.oxford-paris",
+    "version" : "0.28.2+20.0.oxford-paris",
     "dependencies": [
         { "id":"xtz.base" }
     ]
