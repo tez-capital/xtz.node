@@ -36,7 +36,7 @@ for platform, sources in pairs(currentSources) do
 		if sourceId:match("baker") or sourceId:match("accuser") then
 			assetIds[sourceId] = arch .. "-octez-" .. sourceId .. "-" .. protocol
 			if protocolNext then
-				assetIds[sourceId .. "-next"] = arch .. "-octez-" .. sourceId .. "-" .. protocol
+				assetIds[sourceId .. "-next"] = arch .. "-octez-" .. sourceId .. "-" .. protocolNext
 			end
 		end
 
