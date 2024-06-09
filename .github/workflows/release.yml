@@ -54,7 +54,7 @@ jobs:
         echo "PACKAGE_SOURCE=$PACKAGE_SOURCE" >> $GITHUB_OUTPUT
 
     - name: Air Repository Dispatch
-      uses: peter-evans/repository-dispatch@v1
+      uses: peter-evans/repository-dispatch@v3
       if: ${{ steps.repository_info.outputs.NEEDS_RELEASE == 'true'}}
       with:
         token: ${{ secrets.AIR_ACCESS_TOKEN }}
