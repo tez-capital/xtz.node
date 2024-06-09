@@ -1,4 +1,5 @@
 -- SOURCE: https://gitlab.com/tezos/tezos/-/releases
+-- eli src/__xtz/update-sources.lua https://gitlab.com/tezos/tezos/-/packages/25835249 PtParisB
 
 local hjson = require "hjson"
 local args = table.pack(...)
@@ -27,7 +28,7 @@ local files = hjson.parse(response)
 
 local currentSources = hjson.parse(fs.read_file("src/__xtz/sources.hjson"))
 for platform, sources in pairs(currentSources) do
-	local newSources = util.clone(sources, true)
+	local newSources = {}
 	-- extract arch from linux-x86_64
 	local arch = platform:match("linux%-(.*)")
 	for sourceId, _ in pairs(sources) do
@@ -55,7 +56,8 @@ for platform, sources in pairs(currentSources) do
 	currentSources[platform] = newSources
 end
 
-local newContent = "// SOURCE: https://gitlab.com/tezos/tezos/-/releases"
-newContent = newContent .. "\n" .. hjson.stringify(currentSources, { separator = true })
+local newContent = "// SOURCE: https://gitlab.com/tezos/tezos/-/releases\n"
+newContent = newContent .. "// PROTOCOLS: " .. string.join(", ", protocol, protocolNext) .. "\n"
+newContent = newContent .. hjson.stringify(currentSources, { separator = true })
 
 fs.write_file("src/__xtz/sources.hjson", newContent)
