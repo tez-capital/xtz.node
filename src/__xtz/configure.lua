@@ -26,7 +26,7 @@ end
 
 log_success(am.app.get("id") .. " services configured")
 
-log_info("Downloading zcash parameters... (This may take few minutes.)")
+log_info("Downloading zcash parameters... (This may take a few minutes.)")
 
 local _download_zk_params = require"__xtz.download-zk-params"
 local _ok, _error = _download_zk_params()
