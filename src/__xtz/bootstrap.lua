@@ -3,6 +3,11 @@ local _args = table.pack(...)
 local _user = am.app.get("user")
 ami_assert(type(_user) == "string", "User not specified...", EXIT_INVALID_CONFIGURATION)
 
+if table.includes(_args, "--help") then
+	print("Usage: ... bootstrap <url> [block hash] [--no-check]")
+	return
+end
+
 local noCheck = false
 if table.includes(_args, "--no-check") then
 	_args = table.filter(_args, function(k, v) return v ~= "--no-check" and k ~= "n" end)
