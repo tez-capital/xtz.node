@@ -133,6 +133,11 @@ return {
             type = "raw",
             contextFailExitCode = EXIT_APP_INTERNAL_ERROR
         },
+        ["list-bakers"] = {
+            description = "ami 'list-bakers' sub command",
+            summary = "Lists bakers this node meant to be baking for.",
+            action = "__xtz/list_bakers.lua",
+        },
         log = {
             description = "ami 'log' sub command",
             summary = 'Prints logs from services.',
