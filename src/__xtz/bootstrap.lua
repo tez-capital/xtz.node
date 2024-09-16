@@ -77,7 +77,7 @@ else
 		end
 	end)()})
 	if not _ok then
-		fs.remove(_tmpFile)
+		fs.safe_remove(_tmpFile)
 		ami_error("Failed to download: " .. tostring(_error))
 	end
 end
@@ -102,7 +102,7 @@ log_info"finishing the snapshot import"
 for _, v in ipairs(pathsToKeep) do
 	os.rename(path.combine(tmpNodeDir, v --[[@as string]]), path.combine(nodeDir, v --[[@as string]]))
 end
-fs.remove(tmpNodeDir, { recurse = true })
+fs.safe_remove(tmpNodeDir, { recurse = true })
 
 local _ok, _uid = fs.safe_getuid(_user)
 ami_assert(_ok, "Failed to get " .. _user .. "uid - " .. (_uid or ""))
