@@ -1,5 +1,5 @@
 -- SOURCE: https://gitlab.com/tezos/tezos/-/releases
--- eli src/__xtz/update-sources.lua https://gitlab.com/tezos/tezos/-/packages/25835249 PtParisB
+-- eli src/__xtz/update-sources.lua https://gitlab.com/tezos/tezos/-/packages/25835249 PsParisC
 
 local hjson = require "hjson"
 local args = table.pack(...)
