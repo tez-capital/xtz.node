@@ -1,16 +1,16 @@
 // SOURCE: https://gitlab.com/tezos/tezos/-/releases
 // PROTOCOLS: PsParisC
 {
-    linux-x86_64: {
-        node: https://gitlab.com/tezos/tezos/-/package_files/150894611/download
-        accuser: https://gitlab.com/tezos/tezos/-/package_files/150894684/download
-        client: https://gitlab.com/tezos/tezos/-/package_files/150894301/download
-        baker: https://gitlab.com/tezos/tezos/-/package_files/150894772/download
-    }
     linux-arm64: {
-        node: https://gitlab.com/tezos/tezos/-/package_files/150896414/download
-        accuser: https://gitlab.com/tezos/tezos/-/package_files/150896443/download
-        client: https://gitlab.com/tezos/tezos/-/package_files/150896298/download
-        baker: https://gitlab.com/tezos/tezos/-/package_files/150896463/download
+        client: https://gitlab.com/tezos/tezos/-/package_files/159439006/download
+        baker: https://gitlab.com/tezos/tezos/-/package_files/159439265/download
+        node: https://gitlab.com/tezos/tezos/-/package_files/159439159/download
+        accuser: https://gitlab.com/tezos/tezos/-/package_files/159439246/download
+    }
+    linux-x86_64: {
+        client: https://gitlab.com/tezos/tezos/-/package_files/159438100/download
+        baker: https://gitlab.com/tezos/tezos/-/package_files/159438385/download
+        node: https://gitlab.com/tezos/tezos/-/package_files/159438288/download
+        accuser: https://gitlab.com/tezos/tezos/-/package_files/159438365/download
     }
 }
