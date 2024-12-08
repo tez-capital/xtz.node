@@ -58,13 +58,13 @@ local pathsToKeep = table.filter(nodeDirContent, function (_, v)
 end)
 
 -- bootstrap
-local _tmpFile = os.tmpname()
+local _tmpBootstrapFile = "./data/tmp-snapshot"
 local _ok, _exists = fs.safe_exists(_args[1])
 if _ok and _exists then
-	_tmpFile = _args[1]
+	_tmpBootstrapFile = _args[1]
 else
 	log_info("Downloading " .. tostring(_args[1]) .. "...")
-	local _ok, _error = net.safe_download_file(_args[1], _tmpFile, {followRedirects = true, contentType = "binary/octet-stream", progressFunction = (function ()
+	local _ok, _error = net.safe_download_file(_args[1], _tmpBootstrapFile, {followRedirects = true, contentType = "binary/octet-stream", progressFunction = (function ()
 		local _lastWritten = 0
 		return function(total, current) 
 			local _progress = math.floor(current / total * 100)
@@ -77,12 +77,12 @@ else
 		end
 	end)()})
 	if not _ok then
-		fs.safe_remove(_tmpFile)
+		fs.safe_remove(_tmpBootstrapFile)
 		ami_error("Failed to download: " .. tostring(_error))
 	end
 end
 
-local importArgs = { "snapshot", "import", _tmpFile }
+local importArgs = { "snapshot", "import", _tmpBootstrapFile }
 if noCheck then
 	table.insert(importArgs, "--no-check")
 end
@@ -95,7 +95,7 @@ local _proc = proc.spawn("./bin/node", importArgs, {
 	wait = true,
 	env = { HOME = path.combine(os.cwd() --[[@as string]], "data") }
 })
-os.remove(_tmpFile)
+os.remove(_tmpBootstrapFile)
 ami_assert(_proc.exitcode == 0,  "Failed to import snapshot!")
 
 log_info"finishing the snapshot import"
