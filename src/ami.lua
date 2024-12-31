@@ -29,7 +29,7 @@ return {
                     type = "boolean"
                 }
             },
-            contextFailExitCode = EXIT_APP_INFO_ERROR
+            context_fail_exit_code = EXIT_APP_INFO_ERROR
         },
         setup = {
             options = {
@@ -48,7 +48,7 @@ return {
                 end
 
                 if no_options or options.app then
-                    am.execute_extension("__xtz/download-binaries.lua", { contextFailExitCode = EXIT_SETUP_ERROR })
+                    am.execute_extension("__xtz/download-binaries.lua", { context_fail_exit_code = EXIT_SETUP_ERROR })
                 end
 
                 if no_options and not options["no-validate"] then
@@ -56,9 +56,9 @@ return {
                 end
 
                 if no_options or options.configure then
-                    am.execute_extension('__xtz/create_user.lua', { contextFailExitCode = EXIT_APP_CONFIGURE_ERROR })
+                    am.execute_extension('__xtz/create_user.lua', { context_fail_exit_code = EXIT_APP_CONFIGURE_ERROR })
                     am.app.render()
-                    am.execute_extension("__xtz/configure.lua", { contextFailExitCode = EXIT_APP_CONFIGURE_ERROR })
+                    am.execute_extension("__xtz/configure.lua", { context_fail_exit_code = EXIT_APP_CONFIGURE_ERROR })
                 end
                 log_success("XTZ node setup complete.")
             end
@@ -67,13 +67,13 @@ return {
             description = "ami 'start' sub command",
             summary = "Starts the XTZ node",
             action = "__xtz/start.lua",
-            contextFailExitCode = EXIT_APP_START_ERROR
+            context_fail_exit_code = EXIT_APP_START_ERROR
         },
         stop = {
             description = "ami 'stop' sub command",
             summary = "Stops the XTZ node",
             action = "__xtz/stop.lua",
-            contextFailExitCode = EXIT_APP_STOP_ERROR
+            context_fail_exit_code = EXIT_APP_STOP_ERROR
         },
         validate = {
             description = "ami 'validate' sub command",
@@ -101,7 +101,7 @@ return {
             summary = 'Bootstraps XTZ chain',
             action = '__xtz/bootstrap.lua',
             type = "raw",
-            contextFailExitCode = EXIT_APP_START_ERROR
+            context_fail_exit_code = EXIT_APP_START_ERROR
         },
         client = {
             description = "ami 'client' sub command",
@@ -112,7 +112,7 @@ return {
             environment = {
                 HOME = path.combine(os.cwd(), "data")
             },
-            contextFailExitCode = EXIT_APP_INTERNAL_ERROR
+            context_fail_exit_code = EXIT_APP_INTERNAL_ERROR
         },
         node = {
             description = "ami 'node' sub command",
@@ -123,7 +123,7 @@ return {
             environment = {
                 HOME = path.combine(os.cwd(), "data")
             },
-            contextFailExitCode = EXIT_APP_INTERNAL_ERROR
+            context_fail_exit_code = EXIT_APP_INTERNAL_ERROR
         },
         ["import-key"] = {
             description = "ami 'import-key' sub command",
@@ -131,7 +131,7 @@ return {
             index = 10,
             action = "__xtz/import_key.lua",
             type = "raw",
-            contextFailExitCode = EXIT_APP_INTERNAL_ERROR
+            context_fail_exit_code = EXIT_APP_INTERNAL_ERROR
         },
         ["list-bakers"] = {
             description = "ami 'list-bakers' sub command",
@@ -163,7 +163,7 @@ return {
             },
             type = "no-command",
             action = '__xtz/log.lua',
-            contextFailExitCode = EXIT_APP_INTERNAL_ERROR
+            context_fail_exit_code = EXIT_APP_INTERNAL_ERROR
         },
         about = {
             description = "ami 'about' sub command",
@@ -191,10 +191,10 @@ return {
             },
             action = function(options, _, _, _)
                 if options.chain then
-                    am.execute_extension("__xtz/remove-chain.lua", { contextFailExitCode = EXIT_RM_ERROR })
+                    am.execute_extension("__xtz/remove-chain.lua", { context_fail_exit_code = EXIT_RM_ERROR })
                 end
                 if options.all then
-                    am.execute_extension("__xtz/remove-all.lua", { contextFailExitCode = EXIT_RM_ERROR })
+                    am.execute_extension("__xtz/remove-all.lua", { context_fail_exit_code = EXIT_RM_ERROR })
                     am.app.remove()
                     log_success("Application removed.")
                 end
