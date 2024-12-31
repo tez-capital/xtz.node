@@ -37,25 +37,25 @@ return {
                     description = "Configures application, renders templates and installs services"
                 }
             },
-            action = function(_options, _, _, _)
-                local _noOptions = #table.keys(_options) == 0
-                if _noOptions or _options.environment then
+            action = function(options, _, _, _)
+                local no_options = #table.keys(options) == 0
+                if no_options or options.environment then
                     am.app.prepare()
                 end
 
-                if _noOptions or not _options["no-validate"] then
+                if no_options or not options["no-validate"] then
                     am.execute("validate", { "--platform" })
                 end
 
-                if _noOptions or _options.app then
+                if no_options or options.app then
                     am.execute_extension("__xtz/download-binaries.lua", { contextFailExitCode = EXIT_SETUP_ERROR })
                 end
 
-                if _noOptions and not _options["no-validate"] then
+                if no_options and not options["no-validate"] then
                     am.execute("validate", { "--configuration" })
                 end
 
-                if _noOptions or _options.configure then
+                if no_options or options.configure then
                     am.execute_extension('__xtz/create_user.lua', { contextFailExitCode = EXIT_APP_CONFIGURE_ERROR })
                     am.app.render()
                     am.execute_extension("__xtz/configure.lua", { contextFailExitCode = EXIT_APP_CONFIGURE_ERROR })
@@ -78,9 +78,9 @@ return {
         validate = {
             description = "ami 'validate' sub command",
             summary = "Validates app configuration and platform support",
-            action = function(_options, _, _, _cli)
-                if _options.help then
-                    am.print_help(_cli)
+            action = function(options, _, _, cli)
+                if options.help then
+                    am.print_help(cli)
                     return
                 end
                 -- //TODO: Validate platform
@@ -168,17 +168,17 @@ return {
         about = {
             description = "ami 'about' sub command",
             summary = "Prints information about application",
-            action = function(_options, _, _, _)
-                local _ok, _aboutFile = fs.safe_read_file("__xtz/about.hjson")
-                ami_assert(_ok, "Failed to read about file!", EXIT_APP_ABOUT_ERROR)
+            action = function(_, _, _, _)
+                local ok, about_raw = fs.safe_read_file("__xtz/about.hjson")
+                ami_assert(ok, "Failed to read about file!", EXIT_APP_ABOUT_ERROR)
 
-                local _ok, _about = hjson.safe_parse(_aboutFile)
-                _about["App Type"] = am.app.get({ "type", "id" }, am.app.get("type"))
-                ami_assert(_ok, "Failed to parse about file!", EXIT_APP_ABOUT_ERROR)
+                local ok, about = hjson.safe_parse(about_raw)
+                about["App Type"] = am.app.get({ "type", "id" }, am.app.get("type"))
+                ami_assert(ok, "Failed to parse about file!", EXIT_APP_ABOUT_ERROR)
                 if am.options.OUTPUT_FORMAT == "json" then
-                    print(hjson.stringify_to_json(_about, { indent = false, skipkeys = true }))
+                    print(hjson.stringify_to_json(about, { indent = false, skipkeys = true }))
                 else
-                    print(hjson.stringify(_about))
+                    print(hjson.stringify(about))
                 end
             end
         },
@@ -189,16 +189,16 @@ return {
                     description = "Remove chain data only."
                 }
             },
-            action = function(_options, _, _, _)
-                if _options.chain then
+            action = function(options, _, _, _)
+                if options.chain then
                     am.execute_extension("__xtz/remove-chain.lua", { contextFailExitCode = EXIT_RM_ERROR })
                 end
-                if _options.all then
+                if options.all then
                     am.execute_extension("__xtz/remove-all.lua", { contextFailExitCode = EXIT_RM_ERROR })
                     am.app.remove()
                     log_success("Application removed.")
                 end
-                if #table.keys(_options) == 0 then
+                if #table.keys(options) == 0 then
                     am.app.remove_data()
                     log_success("Application data removed.")
                 end

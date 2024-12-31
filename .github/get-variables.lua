@@ -1,14 +1,14 @@
 local hjson = require"hjson"
 local io = require"io"
 
-local specsContent = fs.read_file("./src/specs.json")
-local specs = hjson.parse(specsContent)
+local specs_raw = fs.read_file("./src/specs.json")
+local specs = hjson.parse(specs_raw)
 
 print("ID=" .. specs.id)
 print("VERSION=" .. specs.version)
 
-local containerTag = string.match(specs.version, "(%d+.%d+.%d+)")
-print("CONTAINER_TAG=" .. containerTag)
+local container_tag = string.match(specs.version, "(%d+.%d+.%d+)")
+print("CONTAINER_TAG=" .. container_tag)
 
 local command = 'git tag -l "' .. specs.version .. '"'
 local handle = io.popen(command)

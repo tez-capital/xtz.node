@@ -1,20 +1,20 @@
-local _json = am.options.OUTPUT_FORMAT == "json"
+local needs_json_output = am.options.OUTPUT_FORMAT == "json"
 
-local _options = ...
-local _timeout = 4
-if _options.timeout then
-    _timeout = tonumber(_options.timeout)
+local options = ...
+local timeout = 4
+if options.timeout then
+    timeout = tonumber(options.timeout) or timeout
 end
 
-local _printChainInfo = _options.chain
-local _printVotingInfo = _options.voting
-local _printServiceInfo = _options.services
-local _printSimple = _options.simple
-local _printAll = (not _printVotingInfo) and (not _printChainInfo) and (not _printServiceInfo) and (not _printSimple)
+local print_chain_info = options.chain
+local print_voting_info = options.voting
+local print_service_info = options.services
+local print_simple = options.simple
+local print_all = (not print_voting_info) and (not print_chain_info) and (not print_service_info) and (not print_simple)
 
 
-local serviceManager = require"__xtz.service-manager"
-local _info = {
+local service_manager = require"__xtz.service-manager"
+local info = {
     level = "ok",
     sync_state = false,
 	bootstrapped = false,
@@ -24,101 +24,101 @@ local _info = {
 	services = {}
 }
 
-local _isBaker = am.app.get_configuration("NODE_TYPE") == "baker"
-if _isBaker then
-	_info.status = "XTZ baker is operational"
+local is_baker = am.app.get_configuration("NODE_TYPE") == "baker"
+if is_baker then
+	info.status = "XTZ baker is operational"
 end
 
-if _printAll or _printServiceInfo or _printSimple then
-	local _services = require"__xtz.services"
+if print_all or print_service_info or print_simple then
+	local services = require"__xtz.services"
 
-	for k, v in pairs(_services.allNames) do
+	for k, v in pairs(services.all_names) do
 		if type(v) ~= "string" then goto CONTINUE end
-		local _ok, _status, _started = serviceManager.safe_get_service_status(v)
-		ami_assert(_ok, "Failed to get status of " .. v .. ".service " .. (_status or ""), EXIT_PLUGIN_EXEC_ERROR)
-		_info.services[k] = {
-			status = _status,
-			started = _started
+		local ok, status, started = service_manager.safe_get_service_status(v)
+		ami_assert(ok, "Failed to get status of " .. v .. ".service " .. (status or ""), EXIT_PLUGIN_EXEC_ERROR)
+		info.services[k] = {
+			status = status,
+			started = started
 		}
-		if _status ~= "running" then 
-			_info.status = "One or more baker services is not running"
-			_info.level = "error"
+		if status ~= "running" then 
+			info.status = "One or more baker services is not running"
+			info.level = "error"
 		end
 		::CONTINUE::
 	end
 end
 
-local rpcAddr = am.app.get_model("RPC_ADDR")
-local rpcUrl = string.interpolate("http://${RPC_ADDR}:8732/", { RPC_ADDR = rpcAddr })
+local rpc_addr = am.app.get_model("RPC_ADDR")
+local rpc_url = string.interpolate("http://${RPC_ADDR}:8732/", { RPC_ADDR = rpc_addr })
 
-local _client = net.RestClient:new(rpcUrl, { timeout = _timeout })
-if _printAll or _printChainInfo then
-	local _ok, _response = _client:safe_get("chains/main/blocks/head")
-	if _ok then
-		local _data = _response.data
-		local _metadata = table.get(_data, "metadata")
-		_info.chain_head = {
-			hash = table.get(_data, "hash"),
-			level = table.get(_data, {"header", "level"}),
-			timestamp = table.get(_data, {"header", "timestamp"}),
-			protocol = table.get(_metadata, {"protocol"}),
-			protocol_next = table.get(_metadata, { "next_protocol"}),
-			cycle = table.get(_metadata, {"level_info", "cycle"}, table.get(_metadata, {"level", "cycle"})),
+local rest_client = net.RestClient:new(rpc_url, { timeout = timeout })
+if print_all or print_chain_info then
+	local ok, response = rest_client:safe_get("chains/main/blocks/head")
+	if ok then
+		local data = response.data
+		local metadata = table.get(data, "metadata")
+		info.chain_head = {
+			hash = table.get(data, "hash"),
+			level = table.get(data, {"header", "level"}),
+			timestamp = table.get(data, {"header", "timestamp"}),
+			protocol = table.get(metadata, {"protocol"}),
+			protocol_next = table.get(metadata, { "next_protocol"}),
+			cycle = table.get(metadata, {"level_info", "cycle"}, table.get(metadata, {"level", "cycle"})),
 		}
 	end
 
-	local _ok, _response = _client:safe_get("network/connections")
-	if _ok then
-		_info.connections = #_response.data
+	local ok, response = rest_client:safe_get("network/connections")
+	if ok then
+		info.connections = #response.data
 	end
 end
 
-if _printAll or _printChainInfo or _printSimple then
-	local _ok, _response = _client:safe_get("chains/main/is_bootstrapped")
-	if _ok then
-		local _data = _response.data
-		_info.bootstrapped = _data.bootstrapped
-		_info.sync_state = _data.sync_state
+if print_all or print_chain_info or print_simple then
+	local ok, response = rest_client:safe_get("chains/main/is_bootstrapped")
+	if ok then
+		local data = response.data
+		info.bootstrapped = data.bootstrapped
+		info.sync_state = data.sync_state
 	end
 end
 
-if _isBaker and (_printAll or _printVotingInfo) then
-	local _ok, _response = _client:safe_get("chains/main/blocks/head/votes/proposals")
-	if _ok then
-		local _data = _response.data
-		if table.is_array(_data) then 
-			_info.voting_proposals = {}
-			for _, v in ipairs(_data) do 
-				if #v >= 2 and type(_info.proposals) == "table" then
-					_info.proposals[v[1]] = v[2]
+if is_baker and (print_all or print_voting_info) then
+	local ok, response = rest_client:safe_get("chains/main/blocks/head/votes/proposals")
+	if ok then
+		local data = response.data
+		if table.is_array(data) then 
+			info.voting_proposals = {}
+			for _, v in ipairs(data) do 
+				if #v >= 2 and type(info.proposals) == "table" then
+					info.proposals[v[1]] = v[2]
 				end
 			end
 		end
 	end
 
-	local _ok, _response = _client:safe_get("chains/main/blocks/head/votes/current_period")
-	if _ok then
-		_info.voting_current_period = _response.data
+	local ok, response = rest_client:safe_get("chains/main/blocks/head/votes/current_period")
+	if ok then
+		info.voting_current_period = response.data
 	end
 end
 
-if _info.level == "ok" and _info.sync_state ~= "synced" then 
-	_info.level = "warn"
+if info.level == "ok" and info.sync_state ~= "synced" then 
+	info.level = "warn"
 end
 
-if not _printSimple and not _printAll and (not _printChainInfo or not _printServiceInfo) then
+if not print_simple and not print_all and (not print_chain_info or not print_service_info) then
 	--- reset status and level because we are not able to determine it accurately without 
 	--- service and chain information collected
-	_info.level = nil
-	_info.status = nil
+	info.level = nil
+	info.status = nil
 end
 
-if not _printChainInfo and not _printAll and not _printSimple then
-	_info.sync_state = nil
+if not print_chain_info and not print_all and not print_simple then
+	info.sync_state = nil
 end
 
-if _json then
-    print(hjson.stringify_to_json(_info, {indent = false}))
+if needs_json_output then
+    print(hjson.stringify_to_json(info, {indent = false}))
 else
-    print(hjson.stringify(_info, {sortKeys = true}))
+    print(hjson.stringify(info, {sortKeys = true}))
 end

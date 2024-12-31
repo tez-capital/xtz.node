@@ -1,32 +1,32 @@
 local hjson = require "hjson"
 
-local sourcesHjson = fs.read_file("src/__xtz/sources.hjson")
-local sources = hjson.parse(sourcesHjson)
+local sources_raw = fs.read_file("src/__xtz/sources.hjson")
+local sources = hjson.parse(sources_raw)
 
-local sourceUrls = {}
-local sourceIds = {}
+local source_urls = {}
+local source_ids = {}
 
-for _, platformSources in pairs(sources) do
-	for _, sourceUrl in pairs(platformSources) do
-		if table.includes(sourceUrls, sourceUrl) then
-			error("Duplicate source url: " .. sourceUrl)
+for _, platform_sources in pairs(sources) do
+	for _, source_url in pairs(platform_sources) do
+		if table.includes(source_urls, source_url) then
+			error("Duplicate source url: " .. source_url)
 		end
-		table.insert(sourceUrls, sourceUrl)
+		table.insert(source_urls, source_url)
 
 		-- https://gitlab.com/tezos/tezos/-/package_files/130339715/download
 		-- extract id from url
-		local sourceId = sourceUrl:match("package_files/(%d+)/download")
-		if not sourceId then
-			error("Invalid source url: " .. sourceUrl)
+		local source_id = source_url:match("package_files/(%d+)/download")
+		if not source_id then
+			error("Invalid source url: " .. source_url)
 		end
-		if table.includes(sourceIds, sourceId) then
-			error("Duplicate source id: " .. sourceId)
+		if table.includes(source_ids, source_id) then
+			error("Duplicate source id: " .. source_id)
 		end
-		table.insert(sourceIds, sourceId)
+		table.insert(source_ids, source_id)
 	end
 end
 
-if #sourceUrls < 4 then
+if #source_urls < 4 then
 	error("Not enough source urls found")
 end
-print("Validated " .. #sourceUrls .. " source urls")
+print("Validated " .. #source_urls .. " source urls")

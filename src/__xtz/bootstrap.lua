@@ -1,47 +1,47 @@
-local _args = table.pack(...)
+local args = table.pack(...)
 
-local _user = am.app.get("user")
-ami_assert(type(_user) == "string", "User not specified...", EXIT_INVALID_CONFIGURATION)
+local user = am.app.get("user")
+ami_assert(type(user) == "string", "User not specified...", EXIT_INVALID_CONFIGURATION)
 
-if table.includes(_args, "--help") then
+if table.includes(args, "--help") then
 	print("Usage: ... bootstrap <url> [block hash] [--no-check]")
 	return
 end
 
-local noCheck = false
-if table.includes(_args, "--no-check") then
-	_args = table.filter(_args, function(k, v) return v ~= "--no-check" and k ~= "n" end)
-	noCheck = true
+local no_check = false
+if table.includes(args, "--no-check") then
+	args = table.filter(args, function(k, v) return v ~= "--no-check" and k ~= "n" end)
+	no_check = true
 end
 
-ami_assert(#_args >= 1, [[Please provide URL to snapshot source and block hash to import.
+ami_assert(#args >= 1, [[Please provide URL to snapshot source and block hash to import.
 ami ... bootstrap <url> [block hash]])
 
 -- check if node is running
-local serviceManager = require"__xtz.service-manager"
+local service_manager = require"__xtz.service-manager"
 local services = require"__xtz.services"
-for k, v in pairs(services.allNames) do
+for k, v in pairs(services.all_names) do
 	if type(v) ~= "string" then goto CONTINUE end
-	local _, status, _ = serviceManager.safe_get_service_status(v)
+	local _, status, _ = service_manager.safe_get_service_status(v)
 	ami_assert(status ~= "running", "Some of node services is running, please stop them first...")
 	::CONTINUE::
 end
 
 log_info"Preparing the snapshot import"
 -- cleanup directory
-local nodeDir = "./data/.tezos-node"
-local tmpNodeDir = "./data/.tezos-node-tmp"
-if not fs.exists(tmpNodeDir) and fs.exists(nodeDir) then
-	os.rename(nodeDir, tmpNodeDir)
-	fs.mkdirp(nodeDir)
-	fs.safe_copy_file(path.combine(tmpNodeDir, "config.json"), path.combine(nodeDir, "config.json"))
-	fs.safe_copy_file(path.combine(tmpNodeDir, "identity.json"), path.combine(nodeDir, "identity.json"))
+local node_directory = "./data/.tezos-node"
+local tmp_node_directory = "./data/.tezos-node-tmp"
+if not fs.exists(tmp_node_directory) and fs.exists(node_directory) then
+	os.rename(node_directory, tmp_node_directory)
+	fs.mkdirp(node_directory)
+	fs.safe_copy_file(path.combine(tmp_node_directory, "config.json"), path.combine(node_directory, "config.json"))
+	fs.safe_copy_file(path.combine(tmp_node_directory, "identity.json"), path.combine(node_directory, "identity.json"))
 end
 -- make sure we have all required directories in place
-fs.mkdirp(tmpNodeDir)
-fs.mkdirp(nodeDir)
+fs.mkdirp(tmp_node_directory)
+fs.mkdirp(node_directory)
 
-local toRemovePaths = {
+local paths_to_remove = {
 	"context",
 	"daily_logs",
 	"lock",
@@ -52,63 +52,63 @@ local toRemovePaths = {
 	-- "peers.json",
 	-- "version.json",
 }
-local nodeDirContent = fs.read_dir(tmpNodeDir, { returnFullPaths = false, recurse = false, asDirEntries = false })
-local pathsToKeep = table.filter(nodeDirContent, function (_, v)
-	return not table.includes(toRemovePaths, v)
+local node_directory_content = fs.read_dir(tmp_node_directory, { return_full_paths = false, recurse = false, as_dir_entries = false })
+local paths_to_keep = table.filter(node_directory_content, function (_, v)
+	return not table.includes(paths_to_remove, v)
 end)
 
 -- bootstrap
-local _tmpBootstrapFile = "./data/tmp-snapshot"
-local _ok, _exists = fs.safe_exists(_args[1])
-if _ok and _exists then
-	_tmpBootstrapFile = _args[1]
+local tmp_bootstrap_file = "./data/tmp-snapshot"
+local ok, exists = fs.safe_exists(args[1])
+if ok and exists then
+	tmp_bootstrap_file = args[1]
 else
-	log_info("Downloading " .. tostring(_args[1]) .. "...")
-	local _ok, _error = net.safe_download_file(_args[1], _tmpBootstrapFile, {followRedirects = true, contentType = "binary/octet-stream", progressFunction = (function ()
-		local _lastWritten = 0
+	log_info("Downloading " .. tostring(args[1]) .. "...")
+	local ok, err = net.safe_download_file(args[1], tmp_bootstrap_file, {follow_redirects = true, content_type = "binary/octet-stream", progress_function = (function ()
+		local last_written = 0
 		return function(total, current) 
-			local _progress = math.floor(current / total * 100)
-			if math.fmod(_progress, 10) == 0 and _lastWritten ~= _progress then 
-				_lastWritten = _progress
-				io.write(_progress .. "%...")
+			local progress = math.floor(current / total * 100)
+			if math.fmod(progress, 10) == 0 and last_written ~= progress then 
+				last_written = progress
+				io.write(progress .. "%...")
 				io.flush()
-				if _progress == 100 then print() end
+				if progress == 100 then print() end
 			end
 		end
 	end)()})
-	if not _ok then
-		fs.safe_remove(_tmpBootstrapFile)
-		ami_error("Failed to download: " .. tostring(_error))
+	if not ok then
+		fs.safe_remove(tmp_bootstrap_file)
+		ami_error("Failed to download: " .. tostring(err))
 	end
 end
 
-local importArgs = { "snapshot", "import", _tmpBootstrapFile }
-if noCheck then
-	table.insert(importArgs, "--no-check")
+local import_args = { "snapshot", "import", tmp_bootstrap_file }
+if no_check then
+	table.insert(import_args, "--no-check")
 end
-if #_args > 1 then
-	table.insert(importArgs, "--block")
-	table.insert(importArgs, _args[2])
+if #args > 1 then
+	table.insert(import_args, "--block")
+	table.insert(import_args, args[2])
 end
-local _proc = proc.spawn("./bin/node", importArgs, {
+local bootstrap_process = proc.spawn("./bin/node", import_args, {
 	stdio = "inherit",
 	wait = true,
 	env = { HOME = path.combine(os.cwd() --[[@as string]], "data") }
 })
-os.remove(_tmpBootstrapFile)
-ami_assert(_proc.exitcode == 0,  "Failed to import snapshot!")
+os.remove(tmp_bootstrap_file)
+ami_assert(bootstrap_process.exit_code == 0,  "Failed to import snapshot!")
 
 log_info"finishing the snapshot import"
-for _, v in ipairs(pathsToKeep) do
-	os.rename(path.combine(tmpNodeDir, v --[[@as string]]), path.combine(nodeDir, v --[[@as string]]))
+for _, v in ipairs(paths_to_keep) do
+	os.rename(path.combine(tmp_node_directory, v --[[@as string]]), path.combine(node_directory, v --[[@as string]]))
 end
-fs.safe_remove(tmpNodeDir, { recurse = true })
+fs.safe_remove(tmp_node_directory, { recurse = true })
 
-local _ok, _uid = fs.safe_getuid(_user)
-ami_assert(_ok, "Failed to get " .. _user .. "uid - " .. (_uid or ""))
-local _ok, _error = fs.safe_chown("data", _uid, _uid, {recurse = true, recurseIgnoreErrors = true})
-if not _ok then
-	ami_error("Failed to chown data - " .. tostring(_error))
+local ok, uid = fs.safe_getuid(user)
+ami_assert(ok, "Failed to get " .. user .. "uid - " .. (uid or ""))
+local ok, err = fs.safe_chown("data", uid, uid, {recurse = true, recurse_ignore_errors = true})
+if not ok then
+	ami_error("Failed to chown data - " .. tostring(err))
 end
 
 log_success("Snapshot imported.")
