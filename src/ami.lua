@@ -182,6 +182,33 @@ return {
                 end
             end
         },
+        pack = {
+            description = "ami 'pack' sub command",
+            options = {
+                output = {
+                    index = 1,
+                    aliases = {"o"},
+                    description = "Output path for the archive"
+                },
+                light = {
+                    index = 2,
+                    description = "If used the archive will not include chain data"
+                }
+            },
+            action = function (options)
+                am.app.pack({
+                    destination = options.output,
+                    mode = options.light and "light" or "full",
+                    path_filtering_mode = "blacklist",
+                    paths = {
+                        "data/.tezos-node/context/**",
+                        "data/.tezos-node/daily_logs/**",
+                        "data/.tezos-node/store/**",
+                        "data/.tezos-node/version.json",
+                    }
+                })
+            end
+        },
         remove = {
             index = 7,
             options = {
