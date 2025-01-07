@@ -120,5 +120,5 @@ end
 if needs_json_output then
     print(hjson.stringify_to_json(info, {indent = false}))
 else
-    print(hjson.stringify(info, {sortKeys = true}))
+    print(hjson.stringify(info, {sort_keys = true}))
 end
