@@ -7,7 +7,11 @@ local source_urls = {}
 local source_ids = {}
 
 for _, platform_sources in pairs(sources) do
-	for _, source_url in pairs(platform_sources) do
+	for id, source_url in pairs(platform_sources) do
+		if id == "prism" then -- below validation is just for octez binaries
+			goto continue
+		end
+
 		if table.includes(source_urls, source_url) then
 			error("Duplicate source url: " .. source_url)
 		end
@@ -23,6 +27,7 @@ for _, platform_sources in pairs(sources) do
 			error("Duplicate source id: " .. source_id)
 		end
 		table.insert(source_ids, source_id)
+		::continue::
 	end
 end
 
