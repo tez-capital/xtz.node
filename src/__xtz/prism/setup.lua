@@ -15,7 +15,7 @@
 log_info "configuring PRISM..."
 
 fs.mkdirp("prism/keys")
-fs.mkdirp("prism/conf.d") -- not needed for signer
+-- fs.mkdirp("prism/conf.d") -- not needed right now
 
 --- load and validate configuration
 ---
@@ -40,8 +40,8 @@ ami_assert(are_connecting_forwarders_valid_type, "invalid connecting_forwarders 
 
 local prism_configuration = {
     variables = {
-        default_listen_on = am.app.get_configuration({ "PRISM", "listen_on" }, 20080),
-        default_rpc_endpoint = am.app.get_mode("RPC_ADDR"),
+        default_listen_on = am.app.get_configuration({ "PRISM", "listen_on" }, "0.0.0.0:20080"),
+        default_rpc_endpoint = am.app.get_model("RPC_ADDR", "127.0.0.1") .. ":8732",
     },
     listening_forwarders = PRISM_CONFIGURATION.listening_forwarders,
     connecting_forwarders = PRISM_CONFIGURATION.connecting_forwarders,
@@ -51,7 +51,7 @@ ami_assert(
 type(PRISM_CONFIGURATION.default_forwarder) == "nil" or PRISM_CONFIGURATION.default_forwarder == true or
     type(PRISM_CONFIGURATION.default_forwarder) == "table",
     "invalid 'PRISM.default_forwarder' type")
-if type(prism_configuration.connecting_forwarders.default_forwarder) ~= "nil" and type(PRISM_CONFIGURATION.default_forwarder) ~= "nil" then
+if type(table.get(prism_configuration.connecting_forwarders, "default_forwarder", nil)) ~= "nil" and type(PRISM_CONFIGURATION.default_forwarder) ~= "nil" then
     ami_error("PRISM.default_forwarder collides with PRISM.connecting_forwarders")
 end
 
@@ -75,7 +75,7 @@ if type(PRISM_CONFIGURATION.default_forwarder) == "table" then
     local listening_forwarder = {
         listen_on = "${default_listen_on}",
 
-        key_path = PRISM_CONFIGURATION.default_forwarder.key or "prism/keys/node.key",
+        key_path = PRISM_CONFIGURATION.default_forwarder.key or "prism/keys/node.prism",
 
         client_forwarders = {
         }

@@ -18,6 +18,9 @@ local baker_services = {
 	[app_id .. "-xtz-accuser"] = am.app.get_configuration("ACCUSER_SERVICE_FILE", "__xtz/assets/accuser"),
 	[app_id .. "-xtz-baker"] = am.app.get_configuration("BAKER_SERVICE_FILE", "__xtz/assets/baker"),
 }
+local prism_services = {
+	[app_id .. "-xtz-prism-server"] = "__xtz/assets/prism"
+}
 
 local node_binaries = { "client", "node" }
 local baker_binaries = { "accuser", "baker" }
@@ -45,6 +48,10 @@ end
 local vdf_service_names = {}
 for k, _ in pairs(vdf_services) do
 	vdf_service_names[k:sub((#(app_id .. "-xtz-") + 1))] = k
+end
+local prism_service_names = {}
+for k, _ in pairs(prism_services) do
+	prism_service_names[k:sub((#(app_id .. "-xtz-") + 1))] = k
 end
 
 local all = util.clone(node_services)
@@ -81,12 +88,24 @@ if is_vdf then
 	end
 end
 
+local uses_prism = am.app.get_configuration("PRISM")
+if uses_prism then
+	for k, v in pairs(prism_service_names) do
+		all_names[k] = v
+	end
+	for k, v in pairs(prism_services) do
+		all[k] = v
+	end
+	table.insert(all_binaries, "prism")
+end
+
 -- includes potential residues
 local function remove_all_services()
 	local service_manager = require"__xtz.service-manager"
 
 	local all = util.merge_arrays(table.values(baker_service_names), table.values(node_service_names))
 	all = util.merge_arrays(all, table.values(vdf_service_names))
+	all = util.merge_arrays(all, table.values(prism_service_names))
 	all = util.merge_arrays(all, possible_residue)
 
 	for _, service in ipairs(all) do

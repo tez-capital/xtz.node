@@ -35,10 +35,6 @@ am.app.set_model(
 local services = require("__xtz.services")
 local wanted_binaries = services.all_binaries
 
-if am.app.get_configuration("PRISM") then
-    table.insert(wanted_binaries, "prism")
-end
-
 ---@type string[]
 local configured_additional_keys = am.app.get_configuration("additional_key_aliases", {})
 if not util.is_array(configured_additional_keys) then
