@@ -59,6 +59,12 @@ elseif vote_file then
 end
 fs.write_file("./data/vote-file.json", hjson.stringify_to_json(vote_file_result))
 
+-- prism
+local PRISM = am.app.get_configuration("PRISM")
+if PRISM then
+	require"__xtz.prism.setup"
+end
+
 -- finalize
 local ok, error = fs.chown(os.cwd(), uid, uid, {recurse = true})
 ami_assert(ok, "Failed to chown data - " .. (error or ""))
