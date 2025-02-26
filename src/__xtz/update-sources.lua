@@ -31,7 +31,12 @@ for platform, sources in pairs(current_sources) do
 	local new_sources = {}
 	-- extract arch from linux-x86_64
 	local arch = platform:match("linux%-(.*)")
-	for source_id, _ in pairs(sources) do
+	for source_id, source_url in pairs(sources) do
+		if source_id == "prism" then
+			new_sources[source_id] = source_url
+			goto CONTINUE
+		end
+
 		-- build asset id => <arch>-octez-<source_id>
 		local asset_ids = { [source_id] = arch .. "-octez-" .. source_id }
 		if source_id:match("baker") or source_id:match("accuser") then
@@ -52,6 +57,7 @@ for platform, sources in pairs(current_sources) do
 				end
 			end
 		end
+		::CONTINUE::
 	end
 	current_sources[platform] = new_sources
 end
