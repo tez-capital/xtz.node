@@ -64,6 +64,6 @@ end
 
 local new_content = "// SOURCE: https://gitlab.com/tezos/tezos/-/releases\n"
 new_content = new_content .. "// PROTOCOLS: " .. string.join(", ", protocol, protocol_next) .. "\n"
-new_content = new_content .. hjson.stringify(current_sources, { separator = true, sort_key = true })
+new_content = new_content .. hjson.stringify(current_sources, { separator = true, sort_keys = true })
 
 fs.write_file("src/__xtz/sources.hjson", new_content)
