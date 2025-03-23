@@ -61,7 +61,7 @@ for _, arg in ipairs(BAKER_STARTUP_ARGS) do
         break
     end
     -- matches --with-dal=...
-    if arg:match("--dal-node") then
+    if arg:match("^%-%-dal%-node$") then
         has_dal_arg = true
         break
     end
