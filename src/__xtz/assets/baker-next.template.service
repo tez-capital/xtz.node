@@ -13,7 +13,7 @@ RestartSec=20
 
 Environment="HOME={{{ROOT_DIR}}}/data"
 Environment=TEZOS_LOG='* -> {{{model.BAKER_LOG_LEVEL}}}'
-ExecStart={{{ROOT_DIR}}}/bin/baker-next --remote-signer {{{model.REMOTE_SIGNER_ADDR}}} run with local node {{{ROOT_DIR}}}/data/.tezos-node {{{model.KEY_ALIASES}}} --votefile {{{ROOT_DIR}}}/data/vote-file.json {{{configuration.BAKER_STARTUP_ARGS__CLI_ARGS}}}
+ExecStart={{{ROOT_DIR}}}/bin/baker-next --remote-signer {{{model.REMOTE_SIGNER_ADDR}}} run with local node {{{ROOT_DIR}}}/data/.tezos-node {{{model.KEY_ALIASES}}} --votefile {{{ROOT_DIR}}}/data/vote-file.json {{{model.BAKER_STARTUP_ARGS__CLI_ARGS}}}
 
 {{#configuration.SERVICE_CONFIGURATION_BAKER__ARRAY}}
 {{{key}}}={{{value}}}

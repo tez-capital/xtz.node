@@ -51,6 +51,25 @@ else
 end
 local TEZOS_LOG_LEVEL = am.app.get_configuration("TEZOS_LOG_LEVEL", "info")
 
+--// TODO: DAL
+local BAKER_STARTUP_ARGS = am.app.get_configuration("BAKER_STARTUP_ARGS", {})
+local has_dal_arg = false
+for _, arg in ipairs(BAKER_STARTUP_ARGS) do
+    -- matches --without-dal
+    if arg:match("^%-%-without%-dal$") then
+        has_dal_arg = true
+        break
+    end
+    -- matches --with-dal=...
+    if arg:match("--dal-node") then
+        has_dal_arg = true
+        break
+    end
+end
+if not has_dal_arg then
+    table.insert(BAKER_STARTUP_ARGS, "--without-dal")
+end
+
 am.app.set_model(
     {
         WANTED_BINARIES = wanted_binaries,
