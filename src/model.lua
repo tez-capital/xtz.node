@@ -86,7 +86,8 @@ am.app.set_model(
         NODE_LOG_LEVEL = am.app.get_configuration("NODE_LOG_LEVEL", TEZOS_LOG_LEVEL),
         VDF_LOG_LEVEL = am.app.get_configuration("VDF_LOG_LEVEL", TEZOS_LOG_LEVEL),
         ACCUSER_LOG_LEVEL = am.app.get_configuration("ACCUSER_LOG_LEVEL", TEZOS_LOG_LEVEL),
-        KEY_ALIASES = keys
+        KEY_ALIASES = keys,
+        BAKER_STARTUP_ARGS = BAKER_STARTUP_ARGS
     },
     { merge = true, overwrite = true }
 )
