@@ -62,7 +62,7 @@ for platform, sources in pairs(current_sources) do
 	current_sources[platform] = new_sources
 end
 
-local new_content = "// SOURCE: https://gitlab.com/tezos/tezos/-/releases\n"
+local new_content = "// SOURCE: " .. source .. " \n"
 new_content = new_content .. "// PROTOCOLS: " .. string.join(", ", protocol, protocol_next) .. "\n"
 new_content = new_content .. hjson.stringify(current_sources, { separator = true, sort_keys = true })
 
