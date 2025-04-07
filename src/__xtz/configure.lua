@@ -62,7 +62,9 @@ fs.write_file("./data/vote-file.json", hjson.stringify_to_json(vote_file_result)
 -- prism
 local PRISM = am.app.get_configuration("PRISM")
 if PRISM then
-	require"__xtz.prism.setup"
+	log_warn("PRISM is enabled. Please configure it manually...")
+	-- // TODO: implement prism configuration
+	-- require"__xtz.prism.setup"
 end
 
 -- finalize
