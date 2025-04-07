@@ -1,18 +1,18 @@
-// SOURCE: https://gitlab.com/tezos/tezos/-/releases
+// SOURCE: https://gitlab.com/tezos/tezos/-/packages/37393733 
 // PROTOCOLS: PsQuebec
 {
     linux-arm64: {
-        baker: https://gitlab.com/tezos/tezos/-/package_files/177414455/download
+        accuser: https://gitlab.com/tezos/tezos/-/package_files/185568550/download
+        baker: https://gitlab.com/tezos/tezos/-/package_files/185568578/download
+        client: https://gitlab.com/tezos/tezos/-/package_files/185568194/download
+        node: https://gitlab.com/tezos/tezos/-/package_files/185568452/download
         prism: https://github.com/alis-is/prism-releases/releases/download/0.0.20/prism-linux-arm64
-        node: https://gitlab.com/tezos/tezos/-/package_files/177414431/download
-        client: https://gitlab.com/tezos/tezos/-/package_files/177414391/download
-        accuser: https://gitlab.com/tezos/tezos/-/package_files/177414439/download
     }
     linux-x86_64: {
-        baker: https://gitlab.com/tezos/tezos/-/package_files/177414122/download
+        accuser: https://gitlab.com/tezos/tezos/-/package_files/185566768/download
+        baker: https://gitlab.com/tezos/tezos/-/package_files/185566795/download
+        client: https://gitlab.com/tezos/tezos/-/package_files/185566293/download
+        node: https://gitlab.com/tezos/tezos/-/package_files/185566674/download
         prism: https://github.com/alis-is/prism-releases/releases/download/0.0.20/prism-linux-amd64
-        node: https://gitlab.com/tezos/tezos/-/package_files/177414117/download
-        client: https://gitlab.com/tezos/tezos/-/package_files/177414078/download
-        accuser: https://gitlab.com/tezos/tezos/-/package_files/177414119/download
     }
 }
