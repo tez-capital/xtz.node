@@ -6,13 +6,13 @@
         baker: https://gitlab.com/tezos/tezos/-/package_files/185568578/download
         client: https://gitlab.com/tezos/tezos/-/package_files/185568194/download
         node: https://gitlab.com/tezos/tezos/-/package_files/185568452/download
-        prism: https://github.com/alis-is/prism-releases/releases/download/0.1.1/prism-linux-arm64
+        prism: https://github.com/alis-is/prism-releases/releases/download/0.1.2/prism-linux-arm64
     }
     linux-x86_64: {
         accuser: https://gitlab.com/tezos/tezos/-/package_files/185566768/download
         baker: https://gitlab.com/tezos/tezos/-/package_files/185566795/download
         client: https://gitlab.com/tezos/tezos/-/package_files/185566293/download
         node: https://gitlab.com/tezos/tezos/-/package_files/185566674/download
-        prism: https://github.com/alis-is/prism-releases/releases/download/0.1.1/prism-linux-amd64
+        prism: https://github.com/alis-is/prism-releases/releases/download/0.1.2/prism-linux-amd64
     }
 }
