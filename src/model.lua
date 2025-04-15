@@ -51,8 +51,14 @@ else
 end
 local TEZOS_LOG_LEVEL = am.app.get_configuration("TEZOS_LOG_LEVEL", "info")
 
---// TODO: DAL
+local dal_node = am.app.get_configuration("DAL_NODE", nil)
 local BAKER_STARTUP_ARGS = am.app.get_configuration("BAKER_STARTUP_ARGS", {})
+
+if dal_node ~= nil then
+    table.insert(BAKER_STARTUP_ARGS, "--dal-node")
+    table.insert(BAKER_STARTUP_ARGS, dal_node)
+end
+
 local has_dal_arg = false
 for _, arg in ipairs(BAKER_STARTUP_ARGS) do
     -- matches --without-dal
@@ -66,15 +72,27 @@ for _, arg in ipairs(BAKER_STARTUP_ARGS) do
         break
     end
 end
+
 if not has_dal_arg then
     table.insert(BAKER_STARTUP_ARGS, "--without-dal")
 end
+
+local package_utils = require("__xtz.utils")
+local signer_addr = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0.0.1:20090/")
+
+local signer_host_and_port = package_utils.extract_host_and_port(signer_addr)
+local dal_host_and_port = package_utils.extract_host_and_port(dal_node)
+local prism_server_listen_on = am.app.get_configuration("PRISM_SERVER_LISTEN_ON", "0.0.0.0:20080")
 
 am.app.set_model(
     {
         WANTED_BINARIES = wanted_binaries,
         RPC_ADDR = am.app.get_configuration("RPC_ADDR", "127.0.0.1"),
-        REMOTE_SIGNER_ADDR = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0.0.1:20090/"),
+        REMOTE_SIGNER_ADDR = signer_addr,
+        REMOTE_SIGNER_HOST_AND_PORT = signer_host_and_port,
+        DAL_NODE = dal_node,
+        DAL_NODE_HOST_AND_PORT = dal_host_and_port,
+        PRISM_SERVER_LISTEN_ON = prism_server_listen_on,
 		SERVICE_CONFIGURATION = util.merge_tables(
             {
                 TimeoutStopSec = 300,

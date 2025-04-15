@@ -1,0 +1,12 @@
+{
+    nodes: {
+        main: {
+            named_tunnels: {
+                tezos-signer: {
+                    exit_to: ${node_rpc_endpoint}
+                    enter_from: ${signer_endpoint}
+                }
+            }
+        }
+    }
+}

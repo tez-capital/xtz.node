@@ -1,0 +1,18 @@
+{
+    variables: {
+        # default prism listen on : 0.0.0.0:20080
+        node_rpc_endpoint: {{{model.RPC_ADDR}}}:8732
+        dal_rpc_endpoint: {{{model.DAL_NODE_HOST_AND_PORT}}}
+        signer_endpoint: {{{model.REMOTE_SIGNER_HOST_AND_PORT}}}
+        default_listen_on: {{{model.PRISM_SERVER_LISTEN_ON}}} 
+    }
+    includes: [
+        "./conf.d/*.hjson",
+    ]
+    nodes: {
+        main: {
+            listen: ${default_listen_on}
+            key_file: prism/keys/node.prism
+        }
+    }
+}
