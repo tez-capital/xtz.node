@@ -93,7 +93,7 @@ am.app.set_model(
         DAL_NODE = dal_node,
         DAL_NODE_HOST_AND_PORT = dal_host_and_port,
         PRISM_DAL_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "dal" }, false) ~= true,
-        PRISM_SIGNER_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "signer" }, false) == true,
+        PRISM_SIGNER_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "signer" }, false) ~= true,
         PRISM_SERVER_LISTEN_ON = prism_server_listen_on,
 		SERVICE_CONFIGURATION = util.merge_tables(
             {
