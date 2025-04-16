@@ -8,7 +8,7 @@ local utils = {}
 -- "127.0.0.1:90"             -> "127.0.0.1:90"
 ---@param input string
 ---@return string
-function utils.extract_host_and_port(input)
+function utils.extract_host_and_port(input, default_port)
     -- Try to match URLs starting with "http://" or "https://"
     local protocol, host, port = string.match(input, "^(https?)://([^/:]+):?(%d*)")
     if protocol then
@@ -28,7 +28,8 @@ function utils.extract_host_and_port(input)
             return host_only .. ":" .. port_only
         else
             -- If the input doesn't match expected patterns, return it unchanged.
-            return input
+            local port_suffix = default_port and ":" .. default_port or ""
+            return input .. port_suffix
         end
     end
 end

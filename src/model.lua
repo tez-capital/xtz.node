@@ -80,9 +80,9 @@ end
 local package_utils = require("__xtz.utils")
 local signer_addr = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0.0.1:20090/")
 
-local signer_host_and_port = package_utils.extract_host_and_port(signer_addr)
-local dal_host_and_port = package_utils.extract_host_and_port(dal_node)
-local prism_server_listen_on = am.app.get_configuration("PRISM_SERVER_LISTEN_ON", "0.0.0.0:20080")
+local signer_host_and_port = package_utils.extract_host_and_port(signer_addr, 20090)
+local dal_host_and_port = package_utils.extract_host_and_port(dal_node, 10732)
+local prism_server_listen_on = am.app.get_configuration({ "prism", "listen" }, "0.0.0.0:20080")
 
 am.app.set_model(
     {
