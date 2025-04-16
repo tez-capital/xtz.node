@@ -35,3 +35,9 @@ if #source_urls < 4 then
 	error("Not enough source urls found")
 end
 print("Validated " .. #source_urls .. " source urls")
+
+-- validate version
+-- // TODO:
+-- local specs_rwa = fs.read_file("src/specs.hjson")
+-- local specs = hjson.parse(specs_rwa)
+-- local version = 
