@@ -78,8 +78,10 @@ if not has_dal_arg then
 end
 
 local package_utils = require("__xtz.utils")
+local rpc_addr = am.app.get_configuration("RPC_ADDR", "http://127.0.0.1:8732")
 local signer_addr = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0.0.1:20090/")
 
+local rpc_addr_host_and_port = package_utils.extract_host_and_port(rpc_addr, 8732)
 local signer_host_and_port = package_utils.extract_host_and_port(signer_addr, 20090)
 local dal_host_and_port = package_utils.extract_host_and_port(dal_node, 10732)
 local prism_server_listen_on = am.app.get_configuration({ "prism", "listen" }, "0.0.0.0:20080")
@@ -87,7 +89,8 @@ local prism_server_listen_on = am.app.get_configuration({ "prism", "listen" }, "
 am.app.set_model(
     {
         WANTED_BINARIES = wanted_binaries,
-        RPC_ADDR = am.app.get_configuration("RPC_ADDR", "127.0.0.1:8732"),
+        RPC_ADDR =  rpc_addr,
+        RPC_HOST_AND_PORT = rpc_addr_host_and_port,
         REMOTE_SIGNER_ADDR = signer_addr,
         REMOTE_SIGNER_HOST_AND_PORT = signer_host_and_port,
         DAL_NODE = dal_node,

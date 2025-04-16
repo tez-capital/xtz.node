@@ -3,7 +3,7 @@
     args: [
         run
         --rpc-addr
-        {{{model.RPC_ADDR}}}
+        {{{model.RPC_HOST_AND_PORT}}}
         {{#configuration.STARTUP_ARGS}}
         {{.}}
         {{/configuration.STARTUP_ARGS}}

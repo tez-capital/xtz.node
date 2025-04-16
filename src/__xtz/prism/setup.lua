@@ -41,7 +41,7 @@ ami_assert(are_connecting_forwarders_valid_type, "invalid connecting_forwarders 
 local prism_configuration = {
     variables = {
         default_listen_on = am.app.get_configuration({ "PRISM", "listen_on" }, "0.0.0.0:20080"),
-        default_rpc_endpoint = am.app.get_model("RPC_ADDR", "127.0.0.1") .. ":8732",
+        default_rpc_endpoint = am.app.get_model("RPC_HOST_AND_PORT", "127.0.0.1:8732"),
     },
     listening_forwarders = PRISM_CONFIGURATION.listening_forwarders,
     connecting_forwarders = PRISM_CONFIGURATION.connecting_forwarders,

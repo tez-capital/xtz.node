@@ -1,7 +1,7 @@
 {
     variables: {
         # default prism listen on : 0.0.0.0:20080
-        node_rpc_endpoint: {{{model.RPC_ADDR}}}:8732
+        node_rpc_endpoint: {{{model.RPC_HOST_AND_PORT}}}
         dal_disabled: {{{model.PRISM_DAL_FORWARDING_DISABLED}}}
         dal_rpc_endpoint: {{{model.DAL_NODE_HOST_AND_PORT}}}
         signer_disabled: {{{model.PRISM_SIGNER_FORWARDING_DISABLED}}}
