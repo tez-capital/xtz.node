@@ -84,7 +84,7 @@ local signer_addr = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0
 local rpc_addr_host_and_port = package_utils.extract_host_and_port(rpc_addr, 8732)
 local signer_host_and_port = package_utils.extract_host_and_port(signer_addr, 20090)
 local dal_host_and_port = package_utils.extract_host_and_port(dal_node, 10732)
-local prism_server_listen_on = am.app.get_configuration({ "prism", "listen" }, "0.0.0.0:20080")
+local prism_server_listen_on = am.app.get_configuration({ "PRISM", "listen" }, "0.0.0.0:20080")
 
 am.app.set_model(
     {
