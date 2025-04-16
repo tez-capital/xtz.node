@@ -9,6 +9,9 @@ local utils = {}
 ---@param input string
 ---@return string
 function utils.extract_host_and_port(input, default_port)
+    if not input or input == "" then
+        return input
+    end
     -- Try to match URLs starting with "http://" or "https://"
     local protocol, host, port = string.match(input, "^(https?)://([^/:]+):?(%d*)")
     if protocol then
