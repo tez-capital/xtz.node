@@ -87,7 +87,7 @@ local prism_server_listen_on = am.app.get_configuration({ "prism", "listen" }, "
 am.app.set_model(
     {
         WANTED_BINARIES = wanted_binaries,
-        RPC_ADDR = am.app.get_configuration("RPC_ADDR", "127.0.0.1"),
+        RPC_ADDR = am.app.get_configuration("RPC_ADDR", "127.0.0.1:8732"),
         REMOTE_SIGNER_ADDR = signer_addr,
         REMOTE_SIGNER_HOST_AND_PORT = signer_host_and_port,
         DAL_NODE = dal_node,
