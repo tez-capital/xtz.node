@@ -26,12 +26,6 @@ end
 
 log_success(am.app.get("id") .. " services configured")
 
-log_info("Downloading zcash parameters... (This may take a few minutes.)")
-
-local _download_zk_params = require"__xtz.download-zk-params"
-local ok, err = _download_zk_params()
-ami_assert(ok, "Failed to fetch params: " .. tostring(err))
-
 local config_file = am.app.get_configuration("CONFIG_FILE")
 if type(config_file) == "table" and not table.is_array(config_file) then
 	log_info("Creating config file...")

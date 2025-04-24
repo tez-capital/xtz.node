@@ -21,7 +21,7 @@ local function has_valid_zk_params()
     return true
 end
 
-local function download_zk_params() 
+local function download_zk_params()
     if has_valid_zk_params() then
         return true
     end
@@ -63,4 +63,7 @@ local function download_zk_params()
     end
 end
 
-return download_zk_params
+log_info("Downloading zcash parameters... (This may take a few minutes.)")
+
+local ok, err = download_zk_params()
+ami_assert(ok, "Failed to fetch params: " .. tostring(err))

@@ -49,6 +49,7 @@ return {
 
                 if no_options or options.app then
                     am.execute_extension("__xtz/download-binaries.lua", { context_fail_exit_code = EXIT_SETUP_ERROR })
+                    am.execute_extension("__xtz/download-zk-params.lua", { context_fail_exit_code = EXIT_SETUP_ERROR })
                 end
 
                 if no_options and not options["no-validate"] then
