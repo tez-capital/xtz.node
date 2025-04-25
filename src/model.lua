@@ -84,7 +84,6 @@ local signer_addr = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0
 local rpc_addr_host_and_port = package_utils.extract_host_and_port(rpc_addr, 8732)
 local signer_host_and_port = package_utils.extract_host_and_port(signer_addr, 20090)
 local dal_host_and_port = package_utils.extract_host_and_port(dal_node, 10732)
-local prism_server_listen_on = am.app.get_configuration({ "PRISM", "listen" }, "0.0.0.0:20080")
 
 am.app.set_model(
     {
@@ -95,9 +94,6 @@ am.app.set_model(
         REMOTE_SIGNER_HOST_AND_PORT = signer_host_and_port,
         DAL_NODE = dal_node,
         DAL_NODE_HOST_AND_PORT = dal_host_and_port,
-        PRISM_DAL_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "dal" }, false) ~= true,
-        PRISM_SIGNER_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "signer" }, false) ~= true,
-        PRISM_SERVER_LISTEN_ON = prism_server_listen_on,
 		SERVICE_CONFIGURATION = util.merge_tables(
             {
                 TimeoutStopSec = 300,
@@ -110,7 +106,13 @@ am.app.set_model(
         VDF_LOG_LEVEL = am.app.get_configuration("VDF_LOG_LEVEL", TEZOS_LOG_LEVEL),
         ACCUSER_LOG_LEVEL = am.app.get_configuration("ACCUSER_LOG_LEVEL", TEZOS_LOG_LEVEL),
         KEY_ALIASES = keys,
-        BAKER_STARTUP_ARGS = BAKER_STARTUP_ARGS
+        BAKER_STARTUP_ARGS = BAKER_STARTUP_ARGS,
+        -- prism
+        PRISM_DAL_REMOTE = am.app.get_configuration({ "PRISM", "dal_remote" }),
+        PRISM_DAL_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "dal" }, false) ~= true,
+        PRISM_SIGNER_REMOTE = am.app.get_configuration({ "PRISM", "signer_remote" }),
+        PRISM_SIGNER_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "signer" }, false) ~= true,
+        PRISM_SERVER_LISTEN_ON = am.app.get_configuration({ "PRISM", "listen" }, "0.0.0.0:20080"),
     },
     { merge = true, overwrite = true }
 )

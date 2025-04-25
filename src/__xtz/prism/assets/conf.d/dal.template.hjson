@@ -1,0 +1,18 @@
+{
+    nodes: {
+        main: {
+            named_tunnels: {
+                tezos-dal: {
+                    disabled: {{{model.PRISM_DAL_FORWARDING_DISABLED}}}
+                    {{#model.PRISM_DAL_REMOTE}}
+                    connect: {{{model.PRISM_REMOTE}}}
+                    {{/model.PRISM_DAL_REMOTE}}
+                    exit_to: ${node_rpc_endpoint}
+                    enter_from: ${dal_rpc_endpoint}
+                    server_name: tezos-dal
+                    key_file: ${key_file}
+                }
+            }
+        }
+    }
+}

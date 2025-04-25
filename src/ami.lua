@@ -183,6 +183,17 @@ return {
                 end
             end
         },
+        version = {
+            description = "ami 'version' sub command",
+            summary = "Prints versions of binaries used by the app",
+            action = "__xtz/version.lua",
+            options = {
+                all = {
+                    description = "Prent version and all related versions - dependencies, binaries...",
+                    type = "boolean"
+                }
+            }
+        },
         pack = {
             description = "ami 'pack' sub command",
             options = {
