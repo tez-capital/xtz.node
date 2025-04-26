@@ -1,7 +1,19 @@
 {
     variables: {
+        {{#model.RPC_HOST_AND_PORT}}
         node_rpc_endpoint: {{{model.RPC_HOST_AND_PORT}}}
+        {{/model.RPC_HOST_AND_PORT}}
+        {{^model.RPC_HOST_AND_PORT}}
+        node_rpc_endpoint: 127.0.0.1:8732
+        {{/model.RPC_HOST_AND_PORT}}
+
+        {{#model.DAL_NODE_HOST_AND_PORT}}
         dal_rpc_endpoint: {{{model.DAL_NODE_HOST_AND_PORT}}}
+        {{/model.DAL_NODE_HOST_AND_PORT}}
+        {{^model.DAL_NODE_HOST_AND_PORT}}
+        dal_rpc_endpoint: 127.0.0.1:10732
+        {{/model.DAL_NODE_HOST_AND_PORT}}
+
         signer_endpoint: {{{model.REMOTE_SIGNER_HOST_AND_PORT}}}
         key_file: prism/keys/node.prism
     }

@@ -108,9 +108,9 @@ am.app.set_model(
         KEY_ALIASES = keys,
         BAKER_STARTUP_ARGS = BAKER_STARTUP_ARGS,
         -- prism
-        PRISM_DAL_REMOTE = am.app.get_configuration({ "PRISM", "dal_remote" }, "127.0.0.1:10732"),
+        PRISM_DAL_REMOTE = am.app.get_configuration({ "PRISM", "dal_remote" }),
         PRISM_DAL_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "dal" }, false) ~= true,
-        PRISM_SIGNER_REMOTE = am.app.get_configuration({ "PRISM", "signer_remote" }, "127.0.0.1:20090"),
+        PRISM_SIGNER_REMOTE = am.app.get_configuration({ "PRISM", "signer_remote" }),
         PRISM_SIGNER_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "signer" }, false) ~= true,
         PRISM_SERVER_LISTEN_ON = am.app.get_configuration({ "PRISM", "listen" }, "0.0.0.0:20080"),
     },
