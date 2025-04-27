@@ -5,7 +5,8 @@ local possible_residue = {
 	app_id .. "-xtz-baker-next",
 	app_id .. "-xtz-endorser",
 	app_id .. "-xtz-endorser-next",
-	app_id .. "-xtz-vdf-next"
+	app_id .. "-xtz-vdf-next",
+	app_id .. "-xtz-prism-server"
 }
 
 local node_services = {
@@ -19,7 +20,7 @@ local baker_services = {
 	[app_id .. "-xtz-baker"] = am.app.get_configuration("BAKER_SERVICE_FILE", "__xtz/assets/baker"),
 }
 local prism_services = {
-	[app_id .. "-xtz-prism-server"] = "__xtz/assets/prism"
+	[app_id .. "-xtz-prism"] = "__xtz/assets/prism"
 }
 
 local node_binaries = { "client", "node" }
