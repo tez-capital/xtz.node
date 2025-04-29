@@ -86,13 +86,15 @@ local signer_host_and_port = package_utils.extract_host_and_port(signer_addr, 20
 local dal_host_and_port = package_utils.extract_host_and_port(dal_node, 10732)
 
 local node_startup_args = am.app.get_configuration("STARTUP_ARGS", {})
+
 local local_rpc_addr = rpc_addr
+local local_rpc_addr_host_and_port = package_utils.extract_host_and_port(local_rpc_addr, 8732)
 if not local_rpc_addr:match("127%.0%.0%.1") then
     local_rpc_addr = am.app.get_configuration("LOCAL_RPC_ADDR", "http://127.0.0.1:8732")
+    local_rpc_addr_host_and_port = package_utils.extract_host_and_port(local_rpc_addr, 8732)
     table.insert(node_startup_args, "--rpc-addr")
-    table.insert(node_startup_args, local_rpc_addr)
+    table.insert(node_startup_args, local_rpc_addr_host_and_port)
 end
-local local_rpc_addr_host_and_port = package_utils.extract_host_and_port(local_rpc_addr, 8732)
 
 am.app.set_model(
     {
