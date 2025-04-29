@@ -124,7 +124,7 @@ am.app.set_model(
         PRISM_DAL_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "dal" }, false) ~= true,
         PRISM_SIGNER_REMOTE = am.app.get_configuration({ "PRISM", "signer_remote" }),
         PRISM_SIGNER_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "signer" }, false) ~= true,
-        PRISM_SERVER_LISTEN_ON = am.app.get_configuration({ "PRISM", "listen" }, "0.0.0.0:20080"),
+        PRISM_SERVER_LISTEN_ON = am.app.get_configuration({ "PRISM", "listen" }),
     },
     { merge = true, overwrite = true }
 )
