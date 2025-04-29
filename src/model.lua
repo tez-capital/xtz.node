@@ -85,10 +85,19 @@ local rpc_addr_host_and_port = package_utils.extract_host_and_port(rpc_addr, 873
 local signer_host_and_port = package_utils.extract_host_and_port(signer_addr, 20090)
 local dal_host_and_port = package_utils.extract_host_and_port(dal_node, 10732)
 
+local node_startup_args = am.app.get_configuration("STARTUP_ARGS", {})
+local local_rpc_addr = rpc_addr
+if not local_rpc_addr:match("127%.0%.0%.1") then
+    local_rpc_addr = am.app.get_configuration("LOCAL_RPC_ADDR", "http://127.0.0.1:8732")
+    table.insert(node_startup_args, "--rpc-addr")
+    table.insert(node_startup_args, local_rpc_addr)
+end
+
 am.app.set_model(
     {
         WANTED_BINARIES = wanted_binaries,
         RPC_ADDR =  rpc_addr,
+        LOCAL_RPC_ADDR = local_rpc_addr,
         RPC_HOST_AND_PORT = rpc_addr_host_and_port,
         REMOTE_SIGNER_ADDR = signer_addr,
         REMOTE_SIGNER_HOST_AND_PORT = signer_host_and_port,
@@ -107,6 +116,7 @@ am.app.set_model(
         ACCUSER_LOG_LEVEL = am.app.get_configuration("ACCUSER_LOG_LEVEL", TEZOS_LOG_LEVEL),
         KEY_ALIASES = keys,
         BAKER_STARTUP_ARGS = BAKER_STARTUP_ARGS,
+        STARTUP_ARGS = node_startup_args,
         -- prism
         PRISM_DAL_REMOTE = am.app.get_configuration({ "PRISM", "dal_remote" }),
         PRISM_DAL_FORWARDING_DISABLED = am.app.get_configuration({ "PRISM", "dal" }, false) ~= true,

@@ -48,7 +48,7 @@ if print_all or print_service_info or print_simple then
 	end
 end
 
-local rpc_url = am.app.get_model("RPC_ADDR")
+local rpc_url = am.app.get_model("LOCAL_RPC_ADDR")
 local rest_client = net.RestClient:new(rpc_url, { timeout = timeout })
 if print_all or print_chain_info then
 	local ok, response = rest_client:safe_get("chains/main/blocks/head")

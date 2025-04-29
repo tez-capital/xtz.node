@@ -4,9 +4,9 @@
         run
         --rpc-addr
         {{{model.RPC_HOST_AND_PORT}}}
-        {{#configuration.STARTUP_ARGS}}
+        {{#model.STARTUP_ARGS}}
         {{.}}
-        {{/configuration.STARTUP_ARGS}}
+        {{/model.STARTUP_ARGS}}
     ]
     environment: {
         HOME: {{{ROOT_DIR}}}/data
