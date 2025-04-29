@@ -1,11 +1,6 @@
 {
     variables: {
-        {{#model.RPC_HOST_AND_PORT}}
-        node_rpc_endpoint: {{{model.RPC_HOST_AND_PORT}}}
-        {{/model.RPC_HOST_AND_PORT}}
-        {{^model.RPC_HOST_AND_PORT}}
-        node_rpc_endpoint: 127.0.0.1:8732
-        {{/model.RPC_HOST_AND_PORT}}
+        node_rpc_endpoint: {{{model.LOCAL_RPC_HOST_AND_PORT}}}
 
         {{#model.DAL_NODE_HOST_AND_PORT}}
         dal_rpc_endpoint: {{{model.DAL_NODE_HOST_AND_PORT}}}

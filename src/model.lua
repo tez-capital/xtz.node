@@ -92,13 +92,15 @@ if not local_rpc_addr:match("127%.0%.0%.1") then
     table.insert(node_startup_args, "--rpc-addr")
     table.insert(node_startup_args, local_rpc_addr)
 end
+local local_rpc_addr_host_and_port = package_utils.extract_host_and_port(local_rpc_addr, 8732)
 
 am.app.set_model(
     {
         WANTED_BINARIES = wanted_binaries,
         RPC_ADDR =  rpc_addr,
-        LOCAL_RPC_ADDR = local_rpc_addr,
         RPC_HOST_AND_PORT = rpc_addr_host_and_port,
+        LOCAL_RPC_ADDR = local_rpc_addr,
+        LOCAL_RPC_HOST_AND_PORT = local_rpc_addr_host_and_port,
         REMOTE_SIGNER_ADDR = signer_addr,
         REMOTE_SIGNER_HOST_AND_PORT = signer_host_and_port,
         DAL_NODE = dal_node,
