@@ -5,7 +5,7 @@
                 tezos-signer: {
                     disabled: {{{model.PRISM_SIGNER_FORWARDING_DISABLED}}}
                     {{#model.PRISM_SIGNER_REMOTE}}
-                    connect: {{{model.PRISM_REMOTE}}}
+                    connect: {{{model.PRISM_SIGNER_REMOTE}}}
                     {{/model.PRISM_SIGNER_REMOTE}}
                     exit_to: ${node_rpc_endpoint}
                     enter_from: ${signer_endpoint}
