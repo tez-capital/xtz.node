@@ -126,6 +126,13 @@ return {
             },
             context_fail_exit_code = EXIT_APP_INTERNAL_ERROR
         },
+        prism = {
+            description = "ami 'prism' sub command",
+            summary = "Passes any passed arguments directly to prism.",
+            type = "external",
+            exec = "bin/prism",
+            context_fail_exit_code = EXIT_APP_INTERNAL_ERROR
+        },
         ["import-key"] = {
             description = "ami 'import-key' sub command",
             summary = "Attempts to import ledger key (Assumes only one ledger is connected).",
