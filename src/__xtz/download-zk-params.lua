@@ -55,6 +55,8 @@ local function download_zk_params()
             return ok, err
         end
     end
+    groth_file:close()
+
     if has_valid_zk_params() then
         log_trace("params ready")
         return true
