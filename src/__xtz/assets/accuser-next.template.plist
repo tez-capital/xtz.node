@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>{{{ID}}}.accuser</string>
+
+    <key>UserName</key>
+    <string>{{{USER}}}</string>
+    <key>GroupName</key>
+    <string>{{{USER}}}</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>{{{ROOT_DIR}}}/bin/accuser-next</string>
+        <string>--remote-signer</string>
+        <string>{{{model.REMOTE_SIGNER_ADDR}}}</string>
+        <string>run</string>
+        {{#configuration.ACCUSER_STARTUP_ARGS}}
+        <string>{{.}}</string>
+        {{/configuration.ACCUSER_STARTUP_ARGS}}
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>{{{ROOT_DIR}}}/data</string>
+        <key>TEZOS_LOG</key>
+        <string>* -> {{{model.ACCUSER_LOG_LEVEL}}}</string>
+        {{#configuration.SERVICE_CONFIGURATION_ACCUSER__ARRAY}}
+        <key>{{{key}}}</key>
+        <string>{{{value}}}</string>
+        {{/configuration.SERVICE_CONFIGURATION_ACCUSER__ARRAY}}
+    </dict>
+
+    <key>WorkingDirectory</key>
+    <string>{{{ROOT_DIR}}}/data</string>
+    
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>ThrottleInterval</key>
+    <integer>20</integer>
+</dict>
+</plist>

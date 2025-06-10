@@ -51,8 +51,8 @@ end
 local rpc_url = am.app.get_model("LOCAL_RPC_ADDR")
 local rest_client = net.RestClient:new(rpc_url, { timeout = timeout })
 if print_all or print_chain_info then
-	local ok, response = rest_client:safe_get("chains/main/blocks/head")
-	if ok and response then
+	local response, err = rest_client:get("chains/main/blocks/head")
+	if response then
 		local data = response.data
 		local metadata = table.get(data, "metadata")
 		info.chain_head = {
@@ -65,15 +65,15 @@ if print_all or print_chain_info then
 		}
 	end
 
-	local ok, response = rest_client:safe_get("network/connections")
-	if ok and response then
+	local response = rest_client:get("network/connections")
+	if response then
 		info.connections = #response.data
 	end
 end
 
 if print_all or print_chain_info or print_simple then
-	local ok, response = rest_client:safe_get("chains/main/is_bootstrapped")
-	if ok and response then
+	local response = rest_client:get("chains/main/is_bootstrapped")
+	if response then
 		local data = response.data
 		info.bootstrapped = data.bootstrapped
 		info.sync_state = data.sync_state
@@ -81,8 +81,8 @@ if print_all or print_chain_info or print_simple then
 end
 
 if is_baker and (print_all or print_voting_info) then
-	local ok, response = rest_client:safe_get("chains/main/blocks/head/votes/proposals")
-	if ok and response then
+	local response = rest_client:get("chains/main/blocks/head/votes/proposals")
+	if response then
 		local data = response.data
 		if table.is_array(data) then 
 			info.voting_proposals = {}
@@ -94,8 +94,8 @@ if is_baker and (print_all or print_voting_info) then
 		end
 	end
 
-	local ok, response = rest_client:safe_get("chains/main/blocks/head/votes/current_period")
-	if ok and response  then
+	local response = rest_client:get("chains/main/blocks/head/votes/current_period")
+	if response  then
 		info.voting_current_period = response.data
 	end
 end

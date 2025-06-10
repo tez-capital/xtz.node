@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>{{{ID}}}.vdf</string>
+
+    <key>UserName</key>
+    <string>{{{USER}}}</string>
+    <key>GroupName</key>
+    <string>{{{USER}}}</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>{{{ROOT_DIR}}}/bin/baker-next</string>
+        <string>run</string>
+        <string>vdf</string>
+        {{#configuration.VDF_STARTUP_ARGS}}
+        <string>{{{.}}}</string>
+        {{/configuration.VDF_STARTUP_ARGS}}
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>{{{ROOT_DIR}}}/data</string>
+        <key>TEZOS_LOG</key>
+        <string>* -> {{{model.VDF_LOG_LEVEL}}}</string>
+        {{#configuration.SERVICE_CONFIGURATION_VDF__ARRAY}}
+        <key>{{{key}}}</key>
+        <string>{{{value}}}</string>
+        {{/configuration.SERVICE_CONFIGURATION_VDF__ARRAY}}
+    </dict>
+
+    <key>WorkingDirectory</key>
+    <string>{{{ROOT_DIR}}}/data</string>
+
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>20</integer>
+</dict>
+</plist>

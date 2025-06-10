@@ -1,9 +1,9 @@
 local user = am.app.get("user")
 ami_assert(type(user) == "string", "User not specified...", EXIT_INVALID_CONFIGURATION)
 
-local ok, error = fs.safe_mkdirp("data")
+local ok, error = fs.mkdirp("data")
 ami_assert(ok, "failed to create data directory: ".. tostring(error))
-local ok, uid = fs.safe_getuid(user)
+local uid, err = fs.getuid(user)
 ami_assert(ok, "Failed to get " .. user .. "uid - " .. (uid or ""))
 
 log_info("Configuring " .. am.app.get("id") .. " services...")
@@ -29,19 +29,19 @@ log_success(am.app.get("id") .. " services configured")
 local config_file = am.app.get_configuration("CONFIG_FILE")
 if type(config_file) == "table" and not table.is_array(config_file) then
 	log_info("Creating config file...")
-	fs.safe_mkdirp("./data/.tezos-node/")
+	fs.mkdirp("./data/.tezos-node/")
 	fs.write_file("./data/.tezos-node/config.json", hjson.stringify_to_json(config_file))
 elseif fs.exists("./__xtz/node-config.json") then
-	fs.safe_mkdirp("./data/.tezos-node/")
+	fs.mkdirp("./data/.tezos-node/")
 	fs.copy_file("./__xtz/node-config.json", "./data/.tezos-node/config.json")
 end
 
 -- vote file
 local vote_file = am.app.get_configuration("VOTE_FILE")
 local vote_file_result = {}
-local ok, baseline_raw = fs.safe_read_file("./__xtz/assets/default-vote-file.json")
-if ok then
-	local ok, baseline = hjson.safe_parse(baseline_raw)
+local baseline_raw, err = fs.read_file("./__xtz/assets/default-vote-file.json")
+if baseline_raw then
+	local baseline, err = hjson.parse(baseline_raw)
 	if ok and type(baseline) == "table" and not table.is_array(baseline) then
 		vote_file_result = baseline
 	end

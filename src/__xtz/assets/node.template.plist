@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>{{{ID}}}.node</string>
+
+    <key>UserName</key>
+    <string>{{{USER}}}</string>
+    <key>GroupName</key>
+    <string>{{{USER}}}</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>{{{ROOT_DIR}}}/bin/node</string>
+        <string>run</string>
+        <string>--rpc-addr</string>
+        <string>{{{model.RPC_HOST_AND_PORT}}}</string>
+        {{#model.STARTUP_ARGS}}
+        <string>{{{.}}}</string>
+        {{/model.STARTUP_ARGS}}
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>{{{ROOT_DIR}}}/data</string>
+        <key>TEZOS_LOG</key>
+        <string>* -> {{{model.NODE_LOG_LEVEL}}}</string>
+        {{#model.SERVICE_CONFIGURATION__ARRAY}}
+        <key>{{{key}}}</key>
+        <string>{{{value}}}</string>
+        {{/model.SERVICE_CONFIGURATION__ARRAY}}
+    </dict>
+
+    <key>WorkingDirectory</key>
+    <string>{{{ROOT_DIR}}}/data</string>
+
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>20</integer>
+</dict>
+</plist>

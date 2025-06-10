@@ -34,8 +34,8 @@ local tmp_node_directory = "./data/.tezos-node-tmp"
 if not fs.exists(tmp_node_directory) and fs.exists(node_directory) then
 	os.rename(node_directory, tmp_node_directory)
 	fs.mkdirp(node_directory)
-	fs.safe_copy_file(path.combine(tmp_node_directory, "config.json"), path.combine(node_directory, "config.json"))
-	fs.safe_copy_file(path.combine(tmp_node_directory, "identity.json"), path.combine(node_directory, "identity.json"))
+	fs.copy_file(path.combine(tmp_node_directory, "config.json"), path.combine(node_directory, "config.json"))
+	fs.copy_file(path.combine(tmp_node_directory, "identity.json"), path.combine(node_directory, "identity.json"))
 end
 -- make sure we have all required directories in place
 fs.mkdirp(tmp_node_directory)
@@ -59,12 +59,12 @@ end)
 
 -- bootstrap
 local tmp_bootstrap_file = "./data/tmp-snapshot"
-local ok, exists = fs.safe_exists(args[1])
-if ok and exists then
+local exists = fs.exists(args[1])
+if exists then
 	tmp_bootstrap_file = args[1]
 else
 	log_info("Downloading " .. tostring(args[1]) .. "...")
-	local ok, err = net.safe_download_file(args[1], tmp_bootstrap_file, {follow_redirects = true, content_type = "binary/octet-stream", progress_function = (function ()
+	local ok, err = net.download_file(args[1], tmp_bootstrap_file, {follow_redirects = true, content_type = "binary/octet-stream", progress_function = (function ()
 		local last_written = 0
 		return function(total, current) 
 			local progress = math.floor(current / total * 100)
@@ -77,7 +77,7 @@ else
 		end
 	end)()})
 	if not ok then
-		fs.safe_remove(tmp_bootstrap_file)
+		fs.remove(tmp_bootstrap_file)
 		ami_error("Failed to download: " .. tostring(err))
 	end
 end
@@ -102,11 +102,11 @@ log_info"finishing the snapshot import"
 for _, v in ipairs(paths_to_keep) do
 	os.rename(path.combine(tmp_node_directory, v --[[@as string]]), path.combine(node_directory, v --[[@as string]]))
 end
-fs.safe_remove(tmp_node_directory, { recurse = true })
+fs.remove(tmp_node_directory, { recurse = true })
 
-local ok, uid = fs.safe_getuid(user)
-ami_assert(ok, "Failed to get " .. user .. "uid - " .. (uid or ""))
-local ok, err = fs.safe_chown("data", uid, uid, {recurse = true, recurse_ignore_errors = true})
+local uid, err = fs.getuid(user)
+ami_assert(uid, "Failed to get " .. user .. "uid - " .. (err or ""))
+local ok, err = fs.chown("data", uid, uid, {recurse = true, recurse_ignore_errors = true})
 if not ok then
 	ami_error("Failed to chown data - " .. tostring(err))
 end
