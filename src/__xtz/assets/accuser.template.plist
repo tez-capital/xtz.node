@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>{{{ID}}}.accuser</string>
+    <string>{{{ID}}}-accuser</string>
 
     <key>UserName</key>
     <string>{{{USER}}}</string>

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>{{{ID}}}.accuser</string>
+    <string>{{{ID}}}-accuser-next</string>
 
     <key>UserName</key>
     <string>{{{USER}}}</string>
@@ -35,7 +35,7 @@
 
     <key>WorkingDirectory</key>
     <string>{{{ROOT_DIR}}}/data</string>
-    
+
     <key>KeepAlive</key>
     <true/>
 

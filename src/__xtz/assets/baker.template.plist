@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>{{{ID}}}.baker-next</string>
+    <string>{{{ID}}}-baker</string>
 
     <key>UserName</key>
     <string>{{{USER}}}</string>

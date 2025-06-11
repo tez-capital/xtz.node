@@ -8,7 +8,20 @@ ami_assert(ok, "Failed to get " .. user .. "uid - " .. (uid or ""))
 
 log_info("Configuring " .. am.app.get("id") .. " services...")
 
-local backend = am.app.get_configuration("backend", os.getenv("ASCEND_SERVICES") ~= nil and "ascend" or "systemd")
+local platform_plugin, err = am.plugin.get("platform")
+ami_assert(platform_plugin, "Failed to get platform plugin - " .. (err or ""))
+local ok, platform = platform_plugin.get_platform()
+ami_assert(ok, "Failed to get platform - " .. tostring(platform))
+
+local default_system_backend = platform.DISTRO == "MacOS" and "launchd" or "systemd"
+
+local backend = am.app.get_configuration("backend", os.getenv("ASCEND_SERVICES") ~= nil and "ascend" or default_system_backend)
+local service_file_extension = "service"
+if backend == "ascend" then
+	service_file_extension = "ascend.hjson"
+elseif backend == "launchd" then
+	service_file_extension = "plist"
+end
 
 local service_manager = require"__xtz.service-manager"
 local services = require"__xtz.services"
@@ -18,7 +31,7 @@ for k, v in pairs(services.all) do
 	local service_id = k
 	local source_file = string.interpolate("${file}.${extension}", {
 		file = v,
-		extension = backend == "ascend" and "ascend.hjson" or "service"
+		extension = service_file_extension
 	})
 	local ok, err = service_manager.safe_install_service(source_file, service_id)
 	ami_assert(ok, "Failed to install " .. service_id .. ".service " .. (err or ""))

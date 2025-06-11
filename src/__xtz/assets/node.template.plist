@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>{{{ID}}}.node</string>
+    <string>{{{ID}}}-node</string>
 
     <key>UserName</key>
     <string>{{{USER}}}</string>

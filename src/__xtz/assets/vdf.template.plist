@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>{{{ID}}}.vdf</string>
+    <string>{{{ID}}}-vdf</string>
 
     <key>UserName</key>
     <string>{{{USER}}}</string>

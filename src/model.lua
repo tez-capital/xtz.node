@@ -14,9 +14,13 @@ local download_links = hjson.parse(fs.read_file("__xtz/sources.hjson"))
 local download_urls = nil
 
 if platform.OS == "unix" then
-	download_urls = download_links["linux-x86_64"]
-    if platform.SYSTEM_TYPE:match("[Aa]arch64") then
-        download_urls = download_links["linux-arm64"]
+    if platform.DISTRO == "MacOS" then
+        download_urls = download_links["darwin-arm64"]
+    else
+        download_urls = download_links["linux-x86_64"]
+        if platform.SYSTEM_TYPE:match("[Aa]arch64") then
+            download_urls = download_links["linux-arm64"]
+        end
     end
 end
 
@@ -99,7 +103,7 @@ end
 am.app.set_model(
     {
         WANTED_BINARIES = wanted_binaries,
-        RPC_ADDR =  rpc_addr,
+        RPC_ADDR = rpc_addr,
         RPC_HOST_AND_PORT = rpc_addr_host_and_port,
         LOCAL_RPC_ADDR = local_rpc_addr,
         LOCAL_RPC_HOST_AND_PORT = local_rpc_addr_host_and_port,
@@ -107,11 +111,12 @@ am.app.set_model(
         REMOTE_SIGNER_HOST_AND_PORT = signer_host_and_port,
         DAL_NODE = dal_node,
         DAL_NODE_HOST_AND_PORT = dal_host_and_port,
-		SERVICE_CONFIGURATION = util.merge_tables(
+        SERVICE_CONFIGURATION = util.merge_tables(
             {
                 TimeoutStopSec = 300,
             },
-            type(am.app.get_configuration("SERVICE_CONFIGURATION")) == "table" and am.app.get_configuration("SERVICE_CONFIGURATION") or {},
+            type(am.app.get_configuration("SERVICE_CONFIGURATION")) == "table" and
+            am.app.get_configuration("SERVICE_CONFIGURATION") or {},
             true
         ),
         BAKER_LOG_LEVEL = am.app.get_configuration("BAKER_LOG_LEVEL", TEZOS_LOG_LEVEL),
