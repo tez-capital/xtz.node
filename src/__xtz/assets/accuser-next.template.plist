@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>{{{ID}}}-accuser-next</string>
+    <string>{{{ID}}}-xtz-accuser-next</string>
 
     <key>UserName</key>
     <string>{{{USER}}}</string>
@@ -38,8 +38,12 @@
 
     <key>KeepAlive</key>
     <true/>
-
     <key>ThrottleInterval</key>
-    <integer>20</integer>
+    <integer>1</integer>
+
+    <key>StandardOutPath</key>
+    <string>/usr/local/var/log/{{{ID}}}-xtz-accuser-next.log</string>
+    <key>StandardErrorPath</key>
+    <string>/usr/local/var/log/{{{ID}}}-xtz-accuser-next.log</string>
 </dict>
 </plist>

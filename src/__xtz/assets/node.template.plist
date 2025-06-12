@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>{{{ID}}}-node</string>
+    <string>{{{ID}}}-xtz-node</string>
 
     <key>UserName</key>
     <string>{{{USER}}}</string>
@@ -39,6 +39,11 @@
     <key>KeepAlive</key>
     <true/>
     <key>ThrottleInterval</key>
-    <integer>20</integer>
+    <integer>1</integer>
+
+    <key>StandardOutPath</key>
+    <string>/usr/local/var/log/{{{ID}}}-xtz-node.log</string>
+    <key>StandardErrorPath</key>
+    <string>/usr/local/var/log/{{{ID}}}-xtz-node.log</string>
 </dict>
 </plist>
