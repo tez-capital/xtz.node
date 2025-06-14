@@ -19,7 +19,9 @@ for _, platform_sources in pairs(sources) do
 
 		-- https://gitlab.com/tezos/tezos/-/package_files/130339715/download
 		-- extract id from url
-		local source_id = source_url:match("package_files/(%d+)/download")
+		local source_id = source_url:match("package_files/(%d+)/download") or
+			source_url:match("tez%-capital/tezos%-macos%-pipeline/releases/download/.*")
+
 		if not source_id then
 			error("Invalid source url: " .. source_url)
 		end
@@ -37,7 +39,7 @@ end
 print("Validated " .. #source_urls .. " source urls")
 
 -- validate version
--- // TODO:
--- local specs_rwa = fs.read_file("src/specs.hjson")
--- local specs = hjson.parse(specs_rwa)
--- local version = 
+local specs_rwa = fs.read_file("src/specs.json")
+local specs = hjson.parse(specs_rwa)
+local version, err = ver.parse(specs.version)
+assert(version, "Failed to parse version: " .. (err or ""))

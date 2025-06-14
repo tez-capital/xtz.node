@@ -1,42 +1,17 @@
 local user = am.app.get("user")
-ami_assert(type(user) == "string", "User not specified...", EXIT_INVALID_CONFIGURATION)
+ami_assert(type(user) == "string", "user not specified...", EXIT_INVALID_CONFIGURATION)
+local uid, err = fs.getuid(user)
+ami_assert(uid, "failed to get " .. user .. "uid - " .. tostring(err))
 
 local ok, error = fs.mkdirp("data")
 ami_assert(ok, "failed to create data directory: ".. tostring(error))
-local uid, err = fs.getuid(user)
-ami_assert(ok, "Failed to get " .. user .. "uid - " .. (uid or ""))
 
-log_info("Configuring " .. am.app.get("id") .. " services...")
-
-local platform_plugin, err = am.plugin.get("platform")
-ami_assert(platform_plugin, "Failed to get platform plugin - " .. (err or ""))
-local ok, platform = platform_plugin.get_platform()
-ami_assert(ok, "Failed to get platform - " .. tostring(platform))
-
-local default_system_backend = platform.DISTRO == "MacOS" and "launchd" or "systemd"
-
-local backend = am.app.get_configuration("backend", os.getenv("ASCEND_SERVICES") ~= nil and "ascend" or default_system_backend)
-local service_file_extension = "service"
-if backend == "ascend" then
-	service_file_extension = "ascend.hjson"
-elseif backend == "launchd" then
-	service_file_extension = "plist"
-end
-
+log_info("configuring " .. am.app.get("id") .. " services...")
 local service_manager = require"__xtz.service-manager"
 local services = require"__xtz.services"
-services.remove_all_services() -- cleanup past install
 
-for k, v in pairs(services.all) do
-	local service_id = k
-	local source_file = string.interpolate("${file}.${extension}", {
-		file = v,
-		extension = service_file_extension
-	})
-	local ok, err = service_manager.safe_install_service(source_file, service_id)
-	ami_assert(ok, "Failed to install " .. service_id .. ".service " .. (err or ""))
-end
-
+service_manager.remove_services(services.cleanup_names)
+service_manager.install_services(services.all, os.getenv("SERVICE_BACKEND"))
 log_success(am.app.get("id") .. " services configured")
 
 local config_file = am.app.get_configuration("CONFIG_FILE")
@@ -62,7 +37,7 @@ end
 if type(vote_file) == "table" and not table.is_array(vote_file) then
 	vote_file_result = util.merge_tables(vote_file_result, vote_file, true)
 elseif vote_file then
-	log_warn("Invalid 'VOTE_FILE' detected!")
+	log_warn("invalid 'VOTE_FILE' detected!")
 end
 fs.write_file("./data/vote-file.json", hjson.stringify_to_json(vote_file_result))
 
@@ -74,4 +49,4 @@ end
 
 -- finalize
 local ok, error = fs.chown(os.cwd(), uid, uid, {recurse = true})
-ami_assert(ok, "Failed to chown data - " .. (error or ""))
+ami_assert(ok, "failed to chown data - " .. (error or ""))

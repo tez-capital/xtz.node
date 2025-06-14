@@ -100,28 +100,18 @@ if uses_prism then
 	table.insert(all_binaries, "prism")
 end
 
--- includes potential residues
-local function remove_all_services()
-	local service_manager = require"__xtz.service-manager"
 
-	local all = util.merge_arrays(table.values(baker_service_names), table.values(node_service_names))
-	all = util.merge_arrays(all, table.values(vdf_service_names))
-	all = util.merge_arrays(all, table.values(prism_service_names))
-	all = util.merge_arrays(all, possible_residue)
-
-	for _, service in ipairs(all) do
-		if type(service) ~= "string" then goto CONTINUE end
-		local ok, err = service_manager.safe_remove_service(service)
-		if not ok then
-			ami_error("Failed to remove " .. service .. ": " .. (err or ""))
-		end
-		::CONTINUE::
-	end
-end
+---@type string[]
+local cleanup_names = {}
+cleanup_names = util.merge_arrays(cleanup_names, table.values(node_service_names))
+cleanup_names = util.merge_arrays(cleanup_names, table.values(baker_service_names))
+cleanup_names = util.merge_arrays(cleanup_names, table.values(vdf_service_names))
+cleanup_names = util.merge_arrays(cleanup_names, table.values(prism_service_names))
+cleanup_names = util.merge_arrays(cleanup_names, possible_residue)
 
 return {
 	all = all,
 	all_names = all_names,
 	all_binaries = all_binaries,
-	remove_all_services = remove_all_services
+	cleanup_names = cleanup_names,
 }
