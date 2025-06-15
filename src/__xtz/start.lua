@@ -3,4 +3,4 @@ local services = require"__xtz.services"
 
 service_manager.start_services(services.active_names)
 
-log_success("Node services succesfully started.")
+log_success("node services successfully started.")

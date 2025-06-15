@@ -18,7 +18,7 @@ ami ... bootstrap <url> [block hash]])
 local service_manager = require"__xtz.service-manager"
 local services = require"__xtz.services"
 assert(not service_manager.has_any_service_status(services.active_names, "running"),
-	"node services are running, please stop them first. Use `ami xtz stop` to stop them.")
+	"node services are running, please stop them first. Use `ami stop` to stop them.")
 
 log_info"Preparing the snapshot import"
 -- cleanup directory

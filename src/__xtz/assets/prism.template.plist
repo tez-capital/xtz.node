@@ -21,10 +21,6 @@
     <dict>
         <key>HOME</key>
         <string>{{{ROOT_DIR}}}/data</string>
-        {{#configuration.SERVICE_CONFIGURATION_PRISM_SERVICE__ARRAY}}
-        <key>{{{key}}}</key>
-        <string>{{{value}}}</string>
-        {{/configuration.SERVICE_CONFIGURATION_PRISM_SERVICE__ARRAY}}
     </dict>
 
     <key>WorkingDirectory</key>
@@ -39,5 +35,10 @@
     <string>/usr/local/var/log/{{{ID}}}-xtz-prism.log</string>
     <key>StandardErrorPath</key>
     <string>/usr/local/var/log/{{{ID}}}-xtz-prism.log</string>
+
+    {{#configuration.SERVICE_CONFIGURATION_PRISM_SERVICE__ARRAY}}
+    <key>{{{key}}}</key>
+    <string>{{{value}}}</string>
+    {{/configuration.SERVICE_CONFIGURATION_PRISM_SERVICE__ARRAY}}
 </dict>
 </plist>

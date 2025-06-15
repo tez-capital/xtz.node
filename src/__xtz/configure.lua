@@ -43,9 +43,7 @@ fs.write_file("./data/vote-file.json", hjson.stringify_to_json(vote_file_result)
 
 -- prism
 local PRISM = am.app.get_configuration("PRISM")
-if PRISM then
-	require"__xtz.prism.setup"
-end
+if PRISM then require"__xtz.prism.setup" end
 
 -- finalize
 require"__xtz.base_utils".setup_file_ownership()

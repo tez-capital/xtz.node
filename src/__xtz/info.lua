@@ -12,10 +12,8 @@ local print_service_info = options.services
 local print_simple = options.simple
 local print_all = (not print_voting_info) and (not print_chain_info) and (not print_service_info) and (not print_simple)
 
-
-local service_manager = require"__xtz.service-manager"
 local info = {
-    level = "ok",
+	level = "ok",
     sync_state = "unknown",
 	bootstrapped = false,
     status = "node is operational",
@@ -30,6 +28,7 @@ if is_baker then
 end
 
 if print_all or print_service_info or print_simple then
+	local service_manager = require"__xtz.service-manager"
 	local services = require"__xtz.services"
 
 	local statuses, all_running = service_manager.get_services_status(services.active_names)

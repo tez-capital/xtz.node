@@ -242,13 +242,12 @@ return {
                 if options.all then
                     am.execute_extension("__xtz/remove-all.lua", { context_fail_exit_code = EXIT_RM_ERROR })
                     am.app.remove()
-                    log_success("Application removed.")
+                    log_success("application removed")
                 end
                 if #table.keys(options) == 0 then
                     am.app.remove_data()
-                    log_success("Application data removed.")
+                    log_success("application data removed")
                 end
-                return
             end
         },
     }

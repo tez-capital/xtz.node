@@ -27,10 +27,6 @@
         <string>{{{ROOT_DIR}}}/data</string>
         <key>TEZOS_LOG</key>
         <string>* -> {{{model.NODE_LOG_LEVEL}}}</string>
-        {{#model.SERVICE_CONFIGURATION__ARRAY}}
-        <key>{{{key}}}</key>
-        <string>{{{value}}}</string>
-        {{/model.SERVICE_CONFIGURATION__ARRAY}}
     </dict>
 
     <key>WorkingDirectory</key>
@@ -45,5 +41,10 @@
     <string>/usr/local/var/log/{{{ID}}}-xtz-node.log</string>
     <key>StandardErrorPath</key>
     <string>/usr/local/var/log/{{{ID}}}-xtz-node.log</string>
+
+    {{#model.SERVICE_CONFIGURATION__ARRAY}}
+    <key>{{{key}}}</key>
+    <string>{{{value}}}</string>
+    {{/model.SERVICE_CONFIGURATION__ARRAY}}
 </dict>
 </plist>

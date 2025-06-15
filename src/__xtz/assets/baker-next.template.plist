@@ -34,10 +34,6 @@
         <string>{{{ROOT_DIR}}}/data</string>
         <key>TEZOS_LOG</key>
         <string>* -> {{{model.BAKER_LOG_LEVEL}}}</string>
-        {{#configuration.SERVICE_CONFIGURATION_BAKER__ARRAY}}
-        <key>{{{key}}}</key>
-        <string>{{{value}}}</string>
-        {{/configuration.SERVICE_CONFIGURATION_BAKER__ARRAY}}
     </dict>
 
     <key>WorkingDirectory</key>
@@ -52,5 +48,10 @@
     <string>/usr/local/var/log/{{{ID}}}-xtz-baker-next.log</string>
     <key>StandardErrorPath</key>
     <string>/usr/local/var/log/{{{ID}}}-xtz-baker-next.log</string>
+
+    {{#configuration.SERVICE_CONFIGURATION_BAKER__ARRAY}}
+    <key>{{{key}}}</key>
+    <string>{{{value}}}</string>
+    {{/configuration.SERVICE_CONFIGURATION_BAKER__ARRAY}}
 </dict>
 </plist>
