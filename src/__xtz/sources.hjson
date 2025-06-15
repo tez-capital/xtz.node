@@ -3,8 +3,8 @@
 // PROTOCOLS: PsRiotum
 {
 	darwin-arm64: {
-		accuser: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-accuser
-		baker: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-baker
+		accuser: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-accuser-PsRiotum
+		baker: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-baker-PsRiotum
 		client: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-client
 		node: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-node
 		prism: https://github.com/alis-is/prism-releases/releases/download/0.4.1/prism-macos-arm64

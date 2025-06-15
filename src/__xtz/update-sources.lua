@@ -78,6 +78,12 @@ for platform, sources in pairs(current_sources) do
 
 			-- build asset id => <arch>-octez-<source_id>
 			local asset_ids = { [source_id] = "octez-" .. source_id }
+			if source_id:match("baker") or source_id:match("accuser") then
+				asset_ids[source_id] = "octez-" .. source_id .. "-" .. protocol
+				if protocol_next then
+					asset_ids[source_id .. "-next"] = "octez-" .. source_id .. "-" .. protocol_next
+				end
+			end
 			for asset_id, asset_name in pairs(asset_ids) do
 				-- lookup file id
 				for _, file in ipairs(files) do
