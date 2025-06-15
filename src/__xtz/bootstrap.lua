@@ -1,8 +1,5 @@
 local args = table.pack(...)
 
-local user = am.app.get("user")
-ami_assert(type(user) == "string", "User not specified...", EXIT_INVALID_CONFIGURATION)
-
 if table.includes(args, "--help") then
 	print("Usage: ... bootstrap <url> [block hash] [--no-check]")
 	return
@@ -20,12 +17,8 @@ ami ... bootstrap <url> [block hash]])
 -- check if node is running
 local service_manager = require"__xtz.service-manager"
 local services = require"__xtz.services"
-for k, v in pairs(services.all_names) do
-	if type(v) ~= "string" then goto CONTINUE end
-	local _, status, _ = service_manager.safe_get_service_status(v)
-	ami_assert(status ~= "running", "Some of node services is running, please stop them first...")
-	::CONTINUE::
-end
+assert(not service_manager.has_any_service_status(services.active_names, "running"),
+	"node services are running, please stop them first. Use `ami xtz stop` to stop them.")
 
 log_info"Preparing the snapshot import"
 -- cleanup directory
@@ -104,11 +97,6 @@ for _, v in ipairs(paths_to_keep) do
 end
 fs.remove(tmp_node_directory, { recurse = true })
 
-local uid, err = fs.getuid(user)
-ami_assert(uid, "Failed to get " .. user .. "uid - " .. (err or ""))
-local ok, err = fs.chown("data", uid, uid, {recurse = true, recurse_ignore_errors = true})
-if not ok then
-	ami_error("Failed to chown data - " .. tostring(err))
-end
+require"__xtz.base_utils".setup_file_ownership()
 
-log_success("Snapshot imported.")
+log_success("snapshot imported.")

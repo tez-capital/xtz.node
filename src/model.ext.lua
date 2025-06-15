@@ -15,7 +15,7 @@ if system_os == "unix" then
         end
     end
 end
-ami_assert(download_urls ~= nil, "No download URLs found for the current platform: " .. system_os .. " " .. system_distro .. " " .. system_type)
+ami_assert(download_urls ~= nil, "no download URLs found for the current platform: " .. system_os .. " " .. system_distro .. " " .. system_type)
 
 am.app.set_model(
     {
@@ -25,7 +25,7 @@ am.app.set_model(
 )
 
 local services = require("__xtz.services")
-local wanted_binaries = services.all_binaries
+local wanted_binaries = services.wanted_binaries
 
 ---@type string[]
 local configured_additional_keys = am.app.get_configuration("additional_key_aliases", {})
@@ -69,21 +69,21 @@ if not has_dal_arg then
     table.insert(BAKER_STARTUP_ARGS, "--without-dal")
 end
 
-local package_utils = require("__xtz.utils")
+local base_utils = require("__xtz.base_utils")
 local rpc_addr = am.app.get_configuration("RPC_ADDR", "http://127.0.0.1:8732")
 local signer_addr = am.app.get_configuration("REMOTE_SIGNER_ADDR", "http://127.0.0.1:20090/")
 
-local rpc_addr_host_and_port = package_utils.extract_host_and_port(rpc_addr, 8732)
-local signer_host_and_port = package_utils.extract_host_and_port(signer_addr, 20090)
-local dal_host_and_port = package_utils.extract_host_and_port(dal_node, 10732)
+local rpc_addr_host_and_port = base_utils.extract_host_and_port(rpc_addr, 8732)
+local signer_host_and_port = base_utils.extract_host_and_port(signer_addr, 20090)
+local dal_host_and_port = base_utils.extract_host_and_port(dal_node, 10732)
 
 local node_startup_args = am.app.get_configuration("STARTUP_ARGS", {})
 
 local local_rpc_addr = rpc_addr
-local local_rpc_addr_host_and_port = package_utils.extract_host_and_port(local_rpc_addr, 8732)
+local local_rpc_addr_host_and_port = base_utils.extract_host_and_port(local_rpc_addr, 8732)
 if not local_rpc_addr:match("127%.0%.0%.1") then
     local_rpc_addr = am.app.get_configuration("LOCAL_RPC_ADDR", "http://127.0.0.1:8732")
-    local_rpc_addr_host_and_port = package_utils.extract_host_and_port(local_rpc_addr, 8732)
+    local_rpc_addr_host_and_port = base_utils.extract_host_and_port(local_rpc_addr, 8732)
     table.insert(node_startup_args, "--rpc-addr")
     table.insert(node_startup_args, local_rpc_addr_host_and_port)
 end

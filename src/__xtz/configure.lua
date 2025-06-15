@@ -11,7 +11,7 @@ local service_manager = require"__xtz.service-manager"
 local services = require"__xtz.services"
 
 service_manager.remove_services(services.cleanup_names)
-service_manager.install_services(services.all, os.getenv("SERVICE_BACKEND"))
+service_manager.install_services(services.active)
 log_success(am.app.get("id") .. " services configured")
 
 local config_file = am.app.get_configuration("CONFIG_FILE")
@@ -48,5 +48,4 @@ if PRISM then
 end
 
 -- finalize
-local ok, error = fs.chown(os.cwd(), uid, uid, {recurse = true})
-ami_assert(ok, "failed to chown data - " .. (error or ""))
+require"__xtz.base_utils".setup_file_ownership()

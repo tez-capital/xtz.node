@@ -55,21 +55,21 @@ for k, _ in pairs(prism_services) do
 	prism_service_names[k:sub((#(app_id .. "-xtz-") + 1))] = k
 end
 
-local all = util.clone(node_services)
-local all_names = util.clone(node_service_names)
-local all_binaries = util.clone(node_binaries)
+local active_services = util.clone(node_services)
+local active_names = util.clone(node_service_names)
+local wanted_binaries = util.clone(node_binaries)
 
 local is_baker = am.app.get_configuration("NODE_TYPE") == "baker"
 if is_baker then
 	for k, v in pairs(baker_service_names) do
-		all_names[k] = v
+		active_names[k] = v
 	end
 	for k, v in pairs(baker_services) do
-		all[k] = v
+		active_services[k] = v
 	end
 	for _, v in ipairs(baker_binaries) do
 		if am.app.get_model({ "DOWNLOAD_URLS", v }, false) then
-			table.insert(all_binaries, v)
+			table.insert(wanted_binaries, v)
 		end
 	end
 end
@@ -77,14 +77,14 @@ end
 local is_vdf = am.app.get_configuration("NODE_TYPE") == "vdf"
 if is_vdf then
 	for k, v in pairs(vdf_service_names) do
-		all_names[k] = v
+		active_names[k] = v
 	end
 	for k, v in pairs(vdf_services) do
-		all[k] = v
+		active_services[k] = v
 	end
 	for _, v in ipairs(vdf_binaries) do
 		if am.app.get_model({ "DOWNLOAD_URLS", v }, false) then
-			table.insert(all_binaries, v)
+			table.insert(wanted_binaries, v)
 		end
 	end
 end
@@ -92,12 +92,12 @@ end
 local uses_prism = am.app.get_configuration("PRISM")
 if uses_prism then
 	for k, v in pairs(prism_service_names) do
-		all_names[k] = v
+		active_names[k] = v
 	end
 	for k, v in pairs(prism_services) do
-		all[k] = v
+		active_services[k] = v
 	end
-	table.insert(all_binaries, "prism")
+	table.insert(wanted_binaries, "prism")
 end
 
 
@@ -110,8 +110,8 @@ cleanup_names = util.merge_arrays(cleanup_names, table.values(prism_service_name
 cleanup_names = util.merge_arrays(cleanup_names, possible_residue)
 
 return {
-	all = all,
-	all_names = all_names,
-	all_binaries = all_binaries,
+	active = active_services,
+	active_names = active_names,
+	wanted_binaries = wanted_binaries,
 	cleanup_names = cleanup_names,
 }
