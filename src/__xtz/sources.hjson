@@ -1,25 +1,26 @@
-// SOURCE: https://gitlab.com/tezos/tezos/-/packages/37393733 
+// SOURCE: https://gitlab.com/tezos/tezos/-/packages/40366546 
+// macOS SOURCE: https://github.com/tez-capital/tezos-macos-pipeline/releases/tag/octez-v22.1-2025-06-11_20-14
 // PROTOCOLS: PsRiotum
 {
-    linux-arm64: {
-        accuser: https://gitlab.com/tezos/tezos/-/package_files/185568490/download
-        baker: https://gitlab.com/tezos/tezos/-/package_files/185568519/download
-        client: https://gitlab.com/tezos/tezos/-/package_files/185568194/download
-        node: https://gitlab.com/tezos/tezos/-/package_files/185568452/download
-        prism: https://github.com/alis-is/prism-releases/releases/download/0.4.1/prism-linux-arm64
-    }
-    linux-x86_64: {
-        accuser: https://gitlab.com/tezos/tezos/-/package_files/185566709/download
-        baker: https://gitlab.com/tezos/tezos/-/package_files/185566737/download
-        client: https://gitlab.com/tezos/tezos/-/package_files/185566293/download
-        node: https://gitlab.com/tezos/tezos/-/package_files/185566674/download
-        prism: https://github.com/alis-is/prism-releases/releases/download/0.4.1/prism-linux-amd64
-    }
-    darwin-arm64: {
-        accuser: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.0-2025-06-04_13-26/octez-accuser-PsRiotum
-        baker: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.0-2025-06-04_13-26/octez-baker-PsRiotum
-        client: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.0-2025-06-04_13-26/octez-client
-        node: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.0-2025-06-04_13-26/octez-node
-        prism: https://github.com/alis-is/prism-releases/releases/download/0.4.1/prism-macos-arm64
-    }
+	darwin-arm64: {
+		accuser: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-accuser
+		baker: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-baker
+		client: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-client
+		node: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v22.1-2025-06-11_20-14/octez-node
+		prism: https://github.com/alis-is/prism-releases/releases/download/0.4.1/prism-macos-arm64
+	}
+	linux-arm64: {
+		accuser: https://gitlab.com/tezos/tezos/-/package_files/200919435/download
+		baker: https://gitlab.com/tezos/tezos/-/package_files/200919451/download
+		client: https://gitlab.com/tezos/tezos/-/package_files/200919257/download
+		node: https://gitlab.com/tezos/tezos/-/package_files/200919408/download
+		prism: https://github.com/alis-is/prism-releases/releases/download/0.4.1/prism-linux-arm64
+	}
+	linux-x86_64: {
+		accuser: https://gitlab.com/tezos/tezos/-/package_files/200918460/download
+		baker: https://gitlab.com/tezos/tezos/-/package_files/200918475/download
+		client: https://gitlab.com/tezos/tezos/-/package_files/200918321/download
+		node: https://gitlab.com/tezos/tezos/-/package_files/200918448/download
+		prism: https://github.com/alis-is/prism-releases/releases/download/0.4.1/prism-linux-amd64
+	}
 }
