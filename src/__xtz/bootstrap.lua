@@ -51,13 +51,15 @@ local paths_to_keep = table.filter(node_directory_content, function (_, v)
 end)
 
 -- bootstrap
-local tmp_bootstrap_file = "./data/tmp-snapshot"
+local downloaded_bootstrap_file = "./data/tmp-snapshot"
+local is_tmp_bootstrap_file = true
 local exists = fs.exists(args[1])
 if exists then
-	tmp_bootstrap_file = args[1]
+	downloaded_bootstrap_file = args[1]
+	is_tmp_bootstrap_file = false
 else
 	log_info("Downloading " .. tostring(args[1]) .. "...")
-	local ok, err = net.download_file(args[1], tmp_bootstrap_file, {follow_redirects = true, content_type = "binary/octet-stream", progress_function = (function ()
+	local ok, err = net.download_file(args[1], downloaded_bootstrap_file, {follow_redirects = true, content_type = "binary/octet-stream", progress_function = (function ()
 		local last_written = 0
 		return function(total, current) 
 			local progress = math.floor(current / total * 100)
@@ -70,12 +72,12 @@ else
 		end
 	end)()})
 	if not ok then
-		fs.remove(tmp_bootstrap_file)
+		fs.remove(downloaded_bootstrap_file)
 		ami_error("Failed to download: " .. tostring(err))
 	end
 end
 
-local import_args = { "snapshot", "import", tmp_bootstrap_file }
+local import_args = { "snapshot", "import", downloaded_bootstrap_file }
 if no_check then
 	table.insert(import_args, "--no-check")
 end
@@ -88,7 +90,9 @@ local bootstrap_process = proc.spawn("./bin/node", import_args, {
 	wait = true,
 	env = { HOME = path.combine(os.cwd() --[[@as string]], "data") }
 })
-os.remove(tmp_bootstrap_file)
+if is_tmp_bootstrap_file then -- remove the bootstrap file if it was downloaded
+	os.remove(downloaded_bootstrap_file)
+end
 ami_assert(bootstrap_process.exit_code == 0,  "Failed to import snapshot!")
 
 log_info"finishing the snapshot import"
