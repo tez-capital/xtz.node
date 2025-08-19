@@ -101,7 +101,8 @@ am.app.set_model(
         DAL_NODE_HOST_AND_PORT = dal_host_and_port,
         SERVICE_CONFIGURATION = util.merge_tables(
             {
-                TimeoutStopSec = 300,
+                ExitTimeOut = system_distro == "MacOS" and 300 or nil,
+                TimeoutStopSec = system_distro ~= "MacOS" and 300 or nil,
             },
             type(am.app.get_configuration("SERVICE_CONFIGURATION")) == "table" and
             am.app.get_configuration("SERVICE_CONFIGURATION") or {},
