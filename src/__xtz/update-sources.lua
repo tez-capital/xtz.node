@@ -1,5 +1,5 @@
 -- SOURCE: https://gitlab.com/tezos/tezos/-/releases
--- eli src/__xtz/update-sources.lua https://gitlab.com/tezos/tezos/-/packages/25835249 https://github.com/tez-capital/tezos-macos-pipeline/releases/tag/octez-v22.1-2025-06-11_20-14 PsRiotum
+-- eli src/__xtz/update-sources.lua https://gitlab.com/tezos/tezos/-/packages/25835249 https://github.com/tez-capital/tezos-macos-pipeline/releases/tag/octez-v22.1-2025-06-11_20-14
 
 local hjson = require "hjson"
 local args = table.pack(...)
@@ -10,11 +10,6 @@ end
 
 local source = args[1]
 local macos_source = args[2]
-local protocol = args[3]
-local protocol_next
-if #args > 2 then
-	protocol_next = args[4]
-end
 
 --- extract package id from url source - https://gitlab.com/tezos/tezos/-/packages/25835249
 local package_id = source:match("packages/(%d+)")
@@ -24,7 +19,7 @@ if not package_id then
 end
 
 local response = net.download_string("https://gitlab.com/api/v4/projects/3836952/packages/" ..
-	package_id .. "/package_files?per_page=100")
+	package_id .. "/package_files?per_page=1000")
 local files = hjson.parse(response)
 
 local current_sources = hjson.parse(fs.read_file("src/__xtz/sources.hjson"))
@@ -41,12 +36,6 @@ for platform, sources in pairs(current_sources) do
 
 			-- build asset id => <arch>-octez-<source_id>
 			local asset_ids = { [source_id] = arch .. "-octez-" .. source_id }
-			if source_id:match("baker") or source_id:match("accuser") then
-				asset_ids[source_id] = arch .. "-octez-" .. source_id .. "-" .. protocol
-				if protocol_next then
-					asset_ids[source_id .. "-next"] = arch .. "-octez-" .. source_id .. "-" .. protocol_next
-				end
-			end
 
 			for asset_id, asset_name in pairs(asset_ids) do
 				-- lookup file id
@@ -63,6 +52,7 @@ for platform, sources in pairs(current_sources) do
 			::CONTINUE::
 		end
 	end
+
 	local arch = platform:match("darwin%-(.*)")
 	if arch then -- macos
 		for source_id, source_url in pairs(sources) do
@@ -78,12 +68,6 @@ for platform, sources in pairs(current_sources) do
 
 			-- build asset id => <arch>-octez-<source_id>
 			local asset_ids = { [source_id] = "octez-" .. source_id }
-			if source_id:match("baker") or source_id:match("accuser") then
-				asset_ids[source_id] = "octez-" .. source_id .. "-" .. protocol
-				if protocol_next then
-					asset_ids[source_id .. "-next"] = "octez-" .. source_id .. "-" .. protocol_next
-				end
-			end
 			for asset_id, asset_name in pairs(asset_ids) do
 				-- lookup file id
 				for _, file in ipairs(files) do
@@ -101,8 +85,7 @@ for platform, sources in pairs(current_sources) do
 end
 
 local new_content = "// SOURCE: " .. source .. " \n" ..
-	"// macOS SOURCE: " .. macos_source .. "\n" ..
-	"// PROTOCOLS: " .. string.join(", ", protocol, protocol_next) .. "\n"
+	"// macOS SOURCE: " .. macos_source .. "\n"
 new_content = new_content .. hjson.stringify(current_sources, { separator = true, sort_keys = true })
 
 fs.write_file("src/__xtz/sources.hjson", new_content)
