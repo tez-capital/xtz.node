@@ -3,8 +3,8 @@
 
 local hjson = require "hjson"
 local args = table.pack(...)
-if #args < 3 then
-	print("Usage: update-sources <source-url> <macos-source-url> [protocols]")
+if #args < 2 then
+	print("Usage: update-sources <source-url> <macos-source-url>")
 	return
 end
 
