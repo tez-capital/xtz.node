@@ -24,8 +24,8 @@ am.app.set_model(
     { merge = true, overwrite = true }
 )
 
-local services = require("__xtz.services")
-local wanted_binaries = services.wanted_binaries
+local constants = require("__xtz.constants")
+local wanted_binaries = constants.wanted_binaries
 
 ---@type string[]
 local configured_additional_keys = am.app.get_configuration("additional_key_aliases", {})
@@ -33,6 +33,13 @@ if not util.is_array(configured_additional_keys) then
     configured_additional_keys = {}
     log_warn("invalid additional_key_aliases configuration (skipped)")
 end
+local additional_key_aliases_list_raw = io.open("additional_key_aliases.list", "r+b")
+if additional_key_aliases_list_raw ~= nil then
+    for alias in additional_key_aliases_list_raw:lines() do
+        table.insert(configured_additional_keys, alias)
+    end
+end
+
 ---@type string[]
 local configured_keys = am.app.get_configuration("key_aliases", { "baker" })
 local keys = "baker"
