@@ -36,7 +36,9 @@ end
 local additional_key_aliases_list_raw = io.open("additional_key_aliases.list", "r+b")
 if additional_key_aliases_list_raw ~= nil then
     for alias in additional_key_aliases_list_raw:lines() do
-        table.insert(configured_additional_keys, alias)
+        if alias:match("%S") then -- Check if the alias is not just whitespace
+            table.insert(configured_additional_keys, string.trim(alias))
+        end
     end
 end
 
