@@ -22,6 +22,7 @@ end
 local process = proc.spawn("bin/client", import_args, {
 	stdio = "inherit",
 	wait = true,
+	username = am.app.get("user"),
 	env = { HOME = path.combine(os.cwd(), "data") }
 })
 ami_assert(process.exit_code == 0,  "Failed to import key!")
