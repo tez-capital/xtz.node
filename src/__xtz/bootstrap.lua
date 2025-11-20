@@ -103,7 +103,8 @@ end
 local bootstrap_process, err = proc.spawn("./bin/node", import_args, {
 	stdio = "inherit",
 	wait = true,
-	env = { HOME = path.combine(os.cwd() --[[@as string]], "data") }
+	env = { HOME = path.combine(os.cwd() --[[@as string]], "data") },
+	username = am.app.get("user")
 })
 if not using_local_bootstrap_file then -- remove the bootstrap file if it was downloaded
 	os.remove(downloaded_bootstrap_file)
