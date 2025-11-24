@@ -8,7 +8,9 @@
         local
         node
         {{{ROOT_DIR}}}/data/.tezos-node
-        {{{model.KEY_ALIASES}}}
+        {{#model.KEY_ALIASES}}
+        {{{.}}}
+        {{/model.KEY_ALIASES}}
         --votefile
         {{{ROOT_DIR}}}/data/vote-file.json
         {{#model.BAKER_STARTUP_ARGS}}

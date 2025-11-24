@@ -44,9 +44,8 @@ end
 
 ---@type string[]
 local configured_keys = am.app.get_configuration("key_aliases", { "baker" })
-local keys = "baker"
 if util.is_array(configured_additional_keys) then
-    keys = string.join(" ", table.unpack(util.merge_arrays(configured_keys, configured_additional_keys)))
+    configured_keys = util.merge_arrays(configured_keys, configured_additional_keys)
 else
     log_warn("invalid keys configuration (skipped)")
 end
@@ -121,7 +120,7 @@ am.app.set_model(
         NODE_LOG_LEVEL = am.app.get_configuration("NODE_LOG_LEVEL", TEZOS_LOG_LEVEL),
         VDF_LOG_LEVEL = am.app.get_configuration("VDF_LOG_LEVEL", TEZOS_LOG_LEVEL),
         ACCUSER_LOG_LEVEL = am.app.get_configuration("ACCUSER_LOG_LEVEL", TEZOS_LOG_LEVEL),
-        KEY_ALIASES = keys,
+        KEY_ALIASES = configured_keys,
         BAKER_STARTUP_ARGS = BAKER_STARTUP_ARGS,
         STARTUP_ARGS = node_startup_args,
         -- prism
