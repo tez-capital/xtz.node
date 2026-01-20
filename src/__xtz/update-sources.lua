@@ -5,25 +5,17 @@
 -- eli src/__xtz/update-sources.lua octez-v24.0
 
 local hjson = require "hjson"
+-- net is global in eli
 local args = table.pack(...)
 
 local target_version = args[1]
 
-local net = require "http"
+-- Use defaults for http options as they seem to work better
+local http_options = nil
 
 if not target_version or target_version == "latest" then
 	print("Fetching latest version from RSS feed...")
-	local response = net.download_string("https://octez.tezos.com/releases/feed.xml", {
-		read_timeout = 1000,
-		write_timeout = 1000,
-		connect_timeout = 1000,
-		retry_limit = 3,
-		follow_redirects = true,
-		headers = {
-			-- ["Connection"] = "close"
-		}
-	})
-	print "got response"
+	local response = net.download_string("https://octez.tezos.com/releases/feed.xml", http_options)
 	if #response == 0 then
 		print("Empty response for feed.xml")
 		return
@@ -42,172 +34,212 @@ end
 
 print("Target version: " .. target_version)
 
-local arch_map = {
-	["linux-x86_64"] = "x86_64",
-	["linux-arm64"] = "arm64"
-}
+--------------------------------------------------------------------------------
+-- GitHub Fetching Helper
+--------------------------------------------------------------------------------
+
+local function fetch_github_release(repo, filter_fn)
+	print("Fetching releases from " .. repo .. "...")
+	local url = "https://api.github.com/repos/" .. repo .. "/releases"
+	-- GitHub API might require User-Agent, eli usually handles it but be aware.
+	local response = net.download_string(url, http_options)
+
+	if #response == 0 then
+		print("Empty response from " .. repo)
+		return nil
+	end
+
+	local releases = hjson.parse(response)
+	if not releases or #releases == 0 then
+		return nil
+	end
+
+	if not filter_fn then
+		return releases[1]
+	end
+
+	for _, release in ipairs(releases) do
+		if filter_fn(release) then
+			return release
+		end
+	end
+	return nil
+end
+
+local function extract_asset(release, name_pattern)
+	if not release or not release.assets then return nil end
+	for _, asset in ipairs(release.assets) do
+		if asset.name:match(name_pattern) then
+			local hash = nil
+			if asset.digest then
+				hash = asset.digest:match("sha256:(%x+)")
+			end
+			return {
+				url = asset.browser_download_url,
+				sha256 = hash
+			}
+		end
+	end
+	return nil
+end
+
+--------------------------------------------------------------------------------
+-- Fetch External Releases
+--------------------------------------------------------------------------------
+
+-- 1. Prism (Latest)
+local prism_release = fetch_github_release("alis-is/prism-releases")
+if prism_release then
+	print("Found Prism release: " .. prism_release.tag_name)
+else
+	print("Warning: Failed to fetch Prism release")
+end
+
+-- 2. macOS Octez
+local macos_octez_release = fetch_github_release("tez-capital/tezos-macos-pipeline", function(release)
+	-- Look for 'octez-vXX.Y-2' pattern typically
+	-- Original was: release.tag_name:sub(1, #target_version + 2) == target_version .. "-2"
+	-- This handles suffix like -timestamp
+	if release.tag_name:sub(1, #target_version + 2) == target_version .. "-2" then
+		return true
+	end
+	if release.tag_name == target_version then
+		return true
+	end
+	return false
+end)
+
+if not macos_octez_release then
+	print("Warning: No matching macOS release found for " .. target_version)
+end
+if macos_octez_release then
+	print("Found macOS Octez release: " .. macos_octez_release.tag_name)
+end
+
+
+--------------------------------------------------------------------------------
+-- Update Sources
+--------------------------------------------------------------------------------
 
 local current_sources = hjson.parse(fs.read_file("src/__xtz/sources.hjson"))
 local new_sources_map = {}
 
--- Update Linux sources
-for platform, arch_name in pairs(arch_map) do
+local platforms = {
+	["linux-x86_64"] = {
+		octez_linux_arch = "x86_64",
+		prism_pattern = "prism%-linux%-amd64"
+	},
+	["linux-arm64"] = {
+		octez_linux_arch = "arm64",
+		prism_pattern = "prism%-linux%-arm64"
+	},
+	["darwin-x86_64"] = {
+		is_mac = true,
+		prism_pattern = "prism%-macos%-amd64"
+	},
+	["darwin-arm64"] = {
+		is_mac = true,
+		prism_pattern = "prism%-macos%-arm64"
+	}
+}
+
+for platform, config in pairs(platforms) do
 	print("Updating " .. platform .. "...")
-	local bin_arch = arch_name
-	-- https://octez.tezos.com/releases/octez-v24.0/binaries/x86_64/sha256sums.txt
-	local sha_url = "https://octez.tezos.com/releases/" ..
-		target_version .. "/binaries/" .. bin_arch .. "/sha256sums.txt"
-
-	local sums_content = net.download_string(sha_url, {
-		read_timeout = 1000,
-		write_timeout = 1000,
-		connect_timeout = 1000,
-		retry_limit = 3,
-		follow_redirects = true,
-		headers = {
-			-- ["Connection"] = "close"
-		}
-	})
-	if #sums_content == 0 then
-		print("Failed to download sha256sums for " .. platform)
-		-- Don't return, maybe macos works? Or should we fail hard?
-		-- Let's fail hard for safety
-		return
-	end
-
-	print("Found sha256sums for " .. platform)
 	local new_platform_sources = {}
-	-- Copy prism if exists
-	if current_sources[platform] and current_sources[platform].prism then
-		new_platform_sources.prism = current_sources[platform].prism
-	end
 
-	-- Parse sha256sums
-	for line in sums_content:gmatch("[^\r\n]+") do
-		local hash, filename = line:match("(%x+)%s+(.+)")
-		if hash and filename then
-			local key = nil
-			if filename == "octez-node" then
-				key = "node"
-			elseif filename == "octez-client" then
-				key = "client"
-			elseif filename == "octez-baker" then
-				key = "baker"
-			elseif filename == "octez-accuser" then
-				key = "accuser"
-			end
-
-			if key then
-				local url = "https://octez.tezos.com/releases/" ..
-					target_version .. "/binaries/" .. bin_arch .. "/" .. filename
-				new_platform_sources[key] = {
-					url = url,
-					hash = hash
-				}
-			end
-		end
-	end
-	new_sources_map[platform] = new_platform_sources
-end
-
--- Update macOS sources
-local macos_platforms = { "darwin-arm64", "darwin-x86_64" }
--- Fetch GitHub releases
-print("Fetching macOS releases from GitHub...")
-local gh_response = net.download_string("https://api.github.com/repos/tez-capital/tezos-macos-pipeline/releases")
-local gh_releases = {}
-if #gh_response > 0 then
-	gh_releases = hjson.parse(gh_response)
-end
-
-local found_tag = nil
-for _, release in ipairs(gh_releases) do
-	-- Use plain string comparison to avoid Lua pattern magic character issues (., -)
-	if release.tag_name:sub(1, #target_version + 1) == target_version .. "-" then
-		found_tag = release.tag_name
-		break
-	end
-end
-
-if not found_tag then
-	print("Warning: No matching macOS release found for " .. target_version)
-else
-	print("Found macOS release: " .. found_tag)
-end
-
-local found_release = nil
-for _, release in ipairs(gh_releases) do
-	-- Use plain string comparison to avoid Lua pattern magic character issues (., -)
-	if release.tag_name:sub(1, #target_version + 2) == target_version .. "-2" then
-		found_release = release
-		break
-	end
-end
-
-if not found_release then
-	print("Warning: No matching macOS release found for " .. target_version)
-else
-	print("Found macOS release: " .. found_release.tag_name)
-end
-
-for platform, sources in pairs(current_sources) do
-	if platform:match("^darwin") then
-		print("Updating " .. platform .. "...")
-		local new_platform_sources = {}
-
-		-- Copy prism
-		if sources.prism then
-			new_platform_sources.prism = sources.prism
-		end
-
-		if found_release then
+	-- 1. Octez
+	if config.is_mac then
+		if macos_octez_release then
 			local asset_ids = {
-				node = "octez-node",
-				client = "octez-client",
-				baker = "octez-baker",
-				accuser = "octez-accuser"
+				node = "octez%-node",
+				client = "octez%-client",
+				baker = "octez%-baker",
+				accuser = "octez%-accuser"
 			}
-
 			for key, asset_name in pairs(asset_ids) do
-				local found_asset = nil
-				if found_release.assets then
-					for _, asset in ipairs(found_release.assets) do
-						if asset.name == asset_name then
-							found_asset = asset
-							break
-						end
-					end
-				end
-
-				if found_asset then
-					local hash = nil
-					if found_asset.digest then
-						hash = found_asset.digest:match("sha256:(%x+)")
-					end
-
-					new_platform_sources[key] = {
-						url = found_asset.browser_download_url,
-						hash = hash
-					}
+				local asset_data = extract_asset(macos_octez_release, "^" .. asset_name .. "$")
+				if asset_data then
+					new_platform_sources[key] = asset_data
 				else
-					print("Warning: Asset " .. asset_name .. " not found in release")
+					print("  Warning: Asset " .. asset_name .. " not found in release")
+					if current_sources[platform] and current_sources[platform][key] then
+						new_platform_sources[key] = current_sources[platform][key]
+					end
 				end
 			end
 		else
-			print("Skipping macOS update due to missing tag")
-			for k, v in pairs(sources) do
-				if k ~= "prism" then
-					-- Preserve old
-					new_platform_sources[k] = v
+			-- Copy existing
+			if current_sources[platform] then
+				for k, v in pairs(current_sources[platform]) do
+					if k ~= "prism" then new_platform_sources[k] = v end
 				end
 			end
 		end
-		new_sources_map[platform] = new_platform_sources
+	else
+		-- Linux
+		local bin_arch = config.octez_linux_arch
+		local sha_url = "https://octez.tezos.com/releases/" ..
+			target_version .. "/binaries/" .. bin_arch .. "/sha256sums.txt"
+		print("  Downloading " .. sha_url .. "...")
+		local sums_content = net.download_string(sha_url, http_options)
+
+		if #sums_content > 0 then
+			print("  Found sha256sums for " .. platform)
+
+			for line in sums_content:gmatch("[^\r\n]+") do
+				local hash, filename = line:match("(%x+)%s+(.+)")
+				if hash and filename then
+					local key = nil
+					if filename == "octez-node" then
+						key = "node"
+					elseif filename == "octez-client" then
+						key = "client"
+					elseif filename == "octez-baker" then
+						key = "baker"
+					elseif filename == "octez-accuser" then
+						key = "accuser"
+					end
+
+					if key then
+						local url = "https://octez.tezos.com/releases/" ..
+							target_version .. "/binaries/" .. bin_arch .. "/" .. filename
+						new_platform_sources[key] = {
+							url = url,
+							sha256 = hash
+						}
+					end
+				end
+			end
+		else
+			print("  Failed to download sha256sums for " .. platform)
+			if current_sources[platform] then
+				for k, v in pairs(current_sources[platform]) do
+					if k ~= "prism" then new_platform_sources[k] = v end
+				end
+			end
+		end
 	end
+
+	-- 2. Prism
+	if prism_release then
+		local prism_data = extract_asset(prism_release, config.prism_pattern)
+		if prism_data then
+			new_platform_sources.prism = prism_data
+		else
+			print("  Warning: Prism asset matching " .. config.prism_pattern .. " not found")
+			if current_sources[platform] and current_sources[platform].prism then
+				new_platform_sources.prism = current_sources[platform].prism
+			end
+		end
+	else
+		if current_sources[platform] and current_sources[platform].prism then
+			new_platform_sources.prism = current_sources[platform].prism
+		end
+	end
+
+	new_sources_map[platform] = new_platform_sources
 end
 
-
--- Merge into final structure
 for k, v in pairs(current_sources) do
 	if not new_sources_map[k] then
 		new_sources_map[k] = v
@@ -215,7 +247,8 @@ for k, v in pairs(current_sources) do
 end
 
 local new_content = "// SOURCE: https://octez.tezos.com/releases \n" ..
-	"// macOS SOURCE: https://github.com/tez-capital/tezos-macos-pipeline/releases \n"
+	"// macOS SOURCE: https://github.com/tez-capital/tezos-macos-pipeline/releases \n" ..
+	"// Prism SOURCE: https://github.com/alis-is/prism-releases/releases \n"
 new_content = new_content .. hjson.stringify(new_sources_map, { separator = true, sort_keys = true })
 
 fs.write_file("src/__xtz/sources.hjson", new_content)
