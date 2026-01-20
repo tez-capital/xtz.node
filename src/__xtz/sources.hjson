@@ -24,28 +24,6 @@
 			url: https://github.com/alis-is/prism-releases/releases/download/0.4.7/prism-macos-arm64
 		}
 	}
-	darwin-x86_64: {
-		accuser: {
-			sha256: 61f15cdfd41faccfaa862b9174f5cf87dd795344656800efbf3488267ed8bcbc
-			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.0-2026-01-08_17-18/octez-accuser
-		}
-		baker: {
-			sha256: fe60eb112d0c799dab8405ff3cd233799cdbe4593db2cbe7373e43651521480e
-			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.0-2026-01-08_17-18/octez-baker
-		}
-		client: {
-			sha256: f5c67462b8077ccb1a865fa8d0dcabffa564a490d55932abb1f91cab2770c449
-			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.0-2026-01-08_17-18/octez-client
-		}
-		node: {
-			sha256: 9af69de162269b7c8ca871de75dd7044add6417dd54ad54c002146261de47a38
-			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.0-2026-01-08_17-18/octez-node
-		}
-		prism: {
-			sha256: 49217e2e3706b98604d65125f0e6c239791c5a54f762deb6c69782ad40ab017b
-			url: https://github.com/alis-is/prism-releases/releases/download/0.4.7/prism-macos-amd64
-		}
-	}
 	linux-arm64: {
 		accuser: {
 			sha256: 7292b67a93b350b3e8eab79962f3f00ad85e4fd9ad45ce18d99aa8144a480a61

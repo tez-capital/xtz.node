@@ -133,10 +133,6 @@ local platforms = {
 		octez_linux_arch = "arm64",
 		prism_pattern = "prism%-linux%-arm64"
 	},
-	["darwin-x86_64"] = {
-		is_mac = true,
-		prism_pattern = "prism%-macos%-amd64"
-	},
 	["darwin-arm64"] = {
 		is_mac = true,
 		prism_pattern = "prism%-macos%-arm64"
