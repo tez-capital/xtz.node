@@ -22,9 +22,8 @@ for platform, platform_sources in pairs(sources) do
 			if not source_url then
 				error("Missing source url for " .. id)
 			end
-			-- Enforce hash for linux
-			if platform:match("^linux") and not source_hash then
-				error("Missing source hash for " .. id .. " on " .. platform)
+			if not source_hash then
+				error("Missing source hash for " .. id)
 			end
 		else
 			source_url = source_value
