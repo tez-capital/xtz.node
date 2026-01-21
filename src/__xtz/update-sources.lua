@@ -66,7 +66,7 @@ local function fetch_github_release(repo, filter_fn)
 	return nil
 end
 
-local function extract_asset(release, name_pattern)
+local function extract_asset(release, name_pattern, version_override)
 	if not release or not release.assets then return nil end
 	for _, asset in ipairs(release.assets) do
 		if asset.name:match(name_pattern) then
@@ -76,7 +76,8 @@ local function extract_asset(release, name_pattern)
 			end
 			return {
 				url = asset.browser_download_url,
-				sha256 = hash
+				sha256 = hash,
+				version = version_override or release.tag_name
 			}
 		end
 	end
@@ -152,8 +153,9 @@ for platform, config in pairs(platforms) do
 				baker = "octez%-baker",
 				accuser = "octez%-accuser"
 			}
+			local octez_version = target_version:match("^octez%-v(.+)$") or target_version
 			for key, asset_name in pairs(asset_ids) do
-				local asset_data = extract_asset(macos_octez_release, "^" .. asset_name .. "$")
+				local asset_data = extract_asset(macos_octez_release, "^" .. asset_name .. "$", octez_version)
 				if asset_data then
 					new_platform_sources[key] = asset_data
 				else
@@ -199,9 +201,11 @@ for platform, config in pairs(platforms) do
 					if key then
 						local url = "https://octez.tezos.com/releases/" ..
 							target_version .. "/binaries/" .. bin_arch .. "/" .. filename
+						local octez_version = target_version:match("^octez%-v(.+)$") or target_version
 						new_platform_sources[key] = {
 							url = url,
-							sha256 = hash
+							sha256 = hash,
+							version = octez_version
 						}
 					end
 				end
