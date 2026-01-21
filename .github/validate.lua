@@ -17,7 +17,7 @@ for platform, platform_sources in pairs(sources) do
 
 		if type(source_value) == "table" then
 			source_url = source_value.url
-			source_hash = source_value.hash
+			source_hash = source_value.sha256
 
 			if not source_url then
 				error("Missing source url for " .. id)
