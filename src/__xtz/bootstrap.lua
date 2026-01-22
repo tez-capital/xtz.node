@@ -15,6 +15,12 @@ if table.includes(args, "--no-check") then
 	no_check = true
 end
 
+local keep_snapshot = false
+if table.includes(args, "--keep-snapshot") then
+	args = table.filter(args, function(k, v) return v ~= "--keep-snapshot" and k ~= "k" end)
+	keep_snapshot = true
+end
+
 local block_id = nil
 if #args > 1 then
 	block_id = args[2]
@@ -106,7 +112,7 @@ local bootstrap_process, err = proc.spawn("./bin/node", import_args, {
 	env = { HOME = path.combine(os.cwd() --[[@as string]], "data") },
 	username = am.app.get("user")
 })
-if not using_local_bootstrap_file then -- remove the bootstrap file if it was downloaded
+if not using_local_bootstrap_file and not keep_snapshot then -- remove the bootstrap file if it was downloaded
 	os.remove(downloaded_bootstrap_file)
 end
 if not bootstrap_process or bootstrap_process.exit_code ~= 0 then -- restore entire node directory if failed
