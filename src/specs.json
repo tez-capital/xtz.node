@@ -1,6 +1,6 @@
 {
     "id": "xtz.node",
-    "version": "24.0.3+T_ready",
+    "version": "24.1.0+T",
     "dependencies": [
         {
             "id": "xtz.base"
