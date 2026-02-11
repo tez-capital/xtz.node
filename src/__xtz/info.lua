@@ -3,22 +3,24 @@ local needs_json_output = am.options.OUTPUT_FORMAT == "json"
 local options = ...
 local timeout = 4
 if options.timeout then
-    timeout = tonumber(options.timeout) or timeout
+	timeout = tonumber(options.timeout) or timeout
 end
 
 local print_chain_info = options.chain
 local print_voting_info = options.voting
 local print_service_info = options.services
 local print_simple = options.simple
-local print_all = (not print_voting_info) and (not print_chain_info) and (not print_service_info) and (not print_simple)
+local keys = options.keys
+local print_all = (not print_voting_info) and (not print_chain_info) and (not print_service_info) and (not print_simple) and
+	(not keys)
 
 local info = {
 	level = "ok",
-    sync_state = "unknown",
+	sync_state = "unknown",
 	bootstrapped = false,
-    status = "node is operational",
-    version = am.app.get_version(),
-    type = am.app.get_type(),
+	status = "node is operational",
+	version = am.app.get_version(),
+	type = am.app.get_type(),
 	services = {}
 }
 
@@ -28,8 +30,8 @@ if is_baker then
 end
 
 if print_all or print_service_info or print_simple then
-	local service_manager = require"__xtz.service-manager"
-	local services = require"__xtz.services"
+	local service_manager = require "__xtz.service-manager"
+	local services = require "__xtz.services"
 
 	local statuses, all_running = service_manager.get_services_status(services.active_names)
 	info.services = statuses
@@ -48,11 +50,11 @@ if print_all or print_chain_info then
 		local metadata = table.get(data, "metadata")
 		info.chain_head = {
 			hash = table.get(data, "hash"),
-			level = table.get(data, {"header", "level"}),
-			timestamp = table.get(data, {"header", "timestamp"}),
-			protocol = table.get(metadata, {"protocol"}),
-			protocol_next = table.get(metadata, { "next_protocol"}),
-			cycle = table.get(metadata, {"level_info", "cycle"}, table.get(metadata, {"level", "cycle"})),
+			level = table.get(data, { "header", "level" }),
+			timestamp = table.get(data, { "header", "timestamp" }),
+			protocol = table.get(metadata, { "protocol" }),
+			protocol_next = table.get(metadata, { "next_protocol" }),
+			cycle = table.get(metadata, { "level_info", "cycle" }, table.get(metadata, { "level", "cycle" })),
 		}
 	end
 
@@ -75,9 +77,9 @@ if is_baker and (print_all or print_voting_info) then
 	local response = rest_client:get("chains/main/blocks/head/votes/proposals")
 	if response then
 		local data = response.data
-		if table.is_array(data) then 
+		if table.is_array(data) then
 			info.voting_proposals = {}
-			for _, v in ipairs(data) do 
+			for _, v in ipairs(data) do
 				if #v >= 2 and type(info.proposals) == "table" then
 					info.proposals[v[1]] = v[2]
 				end
@@ -86,17 +88,42 @@ if is_baker and (print_all or print_voting_info) then
 	end
 
 	local response = rest_client:get("chains/main/blocks/head/votes/current_period")
-	if response  then
+	if response then
 		info.voting_current_period = response.data
 	end
 end
 
-if info.level == "ok" and info.sync_state ~= "synced" then 
+if info.level == "ok" and info.sync_state ~= "synced" then
 	info.level = "warn"
 end
 
+if print_all or keys then
+	local configured_keys = am.app.get_model("KEY_ALIASES")
+	if configured_keys and #configured_keys > 0 then
+		info.additional_baking_keys = {}
+		local pkh_map = {}
+		local pkh_file = io.open("data/.tezos-client/public_key_hashs", "r")
+		if pkh_file then
+			local content = pkh_file:read("*a")
+			pkh_file:close()
+			local success, data = pcall(hjson.parse, content)
+			if success and type(data) == "table" then
+				for _, item in ipairs(data) do
+					if item.name and item.value then
+						pkh_map[item.name] = item.value
+					end
+				end
+			end
+		end
+
+		for _, key in ipairs(configured_keys) do
+			info.additional_baking_keys[key] = pkh_map[key] or "pkh_unknown"
+		end
+	end
+end
+
 if not print_simple and not print_all and (not print_chain_info or not print_service_info) then
-	--- reset status and level because we are not able to determine it accurately without 
+	--- reset status and level because we are not able to determine it accurately without
 	--- service and chain information collected
 	info.level = nil
 	info.status = nil
@@ -107,7 +134,7 @@ if not print_chain_info and not print_all and not print_simple then
 end
 
 if needs_json_output then
-    print(hjson.stringify_to_json(info, {indent = false}))
+	print(hjson.stringify_to_json(info, { indent = false }))
 else
-    print(hjson.stringify(info, {sort_keys = true}))
+	print(hjson.stringify(info, { sort_keys = true }))
 end

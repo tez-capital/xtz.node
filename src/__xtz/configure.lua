@@ -4,11 +4,11 @@ local uid, err = fs.getuid(user)
 ami_assert(uid, "failed to get " .. user .. "uid - " .. tostring(err))
 
 local ok, error = fs.mkdirp("data")
-ami_assert(ok, "failed to create data directory: ".. tostring(error))
+ami_assert(ok, "failed to create data directory: " .. tostring(error))
 
 log_info("configuring " .. am.app.get("id") .. " services...")
-local service_manager = require"__xtz.service-manager"
-local services = require"__xtz.services"
+local service_manager = require "__xtz.service-manager"
+local services = require "__xtz.services"
 
 service_manager.remove_services(services.cleanup_names)
 service_manager.install_services(services.active)
@@ -43,7 +43,14 @@ fs.write_file("./data/vote-file.json", hjson.stringify_to_json(vote_file_result)
 
 -- prism
 local PRISM = am.app.get_configuration("PRISM")
-if PRISM then require"__xtz.prism.setup" end
+if PRISM then require "__xtz.prism.setup" end
+
+-- check for deprecated files
+if fs.exists("additional_key_aliases.list") then
+	log_warn(
+		"'additional_key_aliases.list' is deprecated. Please use '... modify --add configuration.key_aliases <key alias>' instead to edit keys in app.json."
+	)
+end
 
 -- finalize
-require"__xtz.base_utils".setup_file_ownership()
+require "__xtz.base_utils".setup_file_ownership()

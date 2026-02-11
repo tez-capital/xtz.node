@@ -23,6 +23,10 @@ return {
                     description = "Prints info about chain state",
                     type = "boolean"
                 },
+                ["keys"] = {
+                    description = "Prints info about keys",
+                    type = "boolean"
+                },
                 ["simple"] = {
                     aliases = "s",
                     description = "Prints simplified info",
@@ -93,7 +97,7 @@ return {
                     EXIT_INVALID_CONFIGURATION)
                 ami_assert(type(am.app.get("user")) == 'string', "USER not specified!", EXIT_INVALID_CONFIGURATION)
                 ami_assert(type(am.app.get_type()) == "table" or type(am.app.get_type()) == "string", "Invalid app type!"
-                    , EXIT_INVALID_CONFIGURATION)
+                , EXIT_INVALID_CONFIGURATION)
                 log_success("XTZ node configuration validated.")
             end
         },
@@ -206,7 +210,7 @@ return {
             options = {
                 output = {
                     index = 1,
-                    aliases = {"o"},
+                    aliases = { "o" },
                     description = "Output path for the archive"
                 },
                 light = {
@@ -214,7 +218,7 @@ return {
                     description = "If used the archive will not include chain data"
                 }
             },
-            action = function (options)
+            action = function(options)
                 am.app.pack({
                     destination = options.output,
                     mode = options.light and "light" or "full",
