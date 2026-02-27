@@ -4,24 +4,24 @@
 {
 	darwin-arm64: {
 		accuser: {
-			sha256: 0655448e187ea49e5680e5101a6b3e91d9a6c2e8ac9a356493244300f48c9310
-			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.1-2026-01-23_13-16/octez-accuser
-			version: "24.1"
+			sha256: 31f93086f3a320afa344c625922f4aaeba7d3f734b7bfeccca8c3f7cc2d3327a
+			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.2-2026-02-27_17-14/octez-accuser
+			version: "24.2"
 		}
 		baker: {
-			sha256: 537172ae040ba346c957d34b04d4a3778e1f17e07a9a5d2bedf225ac0fa4e616
-			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.1-2026-01-23_13-16/octez-baker
-			version: "24.1"
+			sha256: 6a9b9fd1b25eea17e9612e566218f8cca52db6934efa6889b90b49cfc5adc077
+			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.2-2026-02-27_17-14/octez-baker
+			version: "24.2"
 		}
 		client: {
-			sha256: 7de03765f87dc7efbc1673ba7265506bc5ade2d8caabcf8666d4b5554c1c5a62
-			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.1-2026-01-23_13-16/octez-client
-			version: "24.1"
+			sha256: a84bc72a062a32dc1a41c4f5d80c4aeda70a8c1d1743665e3f2feb43bee3b973
+			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.2-2026-02-27_17-14/octez-client
+			version: "24.2"
 		}
 		node: {
-			sha256: 27e364670ddb4acd1ccc8eece9711157f8b4036e5ffcea51289d5a6283f4b26e
-			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.1-2026-01-23_13-16/octez-node
-			version: "24.1"
+			sha256: a72d8fdabf9d5d458d6033ceac7f85c88d2ed5710644d8d539bcd2b2a01e07c5
+			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v24.2-2026-02-27_17-14/octez-node
+			version: "24.2"
 		}
 		prism: {
 			sha256: a9352724d479fcdce5eccc63b340cc3c82ccebd50c5e25bc9627da3b9898feaa
@@ -32,35 +32,35 @@
 	linux-arm64: {
 		accuser: {
 			mirrors: {
-				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.1/24.1/arm64-octez-accuser
+				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.2/24.2/arm64-octez-accuser
 			}
-			sha256: a99d7d364cd5919cfea8233d5be86997c16828d23488a9410d17727a4e579951
-			url: https://octez.tezos.com/releases/octez-v24.1/binaries/arm64/octez-accuser
-			version: "24.1"
+			sha256: 3495c47ca3f8dcfd48bffc43af1e2ac4e3245a7946212b422a64e27825e2fed3
+			url: https://octez.tezos.com/releases/octez-v24.2/binaries/arm64/octez-accuser
+			version: "24.2"
 		}
 		baker: {
 			mirrors: {
-				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.1/24.1/arm64-octez-baker
+				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.2/24.2/arm64-octez-baker
 			}
-			sha256: af3180fed2bcd2689810833e1cf0ed9ea78bc1cc9c8dd1445905cbda81278578
-			url: https://octez.tezos.com/releases/octez-v24.1/binaries/arm64/octez-baker
-			version: "24.1"
+			sha256: f82d3558526b53b1c8cb9863be520bb5ac22b8b091f96d2da6266b9e6dc50436
+			url: https://octez.tezos.com/releases/octez-v24.2/binaries/arm64/octez-baker
+			version: "24.2"
 		}
 		client: {
 			mirrors: {
-				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.1/24.1/arm64-octez-client
+				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.2/24.2/arm64-octez-client
 			}
-			sha256: cf25b797c1b349785100ba684c24f84a18beff84c1eb4a13934a06fcbaaed82e
-			url: https://octez.tezos.com/releases/octez-v24.1/binaries/arm64/octez-client
-			version: "24.1"
+			sha256: ed043af313ee142061488a7f1808da541f1cae9293911e4f16f7bf434b1ae7fd
+			url: https://octez.tezos.com/releases/octez-v24.2/binaries/arm64/octez-client
+			version: "24.2"
 		}
 		node: {
 			mirrors: {
-				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.1/24.1/arm64-octez-node
+				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.2/24.2/arm64-octez-node
 			}
-			sha256: 0f2000a37c67f1b7827c2d70aa74760a9733d110caa03129fe29ab42c8413fe3
-			url: https://octez.tezos.com/releases/octez-v24.1/binaries/arm64/octez-node
-			version: "24.1"
+			sha256: 8208c1eef8c6d17febaf25bf9b4565ec2a91c2e99fc0ba2a87b705c1be589261
+			url: https://octez.tezos.com/releases/octez-v24.2/binaries/arm64/octez-node
+			version: "24.2"
 		}
 		prism: {
 			sha256: 4b8b51bc6bf7a4de3938a1aa36e4d6bc07dcceebe9de5052ad1d2f158ba550b3
@@ -71,35 +71,35 @@
 	linux-x86_64: {
 		accuser: {
 			mirrors: {
-				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.1/24.1/x86_64-octez-accuser
+				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.2/24.2/x86_64-octez-accuser
 			}
-			sha256: b3b22c47e78eda0c3163f9a5d4c3e04bd9cc0b4d36ce6dad765b213531bbfdee
-			url: https://octez.tezos.com/releases/octez-v24.1/binaries/x86_64/octez-accuser
-			version: "24.1"
+			sha256: 975801568b62f5a3ed634638bf31b6dee07c5f0dbf53e709526194f0f18e7913
+			url: https://octez.tezos.com/releases/octez-v24.2/binaries/x86_64/octez-accuser
+			version: "24.2"
 		}
 		baker: {
 			mirrors: {
-				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.1/24.1/x86_64-octez-baker
+				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.2/24.2/x86_64-octez-baker
 			}
-			sha256: 84b576d1e5500fede48122299a42360f6db0f2feb37ba6fe22fb82773c89a854
-			url: https://octez.tezos.com/releases/octez-v24.1/binaries/x86_64/octez-baker
-			version: "24.1"
+			sha256: 878adf3951ca6fa1209a158f7d7acd576c1192dbcb2485b11eb3fee2b482e8fc
+			url: https://octez.tezos.com/releases/octez-v24.2/binaries/x86_64/octez-baker
+			version: "24.2"
 		}
 		client: {
 			mirrors: {
-				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.1/24.1/x86_64-octez-client
+				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.2/24.2/x86_64-octez-client
 			}
-			sha256: 2c00970f65ab6fb489df3d0b322719c46431b4755360b276d6e2f09459ec6280
-			url: https://octez.tezos.com/releases/octez-v24.1/binaries/x86_64/octez-client
-			version: "24.1"
+			sha256: 09db806e0c9edb6d56d02dded22e9b09a0cc8e3c185674d67e5b0651c87685ee
+			url: https://octez.tezos.com/releases/octez-v24.2/binaries/x86_64/octez-client
+			version: "24.2"
 		}
 		node: {
 			mirrors: {
-				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.1/24.1/x86_64-octez-node
+				gitlab: https://gitlab.com/api/v4/projects/3836952/packages/generic/octez-binaries-24.2/24.2/x86_64-octez-node
 			}
-			sha256: 7fd7d9ac33d54da9d8c8600e69859a5715e8a2b8ed1efce12679b8e6b2d8117c
-			url: https://octez.tezos.com/releases/octez-v24.1/binaries/x86_64/octez-node
-			version: "24.1"
+			sha256: 834586406b214f60ce61b7e916cb6f94e204d1f7040a15e1a011c19236a16547
+			url: https://octez.tezos.com/releases/octez-v24.2/binaries/x86_64/octez-node
+			version: "24.2"
 		}
 		prism: {
 			sha256: 184e10f55a2b5de60a26682207325d3b0addfcce5e02f328be37272013dd2445
