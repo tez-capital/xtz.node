@@ -25,12 +25,15 @@ elseif fs.exists("./__xtz/node-config.json") then
 end
 
 -- vote file
+local valid_vote_file_keys = {
+	liquidity_baking_toggle_vote = true,
+}
 local vote_file = am.app.get_configuration("VOTE_FILE")
 local vote_file_result = {}
 local baseline_raw, err = fs.read_file("./__xtz/assets/default-vote-file.json")
 if baseline_raw then
-	local baseline, err = hjson.parse(baseline_raw)
-	if ok and type(baseline) == "table" and not table.is_array(baseline) then
+	local baseline, parse_err = hjson.parse(baseline_raw)
+	if baseline and type(baseline) == "table" and not table.is_array(baseline) then
 		vote_file_result = baseline
 	end
 end
@@ -38,6 +41,15 @@ if type(vote_file) == "table" and not table.is_array(vote_file) then
 	vote_file_result = util.merge_tables(vote_file_result, vote_file, true)
 elseif vote_file then
 	log_warn("invalid 'VOTE_FILE' detected!")
+end
+for key in pairs(vote_file_result) do
+	if not valid_vote_file_keys[key] then
+		log_warn(
+			"invalid key '" .. key .. "' detected in 'VOTE_FILE'. Please use '... modify --unset configuration.VOTE_FILE." ..
+			key .. "' to remove it from app.hjson."
+		)
+		vote_file_result[key] = nil
+	end
 end
 fs.write_file("./data/vote-file.json", hjson.stringify_to_json(vote_file_result))
 
