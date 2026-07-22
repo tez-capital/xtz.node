@@ -6,22 +6,22 @@
 		accuser: {
 			sha256: 5c3a00404a6ee2e822bda9dd433d4322f88830ace94006ea677e4433861918d3
 			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v25.1-2026-07-21_12-46/octez-accuser
-			version: "25.0"
+			version: "25.1"
 		}
 		baker: {
 			sha256: 2fc15efa87faf81e734d57b439779d10a71a39108069caef3cbea1c5eb3bcb75
 			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v25.1-2026-07-21_12-46/octez-baker
-			version: "25.0"
+			version: "25.1"
 		}
 		client: {
 			sha256: 6feaa325fe1dee1638cec458a5eb8d6bf9a809ceaa92d0cf096f654b800bda58
 			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v25.1-2026-07-21_12-46/octez-client
-			version: "25.0"
+			version: "25.1"
 		}
 		node: {
 			sha256: 5f0af26ab0332fadd66e2e94e27aaa1c8cf3d6f981e4d42d484e9c9a9e818d0e
 			url: https://github.com/tez-capital/tezos-macos-pipeline/releases/download/octez-v25.1-2026-07-21_12-46/octez-node
-			version: "25.0"
+			version: "25.1"
 		}
 		prism: {
 			sha256: a9352724d479fcdce5eccc63b340cc3c82ccebd50c5e25bc9627da3b9898feaa
@@ -36,7 +36,7 @@
 			}
 			sha256: 881d24c2b3637ea3860b426d75df9f367deeffc66a4ee187a839708cf393e864
 			url: https://octez.tezos.com/releases/octez-v25.1/binaries/arm64/octez-accuser
-			version: "25.0"
+			version: "25.1"
 		}
 		baker: {
 			mirrors: {
@@ -44,7 +44,7 @@
 			}
 			sha256: ad065f170467e212c657117dccf1d58775f72498ba4646446b267744cc56b69f
 			url: https://octez.tezos.com/releases/octez-v25.1/binaries/arm64/octez-baker
-			version: "25.0"
+			version: "25.1"
 		}
 		client: {
 			mirrors: {
@@ -52,7 +52,7 @@
 			}
 			sha256: 031c8885de8784d51b2cdfabe8371eb96464ff1e78b32e2e78f5bfa2bb9604d1
 			url: https://octez.tezos.com/releases/octez-v25.1/binaries/arm64/octez-client
-			version: "25.0"
+			version: "25.1"
 		}
 		node: {
 			mirrors: {
@@ -60,7 +60,7 @@
 			}
 			sha256: 9d76eb6d34b367e68984b9264de31128bba8a564ad942dba70aaafa4bc65e3a6
 			url: https://octez.tezos.com/releases/octez-v25.1/binaries/arm64/octez-node
-			version: "25.0"
+			version: "25.1"
 		}
 		prism: {
 			sha256: 4b8b51bc6bf7a4de3938a1aa36e4d6bc07dcceebe9de5052ad1d2f158ba550b3
@@ -75,7 +75,7 @@
 			}
 			sha256: 7f421adae4b546369a3ba76309f61fbd7af70562e67efe3e27d2ca8392a928c7
 			url: https://octez.tezos.com/releases/octez-v25.1/binaries/x86_64/octez-accuser
-			version: "25.0"
+			version: "25.1"
 		}
 		baker: {
 			mirrors: {
@@ -83,7 +83,7 @@
 			}
 			sha256: 817374c5b5a86098ef843c953961e69b4bce504fd99847d41c2863ea9a2459e0
 			url: https://octez.tezos.com/releases/octez-v25.1/binaries/x86_64/octez-baker
-			version: "25.0"
+			version: "25.1"
 		}
 		client: {
 			mirrors: {
@@ -91,7 +91,7 @@
 			}
 			sha256: 405b6acc2e1c9ab81e3d08fcae84a662764396ba9162dd448b3ae561847e5754
 			url: https://octez.tezos.com/releases/octez-v25.1/binaries/x86_64/octez-client
-			version: "25.0"
+			version: "25.1"
 		}
 		node: {
 			mirrors: {
@@ -99,7 +99,7 @@
 			}
 			sha256: ef3f13ee5c419cb5ffea4ff8f8a8c6a484ac28cf785719b93b9cfd88bfc83c4a
 			url: https://octez.tezos.com/releases/octez-v25.1/binaries/x86_64/octez-node
-			version: "25.0"
+			version: "25.1"
 		}
 		prism: {
 			sha256: 184e10f55a2b5de60a26682207325d3b0addfcce5e02f328be37272013dd2445
