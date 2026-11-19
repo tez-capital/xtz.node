@@ -219,17 +219,20 @@ return {
                 }
             },
             action = function(options)
-                am.app.pack({
-                    destination = options.output,
-                    mode = options.light and "light" or "full",
-                    path_filtering_mode = "blacklist",
-                    paths = {
-                        "data/.tezos-node/context/**",
-                        "data/.tezos-node/daily_logs/**",
-                        "data/.tezos-node/store/**",
-                        "data/.tezos-node/version.json",
-                    }
-                })
+                local pack = { destination = options.output, mode = options.light and "light" or "full" }
+                if options.light then
+                    ami_assert(ver.compare(am.VERSION, "0.36.5") >= 0, "Light node backups require AMI 0.36.5 or newer", EXIT_INVALID_AMI_VERSION)
+                    local keep = { ["config.json"] = true, ["identity.json"] = true, ["peers.json"] = true }
+                    pack.paths = {} -- AMI's default light filter excludes all of data/.
+                    pack.filter = function(file)
+                        -- leftovers of an interrupted bootstrap (see __xtz/bootstrap.lua)
+                        local root = file:match("^data/([^/]+)")
+                        if root == "tmp-snapshot" or root == ".tezos-node-tmp" then return false end
+                        local name = file:match("^data/%.tezos%-node/(.*)$")
+                        return name == nil or (keep[name] == true and fs.file_type(file) == "file")
+                    end
+                end
+                am.app.pack(pack)
             end
         },
         remove = {
